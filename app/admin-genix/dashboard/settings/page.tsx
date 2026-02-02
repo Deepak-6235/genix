@@ -81,11 +81,10 @@ export default function SettingsPage() {
     <div className="space-y-8">
       <div>
         <h2 className="text-3xl font-bold text-gray-900">Settings</h2>
-        <p className="mt-2 text-gray-600">Manage your account settings</p>
+        {/* <p className="mt-2 text-gray-600">Manage your account settings</p> */}
       </div>
 
-      {/* Change Password Section */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 max-w-2xl">
+      {/* <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 max-w-2xl">
         <h3 className="text-xl font-bold text-gray-900 mb-4">Change Password</h3>
 
         <form onSubmit={handleChangePassword} className="space-y-4">
@@ -164,7 +163,7 @@ export default function SettingsPage() {
             {loading ? 'Changing Password...' : 'Change Password'}
           </button>
         </form>
-      </div>
+      </div> */}
 
       {/* Account Information */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 max-w-2xl">
