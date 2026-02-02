@@ -21,6 +21,7 @@ model Language {
   // Relations
   services  Service[] @relation("ServiceLanguage")
   blogs     Blog[]    @relation("BlogLanguage")
+  faqs      FAQ[]     @relation("FAQLanguage")
 
   @@map("languages")
 }
@@ -128,4 +129,22 @@ model Review {
   updatedAt DateTime @updatedAt
 
   @@map("reviews")
+}
+
+model FAQ {
+  id          String   @id @default(cuid())
+  languageId  String   // Foreign key to Language table
+  language    Language @relation("FAQLanguage", fields: [languageId], references: [id])
+  
+  // Content fields
+  question    String   @db.Text
+  answer      String   @db.Text
+  
+  // Meta
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("faqs")
 }
