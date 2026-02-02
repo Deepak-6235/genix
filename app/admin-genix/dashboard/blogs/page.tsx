@@ -299,14 +299,11 @@ export default function BlogsPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (slug: string) => {
     if (!confirm('Are you sure you want to delete this blog?')) return;
 
     try {
-      const blog = blogs.find((b) => b.id === id);
-      if (!blog) return;
-
-      const response = await fetch(`/api/blogs/${encodeURIComponent(blog.slug)}`, {
+      const response = await fetch(`/api/blogs/${encodeURIComponent(slug)}`, {
         method: 'DELETE',
       });
 
