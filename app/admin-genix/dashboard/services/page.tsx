@@ -420,7 +420,7 @@ export default function ServicesPage() {
               <h3 className="text-xl font-bold text-gray-900">
                 {editingService ? 'Edit Service' : 'Add New Service'}
               </h3>
-              <p className="text-sm text-gray-600 mt-2">Fill in English content only. Auto-translation to all 5 languages on save.</p>
+              <p className="text-sm text-gray-600 mt-2">Fill in English content only. Auto-translation to languages on save.</p>
             </div>
 
             {/* Main Tabs */}
