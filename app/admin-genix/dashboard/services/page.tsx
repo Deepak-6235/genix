@@ -469,17 +469,7 @@ export default function ServicesPage() {
               {activeTab === 'basic' && (
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Slug *</label>
-                      <input
-                        type="text"
-                        required
-                        value={formData.slug}
-                        onChange={(e) => updateFormData('slug', e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
-                        placeholder="pest-control"
-                      />
-                    </div>
+
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Icon</label>
                       <input
