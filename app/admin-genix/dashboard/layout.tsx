@@ -68,9 +68,7 @@ export default function DashboardLayout({
 
   const navItems = [
     { name: 'Dashboard', path: '/admin-genix/dashboard', icon: '📊' },
-    { name: 'Users', path: '/admin-genix/dashboard/users', icon: '👥' },
-    { name: 'Products', path: '/admin-genix/dashboard/products', icon: '📦' },
-    { name: 'Orders', path: '/admin-genix/dashboard/orders', icon: '🛒' },
+    { name: 'Services', path: '/admin-genix/dashboard/services', icon: '🔧' },
     { name: 'Settings', path: '/admin-genix/dashboard/settings', icon: '⚙️' },
   ];
 
