@@ -117,3 +117,15 @@ model AboutUs {
 
   @@map("about_us")
 }
+
+model Review {
+  id        String   @id @default(cuid())
+  name      String   // Customer name
+  text      String   @db.Text // Review text
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("reviews")
+}
