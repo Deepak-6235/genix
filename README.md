@@ -1,37 +1,118 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Genix Admin Panel
 
-## Getting Started
+A modern, secure admin panel built with Next.js 16, TypeScript, Prisma, and PostgreSQL.
 
-First, run the development server:
+## Features
+
+- 🔐 Secure authentication with JWT & bcrypt
+- 🗄️ PostgreSQL database with Prisma ORM
+- 🎨 Beautiful UI with Tailwind CSS
+- 🛡️ Rate limiting & brute force protection
+- 📱 Responsive design
+- ⚡ Built with Next.js App Router
+
+## Quick Start
+
+### 1. Install Dependencies
+
+```bash
+npm install
+```
+
+### 2. Setup Database
+
+Follow the [DATABASE_SETUP.md](./DATABASE_SETUP.md) guide to:
+- Install PostgreSQL
+- Configure DATABASE_URL
+- Run migrations
+- Seed admin user
+
+**Quick commands:**
+```bash
+npm run db:generate  # Generate Prisma Client
+npm run db:push      # Create database tables
+npm run db:seed      # Create default admin
+```
+
+### 3. Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit: `http://localhost:3000/admin-genix`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Default Login:**
+- Email: `admin@genix.com`
+- Password: `Admin@123!`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+```
+genix/
+├── app/
+│   ├── admin-genix/           # Admin login page
+│   │   └── dashboard/         # Protected admin panel
+│   └── api/auth/              # Authentication API routes
+├── lib/
+│   ├── prisma.ts              # Prisma client
+│   ├── password.ts            # Password hashing utilities
+│   └── auth.ts                # Auth helper functions
+├── prisma/
+│   ├── schema.prisma          # Database schema
+│   └── seed.ts                # Database seeder
+├── middleware.ts              # Route protection
+└── .env.local                 # Environment variables
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Environment Variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/genix_db"
+JWT_SECRET="your-super-secret-jwt-key"
+NODE_ENV="development"
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Available Scripts
 
-## Deploy on Vercel
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+npm run db:generate  # Generate Prisma Client
+npm run db:push      # Push schema to database
+npm run db:migrate   # Create and run migrations
+npm run db:seed      # Seed database with admin user
+npm run db:studio    # Open Prisma Studio (database GUI)
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-"# genix" 
+## Tech Stack
+
+- **Framework:** Next.js 16 (App Router)
+- **Language:** TypeScript
+- **Database:** PostgreSQL
+- **ORM:** Prisma
+- **Styling:** Tailwind CSS
+- **Authentication:** JWT (jose) + bcrypt
+- **Runtime:** Node.js
+
+## Security
+
+- ✅ Password hashing with bcrypt (12 rounds)
+- ✅ JWT tokens with 24-hour expiration
+- ✅ HTTP-only cookies (XSS protection)
+- ✅ Rate limiting (5 attempts / 15 min lockout)
+- ✅ Timing attack protection
+- ✅ Email validation
+- ✅ Secure cookies (HTTPS in production)
+
+## Documentation
+
+- [Database Setup Guide](./DATABASE_SETUP.md) - Complete database setup instructions
+- [Authentication Documentation](./AUTH_SETUP.md) - Detailed auth system docs
+
+## License
+
+Private

@@ -12,18 +12,58 @@ export default function DashboardLayout({
   const router = useRouter();
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [userEmail, setUserEmail] = useState<string>('');
+  const [loggingOut, setLoggingOut] = useState(false);
 
   useEffect(() => {
-    // Check authentication
-    const isAuthenticated = localStorage.getItem('adminAuth');
-    if (!isAuthenticated) {
-      router.push('/admin-genix');
-    }
+    // Verify authentication on mount
+    const verifyAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/verify');
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          router.push('/admin-genix');
+          return;
+        }
+
+        setUserEmail(data.user.email);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Auth verification failed:', error);
+        router.push('/admin-genix');
+      }
+    };
+
+    verifyAuth();
   }, [router]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('adminAuth');
-    router.push('/admin-genix');
+  const handleLogout = async () => {
+    if (loggingOut) return;
+
+    setLoggingOut(true);
+
+    try {
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+      });
+
+      if (response.ok) {
+        router.push('/admin-genix');
+        router.refresh();
+      } else {
+        console.error('Logout failed');
+        // Force redirect anyway
+        router.push('/admin-genix');
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Force redirect anyway
+      router.push('/admin-genix');
+    } finally {
+      setLoggingOut(false);
+    }
   };
 
   const navItems = [
@@ -33,6 +73,18 @@ export default function DashboardLayout({
     { name: 'Orders', path: '/admin-genix/dashboard/orders', icon: '🛒' },
     { name: 'Settings', path: '/admin-genix/dashboard/settings', icon: '⚙️' },
   ];
+
+  // Show loading state while verifying auth
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -54,13 +106,14 @@ export default function DashboardLayout({
 
             <div className="flex items-center space-x-4">
               <div className="text-sm text-gray-700">
-                <span className="font-medium">Admin User</span>
+                <span className="font-medium">{userEmail || 'Admin User'}</span>
               </div>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm font-medium"
+                disabled={loggingOut}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Logout
+                {loggingOut ? 'Logging out...' : 'Logout'}
               </button>
             </div>
           </div>
