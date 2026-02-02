@@ -105,7 +105,6 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
     const {
-      icon,
       slug,
       isActive,
       order,
@@ -156,7 +155,6 @@ export async function POST(request: NextRequest) {
             },
           },
           update: {
-            icon: icon || null,
             title: finalContent.title,
             shortDescription: finalContent.shortDescription,
             fullDescription: finalContent.fullDescription || null,
@@ -171,7 +169,6 @@ export async function POST(request: NextRequest) {
             order: order || 0,
           },
           create: {
-            icon: icon || null,
             slug: generatedSlug,
             languageId: lang.id,
             title: finalContent.title,

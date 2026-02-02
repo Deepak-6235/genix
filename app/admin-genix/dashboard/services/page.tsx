@@ -38,7 +38,6 @@ interface Service {
   id: string;
   title: string;
   shortDescription: string;
-  icon: string | null;
   slug: string;
   fullDescription: string | null;
   servicesProvided: string | null;
@@ -93,7 +92,6 @@ function SortableServiceItem({ service, onEdit, onDelete, onView }: {
         <div className="flex-1">
           <div className="flex justify-between items-start mb-4">
             <div>
-              {service.icon && <div className="text-3xl mb-2">{service.icon}</div>}
               <h3 className="text-lg font-bold text-gray-900">{service.title}</h3>
             </div>
             <span
@@ -141,7 +139,6 @@ export default function ServicesPage() {
   const [activeTab, setActiveTab] = useState('basic');
   const [viewLanguage, setViewLanguage] = useState<LanguageCode>('en');
   const [formData, setFormData] = useState({
-    icon: '',
     slug: '',
     isActive: true,
     title: '',
@@ -217,7 +214,6 @@ export default function ServicesPage() {
       setEditingService(service);
       const englishTranslation = service.translations?.en;
       setFormData({
-        icon: service.icon || '',
         slug: service.slug,
         isActive: service.isActive,
         title: englishTranslation?.title || '',
@@ -234,7 +230,6 @@ export default function ServicesPage() {
     } else {
       setEditingService(null);
       setFormData({
-        icon: '',
         slug: '',
         isActive: true,
         title: '',
@@ -468,19 +463,6 @@ export default function ServicesPage() {
               {/* Basic Info Tab */}
               {activeTab === 'basic' && (
                 <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Icon</label>
-                      <input
-                        type="text"
-                        value={formData.icon}
-                        onChange={(e) => updateFormData('icon', e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
-                        placeholder="🔧"
-                      />
-                    </div>
-                  </div>
                   <div className="flex items-center">
                     <label className="flex items-center cursor-pointer">
                       <input
