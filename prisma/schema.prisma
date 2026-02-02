@@ -91,3 +91,16 @@ model Blog {
   @@unique([slug, languageId], name: "slug_languageId")
   @@map("blogs")
 }
+
+model Statistic {
+  id        String   @id @default(cuid())
+  label     String   // e.g., "Specialized Technicians", "Happy Customers"
+  value     Int      // e.g., 45, 1230
+  icon      String?  // Icon emoji or name
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("statistics")
+}
