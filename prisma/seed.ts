@@ -1,11 +1,23 @@
 import { config } from 'dotenv';
 import bcrypt from 'bcrypt';
+import { PrismaClient } from '@prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { Pool } from 'pg';
 
 // Load environment variables
 config({ path: '.env.local' });
 
-// Use the prisma instance from lib
-import { prisma } from '../lib/prisma';
+// Create pool and adapter for Prisma 7
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+const adapter = new PrismaPg(pool);
+
+// Create a new Prisma client for seeding
+const prisma = new PrismaClient({
+  adapter,
+});
 
 async function main() {
   console.log('🌱 Starting database seed...');
@@ -15,50 +27,36 @@ async function main() {
     {
       code: 'en',
       name: 'English',
-      nativeName: 'English',
-      flag: '🇬🇧',
       dir: 'ltr',
     },
     {
       code: 'ar',
       name: 'Arabic',
-      nativeName: 'العربية',
-      flag: '🇸🇦',
       dir: 'rtl',
     },
     {
       code: 'pt',
       name: 'Portuguese',
-      nativeName: 'Português',
-      flag: '🇵🇹',
       dir: 'ltr',
     },
     {
       code: 'zh',
       name: 'Chinese',
-      nativeName: '中文',
-      flag: '🇨🇳',
       dir: 'ltr',
     },
     {
       code: 'ja',
       name: 'Japanese',
-      nativeName: '日本語',
-      flag: '🇯🇵',
       dir: 'ltr',
     },
     {
       code: 'de',
       name: 'German',
-      nativeName: 'Deutsch',
-      flag: '🇩🇪',
       dir: 'ltr',
     },
     {
       code: 'fr',
       name: 'French',
-      nativeName: 'Français',
-      flag: '🇫🇷',
       dir: 'ltr',
     },
   ];
