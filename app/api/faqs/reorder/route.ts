@@ -14,21 +14,30 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Update order for each FAQ across all languages
-        // For each FAQ in the reordered list, find its current order and update all FAQs with that order
-        for (const item of faqs) {
-            // Find the FAQ to get its current order
+        // Two-phase update to prevent order collisions:
+        // Phase 1: Set all to temporary negative values
+        for (let i = 0; i < faqs.length; i++) {
+            const item = faqs[i];
             const faq = await prisma.fAQ.findUnique({
                 where: { id: item.id },
             });
 
             if (faq) {
-                // Update all FAQs with the same current order (all language versions)
+                // Update all FAQs with the same current order to temporary negative value
                 await prisma.fAQ.updateMany({
                     where: { order: faq.order },
-                    data: { order: item.order },
+                    data: { order: -(i + 1000) }, // Use negative temp values
                 });
             }
+        }
+
+        // Phase 2: Set final order values
+        for (let i = 0; i < faqs.length; i++) {
+            const tempOrder = -(i + 1000);
+            await prisma.fAQ.updateMany({
+                where: { order: tempOrder },
+                data: { order: i },
+            });
         }
 
         return NextResponse.json({ success: true, message: 'FAQs reordered successfully' });
