@@ -90,16 +90,7 @@ export async function PUT(
       slug,
       isActive,
       order,
-      title,
-      shortDescription,
-      fullDescription,
-      servicesProvided,
-      targetInsects,
-      methodsTitle,
-      methodsDescription,
-      advancedTechnologies,
-      safeUseDescription,
-      serviceGuarantee,
+      translations: clientTranslations,
     } = body;
 
     // Find all services with this slug (all language versions)
@@ -114,30 +105,40 @@ export async function PUT(
       );
     }
 
-    // Update all language versions
-    const updatedServices = await Promise.all(
-      existingServices.map((service) =>
-        prisma.service.update({
-          where: { id: service.id },
-          data: {
-            icon: icon !== undefined ? icon : service.icon,
-            slug: slug !== undefined ? slug : service.slug,
-            isActive: isActive !== undefined ? isActive : service.isActive,
-            order: order !== undefined ? order : service.order,
-            title: title !== undefined ? title : service.title,
-            shortDescription: shortDescription !== undefined ? shortDescription : service.shortDescription,
-            fullDescription: fullDescription !== undefined ? fullDescription : service.fullDescription,
-            servicesProvided: servicesProvided !== undefined ? servicesProvided : service.servicesProvided,
-            targetInsects: targetInsects !== undefined ? targetInsects : service.targetInsects,
-            methodsTitle: methodsTitle !== undefined ? methodsTitle : service.methodsTitle,
-            methodsDescription: methodsDescription !== undefined ? methodsDescription : service.methodsDescription,
-            advancedTechnologies: advancedTechnologies !== undefined ? advancedTechnologies : service.advancedTechnologies,
-            safeUseDescription: safeUseDescription !== undefined ? safeUseDescription : service.safeUseDescription,
-            serviceGuarantee: serviceGuarantee !== undefined ? serviceGuarantee : service.serviceGuarantee,
-          },
-        })
-      )
-    );
+    // Get all languages to match service updates
+    const allLanguages = await prisma.language.findMany();
+
+    // Update all language versions with translations (sequentially to avoid connection pool exhaustion)
+    const updatedServices = [];
+    for (const service of existingServices) {
+      // Find the language code for this service
+      const serviceLanguage = allLanguages.find(lang => lang.id === service.languageId);
+      const langCode = serviceLanguage?.code as any;
+
+      // Get the correct translation for this language
+      const langTranslation = clientTranslations && langCode ? clientTranslations[langCode] : null;
+
+      const updatedService = await prisma.service.update({
+        where: { id: service.id },
+        data: {
+          icon: icon !== undefined ? icon : service.icon,
+          slug: slug !== undefined ? slug : service.slug,
+          isActive: isActive !== undefined ? isActive : service.isActive,
+          order: order !== undefined ? order : service.order,
+          title: langTranslation?.title || service.title,
+          shortDescription: langTranslation?.shortDescription || service.shortDescription,
+          fullDescription: langTranslation?.fullDescription || service.fullDescription,
+          servicesProvided: langTranslation?.servicesProvided || service.servicesProvided,
+          targetInsects: langTranslation?.targetInsects || service.targetInsects,
+          methodsTitle: langTranslation?.methodsTitle || service.methodsTitle,
+          methodsDescription: langTranslation?.methodsDescription || service.methodsDescription,
+          advancedTechnologies: langTranslation?.advancedTechnologies || service.advancedTechnologies,
+          safeUseDescription: langTranslation?.safeUseDescription || service.safeUseDescription,
+          serviceGuarantee: langTranslation?.serviceGuarantee || service.serviceGuarantee,
+        },
+      });
+      updatedServices.push(updatedService);
+    }
 
     return NextResponse.json({
       success: true,
@@ -181,14 +182,12 @@ export async function DELETE(
       );
     }
 
-    // Delete all language versions
-    await Promise.all(
-      existingServices.map((service) =>
-        prisma.service.delete({
-          where: { id: service.id },
-        })
-      )
-    );
+    // Delete all language versions (sequentially to avoid connection pool exhaustion)
+    for (const service of existingServices) {
+      await prisma.service.delete({
+        where: { id: service.id },
+      });
+    }
 
     return NextResponse.json({
       success: true,

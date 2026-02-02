@@ -63,7 +63,7 @@ model Service {
   updatedAt             DateTime @updatedAt
 
   // Unique constraint: same slug can have multiple languages
-  @@unique([slug, languageId])
+  @@unique([slug, languageId], name: "slug_languageId")
   @@map("services")
 }
 
@@ -88,6 +88,6 @@ model Blog {
   updatedAt             DateTime @updatedAt
 
   // Unique constraint: same slug can have multiple languages
-  @@unique([slug, languageId])
+  @@unique([slug, languageId], name: "slug_languageId")
   @@map("blogs")
 }

@@ -33,46 +33,46 @@ async function translateText(text: string, targetLanguage: LanguageCode): Promis
   if (!text) return '';
   if (targetLanguage === 'en') return text;
 
+  const apiKey = process.env.GOOGLE_TRANSLATE_API_KEY;
+
+  // If no API key, return original text immediately
+  if (!apiKey || apiKey === 'your-google-translate-api-key-here') {
+    console.warn(`GOOGLE_TRANSLATE_API_KEY not set, using English text for ${targetLanguage}`);
+    return text;
+  }
+
   try {
     const googleTranslateCode = LANGUAGE_MAP[targetLanguage];
 
-    // Using free Google Translate API (no key required for basic usage)
+    // Use official Google Translate API
     const response = await fetch(
-      `https://translate.googleapis.com/translate_a/element.js?cb=googleTranslateElementInit`,
+      `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`,
       {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify({
+          q: text,
+          target: googleTranslateCode,
+          source: 'en',
+        }),
       }
     );
 
-    // Fallback to a simple translation approach using Google Translate free API
-    const encoded = encodeURIComponent(text);
-    const translationResponse = await fetch(
-      `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${googleTranslateCode}&dt=t&q=${encoded}`,
-      {
-        headers: {
-          'User-Agent': 'Mozilla/5.0',
-        },
-      }
-    );
-
-    if (!translationResponse.ok) {
-      console.error(`Translation failed for ${targetLanguage}:`, translationResponse.status);
+    if (!response.ok) {
+      console.error(`Translation API failed for ${targetLanguage}:`, response.status, response.statusText);
       return text;
     }
 
-    const data = await translationResponse.json();
+    const data = await response.json();
 
     // Extract translated text from the response
-    if (Array.isArray(data) && data[0] && Array.isArray(data[0])) {
-      const translatedText = data[0]
-        .map((item: any) => item[0])
-        .join('');
-      return translatedText;
+    if (data.data && data.data.translations && data.data.translations[0]) {
+      return data.data.translations[0].translatedText;
     }
 
+    console.warn(`No translation received for ${targetLanguage}`);
     return text;
   } catch (error) {
     console.error(`Translation error for ${targetLanguage}:`, error);

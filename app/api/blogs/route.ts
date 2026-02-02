@@ -28,6 +28,26 @@ function generateSlug(title: string): string {
     .replace(/(^-|-$)/g, '');
 }
 
+async function generateUniqueSlug(baseSlug: string): Promise<string> {
+  let slug = baseSlug;
+  let counter = 1;
+
+  while (true) {
+    // Check if this slug already exists
+    const existing = await prisma.blog.findFirst({
+      where: { slug },
+    });
+
+    if (!existing) {
+      return slug;
+    }
+
+    // If it exists, append a number and try again
+    slug = `${baseSlug}-${counter}`;
+    counter++;
+  }
+}
+
 // GET all blogs in selected language
 export async function GET(request: NextRequest) {
   try {
@@ -122,7 +142,8 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const generatedSlug = slug || generateSlug(title);
+    const baseSlug = slug || generateSlug(title);
+    const generatedSlug = await generateUniqueSlug(baseSlug);
 
     // Prepare English content
     const englishContent = {
@@ -153,17 +174,40 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Create blog records for all languages
-    const createdBlogs = await Promise.all(
+    // Create or update blog records for all languages
+    const createdBlogs = await Promise.allSettled(
       languages.map((lang) => {
         const trans = translations[lang.code as keyof typeof translations];
-        return prisma.blog.create({
-          data: {
+
+        // Use provided translation or fall back to English
+        const finalTrans = trans || translations['en'];
+
+        if (!finalTrans) {
+          throw new Error(`No translation found for language ${lang.code}`);
+        }
+
+        return prisma.blog.upsert({
+          where: {
+            slug_languageId: {
+              slug: generatedSlug,
+              languageId: lang.id,
+            },
+          },
+          update: {
+            title: finalTrans.title,
+            excerpt: finalTrans.shortDescription,
+            content: finalTrans.fullDescription,
+            imageUrl: imageUrl,
+            author: author || null,
+            isActive: isActive,
+            publishedAt: publishedAt ? new Date(publishedAt) : new Date(),
+          },
+          create: {
             slug: generatedSlug,
             languageId: lang.id,
-            title: trans.title,
-            excerpt: trans.shortDescription,
-            content: trans.fullDescription,
+            title: finalTrans.title,
+            excerpt: finalTrans.shortDescription,
+            content: finalTrans.fullDescription,
             imageUrl: imageUrl,
             author: author || null,
             isActive: isActive,
@@ -176,10 +220,15 @@ export async function POST(request: NextRequest) {
       })
     );
 
+    // Extract successful results
+    const successfulBlogs = createdBlogs
+      .filter((result) => result.status === 'fulfilled')
+      .map((result) => (result as PromiseFulfilledResult<any>).value);
+
     return NextResponse.json({
       success: true,
       message: 'Blog created successfully in all languages',
-      blog: createdBlogs,
+      blog: successfulBlogs,
     });
   } catch (error) {
     console.error('Create blog error:', error);

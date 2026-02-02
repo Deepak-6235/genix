@@ -27,6 +27,26 @@ function generateSlug(title: string): string {
     .replace(/(^-|-$)/g, '');
 }
 
+async function generateUniqueSlug(baseSlug: string): Promise<string> {
+  let slug = baseSlug;
+  let counter = 1;
+
+  while (true) {
+    // Check if this slug already exists
+    const existing = await prisma.service.findFirst({
+      where: { slug },
+    });
+
+    if (!existing) {
+      return slug;
+    }
+
+    // If it exists, append a number and try again
+    slug = `${baseSlug}-${counter}`;
+    counter++;
+  }
+}
+
 // GET all services in selected language
 export async function GET(request: NextRequest) {
   try {
@@ -89,47 +109,23 @@ export async function POST(request: NextRequest) {
       slug,
       isActive,
       order,
-      title,
-      shortDescription,
-      fullDescription,
-      servicesProvided,
-      targetInsects,
-      methodsTitle,
-      methodsDescription,
-      advancedTechnologies,
-      safeUseDescription,
-      serviceGuarantee,
+      translations: clientTranslations,
     } = body;
 
-    // Validation
-    if (!title || !shortDescription) {
+    // Validation - check if translations from client has English content
+    if (!clientTranslations || !clientTranslations.en || !clientTranslations.en.title || !clientTranslations.en.shortDescription) {
       return NextResponse.json(
         { success: false, message: 'Title and short description are required' },
         { status: 400 }
       );
     }
 
-    const generatedSlug = slug || generateSlug(title);
+    const englishContent = clientTranslations.en;
+    const baseSlug = slug || generateSlug(englishContent.title);
+    const generatedSlug = await generateUniqueSlug(baseSlug);
 
-    // Prepare English content
-    const englishContent = {
-      title,
-      shortDescription,
-      fullDescription: fullDescription || '',
-      servicesProvided: servicesProvided || '',
-      targetInsects: targetInsects || '',
-      methodsTitle: methodsTitle || '',
-      methodsDescription: methodsDescription || '',
-      advancedTechnologies: advancedTechnologies || '',
-      safeUseDescription: safeUseDescription || '',
-      serviceGuarantee: serviceGuarantee || '',
-    };
-
-    // Auto-translate to all languages
-    const translations = await translateContent(
-      englishContent,
-      LANGUAGE_CODES as any
-    );
+    // Use translations from client (already translated on client side)
+    const translations = clientTranslations;
 
     // Get all language records
     const languages = await prisma.language.findMany({
@@ -140,25 +136,54 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Create service records for all languages
-    const createdServices = await Promise.all(
+    // Create or update service records for all languages
+    const createdServices = await Promise.allSettled(
       languages.map((lang) => {
         const content = translations[lang.code as keyof typeof translations];
-        return prisma.service.create({
-          data: {
+
+        // Use provided translation or fall back to English
+        const finalContent = content || translations['en'];
+
+        if (!finalContent) {
+          throw new Error(`No translation found for language ${lang.code}`);
+        }
+
+        return prisma.service.upsert({
+          where: {
+            slug_languageId: {
+              slug: generatedSlug,
+              languageId: lang.id,
+            },
+          },
+          update: {
+            icon: icon || null,
+            title: finalContent.title,
+            shortDescription: finalContent.shortDescription,
+            fullDescription: finalContent.fullDescription || null,
+            servicesProvided: finalContent.servicesProvided || null,
+            targetInsects: finalContent.targetInsects || null,
+            methodsTitle: finalContent.methodsTitle || null,
+            methodsDescription: finalContent.methodsDescription || null,
+            advancedTechnologies: finalContent.advancedTechnologies || null,
+            safeUseDescription: finalContent.safeUseDescription || null,
+            serviceGuarantee: finalContent.serviceGuarantee || null,
+            isActive: isActive !== undefined ? isActive : true,
+            order: order || 0,
+          },
+          create: {
             icon: icon || null,
             slug: generatedSlug,
             languageId: lang.id,
-            title: content.title,
-            shortDescription: content.shortDescription,
-            fullDescription: content.fullDescription || null,
-            servicesProvided: content.servicesProvided || null,
-            targetInsects: content.targetInsects || null,
-            methodsTitle: content.methodsTitle || null,
-            methodsDescription: content.methodsDescription || null,
-            advancedTechnologies: content.advancedTechnologies || null,
-            safeUseDescription: content.safeUseDescription || null,
-            serviceGuarantee: content.serviceGuarantee || null,
+            title: finalContent.title,
+            shortDescription: finalContent.shortDescription,
+            fullDescription: finalContent.fullDescription || null,
+            servicesProvided: finalContent.servicesProvided || null,
+            targetInsects: finalContent.targetInsects || null,
+            methodsTitle: finalContent.methodsTitle || null,
+            methodsDescription: finalContent.methodsDescription || null,
+            advancedTechnologies: finalContent.advancedTechnologies || null,
+            safeUseDescription: finalContent.safeUseDescription || null,
+            serviceGuarantee: finalContent.serviceGuarantee || null,
             isActive: isActive !== undefined ? isActive : true,
             order: order || 0,
           },
@@ -169,10 +194,15 @@ export async function POST(request: NextRequest) {
       })
     );
 
+    // Extract successful results
+    const successfulServices = createdServices
+      .filter((result) => result.status === 'fulfilled')
+      .map((result) => (result as PromiseFulfilledResult<any>).value);
+
     return NextResponse.json({
       success: true,
       message: 'Service created successfully in all languages',
-      service: createdServices,
+      service: successfulServices,
     });
   } catch (error) {
     console.error('Create service error:', error);

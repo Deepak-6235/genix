@@ -119,7 +119,7 @@ function SortableServiceItem({ service, onEdit, onDelete, onView }: {
               Edit
             </button>
             <button
-              onClick={() => onDelete(service.id)}
+              onClick={() => onDelete(service.slug)}
               className="flex-1 px-3 py-2 text-sm bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition"
             >
               Delete
@@ -261,11 +261,22 @@ export default function ServicesPage() {
     setError('');
   };
 
+  const generateSlug = (title: string): string => {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+  };
+
   const updateFormData = (field: keyof typeof formData, value: string | boolean) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    setFormData(prev => {
+      const updated = { ...prev, [field]: value };
+      // Auto-generate slug from title (always)
+      if (field === 'title' && typeof value === 'string') {
+        updated.slug = generateSlug(value);
+      }
+      return updated;
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -303,7 +314,7 @@ export default function ServicesPage() {
       // Clear the translating message
       setError('');
 
-      const url = editingService ? `/api/services/${editingService.id}` : '/api/services';
+      const url = editingService ? `/api/services/${encodeURIComponent(editingService.slug)}` : '/api/services';
       const method = editingService ? 'PUT' : 'POST';
 
       const response = await fetch(url, {
@@ -342,7 +353,7 @@ export default function ServicesPage() {
     if (!confirm('Are you sure you want to delete this service?')) return;
 
     try {
-      const response = await fetch(`/api/services/${id}`, { method: 'DELETE' });
+      const response = await fetch(`/api/services/${encodeURIComponent(id)}`, { method: 'DELETE' });
       const data = await response.json();
 
       if (data.success) {

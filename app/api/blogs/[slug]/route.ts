@@ -128,26 +128,26 @@ export async function PUT(
       );
     }
 
-    // Update all language versions
-    const updatedBlogs = await Promise.all(
-      existingBlogs.map((blog) =>
-        prisma.blog.update({
-          where: { id: blog.id },
-          data: {
-            title: title || blog.title,
-            excerpt: excerpt || blog.excerpt,
-            content: content || blog.content,
-            author: author || blog.author,
-            imageUrl: imageUrl !== undefined ? imageUrl : blog.imageUrl,
-            isActive: isActive !== undefined ? isActive : blog.isActive,
-            publishedAt: publishedAt ? new Date(publishedAt) : blog.publishedAt,
-          },
-          include: {
-            language: true,
-          },
-        })
-      )
-    );
+    // Update all language versions (sequentially to avoid connection pool exhaustion)
+    const updatedBlogs = [];
+    for (const blog of existingBlogs) {
+      const updatedBlog = await prisma.blog.update({
+        where: { id: blog.id },
+        data: {
+          title: title || blog.title,
+          excerpt: excerpt || blog.excerpt,
+          content: content || blog.content,
+          author: author || blog.author,
+          imageUrl: imageUrl !== undefined ? imageUrl : blog.imageUrl,
+          isActive: isActive !== undefined ? isActive : blog.isActive,
+          publishedAt: publishedAt ? new Date(publishedAt) : blog.publishedAt,
+        },
+        include: {
+          language: true,
+        },
+      });
+      updatedBlogs.push(updatedBlog);
+    }
 
     return NextResponse.json({
       success: true,
@@ -198,14 +198,12 @@ export async function DELETE(
       }
     }
 
-    // Delete all language versions
-    await Promise.all(
-      existingBlogs.map((blog) =>
-        prisma.blog.delete({
-          where: { id: blog.id },
-        })
-      )
-    );
+    // Delete all language versions (sequentially to avoid connection pool exhaustion)
+    for (const blog of existingBlogs) {
+      await prisma.blog.delete({
+        where: { id: blog.id },
+      });
+    }
 
     return NextResponse.json({
       success: true,

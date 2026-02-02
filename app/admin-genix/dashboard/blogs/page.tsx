@@ -109,7 +109,7 @@ function SortableBlogItem({ blog, onEdit, onDelete, onView }: {
               Edit
             </button>
             <button
-              onClick={() => onDelete(blog.id)}
+              onClick={() => onDelete(blog.slug)}
               className="flex-1 px-3 py-2 text-sm bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition"
             >
               Delete
@@ -233,6 +233,13 @@ export default function BlogsPage() {
     setError('');
   };
 
+  const generateSlug = (title: string): string => {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+  };
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -269,7 +276,7 @@ export default function BlogsPage() {
         data.append('image', selectedFile);
       }
 
-      const url = editingBlog ? `/api/blogs/${editingBlog.slug}` : '/api/blogs';
+      const url = editingBlog ? `/api/blogs/${encodeURIComponent(editingBlog.slug)}` : '/api/blogs';
       const method = editingBlog ? 'PUT' : 'POST';
 
       const response = await fetch(url, {
@@ -299,7 +306,7 @@ export default function BlogsPage() {
       const blog = blogs.find((b) => b.id === id);
       if (!blog) return;
 
-      const response = await fetch(`/api/blogs/${blog.slug}`, {
+      const response = await fetch(`/api/blogs/${encodeURIComponent(blog.slug)}`, {
         method: 'DELETE',
       });
 
@@ -395,7 +402,14 @@ export default function BlogsPage() {
                   type="text"
                   required
                   value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  onChange={(e) => {
+                    const newTitle = e.target.value;
+                    setFormData({
+                      ...formData,
+                      title: newTitle,
+                      slug: generateSlug(newTitle),
+                    });
+                  }}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
                   placeholder="Blog title"
                 />
