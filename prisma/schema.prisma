@@ -104,3 +104,17 @@ model Statistic {
 
   @@map("statistics")
 }
+
+model AboutUs {
+  id              String   @id @default(cuid())
+  email           String?
+  phoneNumber1    String?  // First phone number
+  phoneNumber2    String?  // Second phone number
+  workingHours    String?  // e.g., "24/7"
+  address         String?  // Full address
+  city            String?  // City name
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("about_us")
+}

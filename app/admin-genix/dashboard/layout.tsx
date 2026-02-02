@@ -74,6 +74,7 @@ function DashboardLayoutContent({
     { name: t('nav.services'), path: '/admin-genix/dashboard/services', icon: '🔧' },
     { name: 'Blog', path: '/admin-genix/dashboard/blogs', icon: '📝' },
     { name: 'Statistics', path: '/admin-genix/dashboard/statistics', icon: '📈' },
+    { name: 'About Us', path: '/admin-genix/dashboard/about-us', icon: '📋' },
     { name: t('nav.settings'), path: '/admin-genix/dashboard/settings', icon: '⚙️' },
   ];
 
