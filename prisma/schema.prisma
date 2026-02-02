@@ -39,7 +39,6 @@ model Admin {
 
 model Service {
   id                    String   @id @default(cuid())
-  icon                  String?
   slug                  String
   languageId            String   // Foreign key to Language table
   language              Language @relation("ServiceLanguage", fields: [languageId], references: [id])
