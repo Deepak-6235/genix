@@ -9,6 +9,22 @@ datasource db {
   provider = "postgresql"
 }
 
+model Language {
+  id        String   @id @default(cuid())
+  code      String   @unique // 'en', 'ar', 'pt', 'zh', 'ja', 'de', 'fr'
+  name      String   // 'English', 'Arabic', 'Portuguese', etc.
+  dir       String   @default("ltr") // 'ltr' or 'rtl'
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  services  Service[] @relation("ServiceLanguage")
+  blogs     Blog[]    @relation("BlogLanguage")
+
+  @@map("languages")
+}
+
 model Admin {
   id        String   @id @default(cuid())
   email     String   @unique
@@ -19,4 +35,59 @@ model Admin {
   updatedAt DateTime @updatedAt
 
   @@map("admins")
+}
+
+model Service {
+  id                    String   @id @default(cuid())
+  icon                  String?
+  slug                  String
+  languageId            String   // Foreign key to Language table
+  language              Language @relation("ServiceLanguage", fields: [languageId], references: [id])
+
+  // Content fields
+  title                 String
+  shortDescription      String   @db.Text
+  fullDescription       String?  @db.Text
+  servicesProvided      String?  @db.Text
+  targetInsects         String?  @db.Text
+  methodsTitle          String?
+  methodsDescription    String?  @db.Text
+  advancedTechnologies  String?  @db.Text
+  safeUseDescription    String?  @db.Text
+  serviceGuarantee      String?  @db.Text
+
+  // Meta
+  isActive              Boolean  @default(true)
+  order                 Int      @default(0)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  // Unique constraint: same slug can have multiple languages
+  @@unique([slug, languageId])
+  @@map("services")
+}
+
+model Blog {
+  id                    String   @id @default(cuid())
+  slug                  String
+  languageId            String   // Foreign key to Language table
+  language              Language @relation("BlogLanguage", fields: [languageId], references: [id])
+
+  // Content fields
+  title                 String
+  excerpt               String   @db.Text
+  content               String   @db.Text
+  imageUrl              String?  // S3 image URL
+  author                String?
+  publishedAt           DateTime?
+
+  // Meta
+  isActive              Boolean  @default(true)
+  order                 Int      @default(0)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  // Unique constraint: same slug can have multiple languages
+  @@unique([slug, languageId])
+  @@map("blogs")
 }

@@ -10,6 +10,7 @@ export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
+    seed: "node -r tsx ./prisma/seed.ts",
   },
   datasource: {
     url: process.env["DATABASE_URL"] || "postgresql://bairuhapgsqluser:BAiruhamysqluser123_@46.28.44.14:5432/genix?schema=public",

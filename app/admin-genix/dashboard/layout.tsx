@@ -3,14 +3,17 @@
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { AdminLanguageProvider, useAdminLanguage } from '@/contexts/AdminLanguageContext';
+import AdminLanguageSwitcher from '@/components/AdminLanguageSwitcher';
 
-export default function DashboardLayout({
+function DashboardLayoutContent({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const { t } = useAdminLanguage();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [userEmail, setUserEmail] = useState<string>('');
@@ -67,9 +70,10 @@ export default function DashboardLayout({
   };
 
   const navItems = [
-    { name: 'Dashboard', path: '/admin-genix/dashboard', icon: '📊' },
-    { name: 'Services', path: '/admin-genix/dashboard/services', icon: '🔧' },
-    { name: 'Settings', path: '/admin-genix/dashboard/settings', icon: '⚙️' },
+    { name: t('nav.dashboard'), path: '/admin-genix/dashboard', icon: '📊' },
+    { name: t('nav.services'), path: '/admin-genix/dashboard/services', icon: '🔧' },
+    { name: 'Blog', path: '/admin-genix/dashboard/blogs', icon: '📝' },
+    { name: t('nav.settings'), path: '/admin-genix/dashboard/settings', icon: '⚙️' },
   ];
 
   // Show loading state while verifying auth
@@ -103,6 +107,7 @@ export default function DashboardLayout({
             </div>
 
             <div className="flex items-center space-x-4">
+              <AdminLanguageSwitcher />
               <div className="text-sm text-gray-700">
                 <span className="font-medium">{userEmail || 'Admin User'}</span>
               </div>
@@ -111,7 +116,7 @@ export default function DashboardLayout({
                 disabled={loggingOut}
                 className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loggingOut ? 'Logging out...' : 'Logout'}
+                {loggingOut ? t('modal.saving') : t('nav.logout')}
               </button>
             </div>
           </div>
@@ -155,5 +160,17 @@ export default function DashboardLayout({
         </main>
       </div>
     </div>
+  );
+}
+
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <AdminLanguageProvider>
+      <DashboardLayoutContent>{children}</DashboardLayoutContent>
+    </AdminLanguageProvider>
   );
 }
