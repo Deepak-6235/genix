@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
+import { seedServices } from './seed-services';
 
 // Load environment variables
 config({ path: '.env.local' });
@@ -95,6 +96,10 @@ async function main() {
   console.log('✅ Created admin user:', { id: admin.id, email: admin.email });
   console.log('📧 Email: admin@genix.com');
   console.log('🔑 Password: Admin@123!');
+
+  // Seed services
+  await seedServices(prisma);
+
   console.log('✨ Seeding completed!');
 }
 
