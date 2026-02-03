@@ -131,6 +131,10 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'faqs.loading': 'Loading FAQs...',
     'faqs.question': 'Question',
     'faqs.answer': 'Answer',
+    'faqs.answered': 'Answered',
+    'faqs.pending': 'Pending',
+    'faqs.noAnswerYet': 'No answer yet',
+    'faqs.addAnswer': 'Add Answer',
 
     // Statistics Page
     'statistics.title': 'Statistics',
@@ -462,6 +466,10 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'faqs.loading': 'جاري تحميل الأسئلة...',
     'faqs.question': 'السؤال',
     'faqs.answer': 'الإجابة',
+    'faqs.answered': 'تمت الإجابة',
+    'faqs.pending': 'قيد الانتظار',
+    'faqs.noAnswerYet': 'لا توجد إجابة بعد',
+    'faqs.addAnswer': 'إضافة إجابة',
 
     // Statistics Page
     'statistics.title': 'الإحصائيات',
@@ -772,6 +780,10 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'faqs.loading': 'Carregando perguntas...',
     'faqs.question': 'Pergunta',
     'faqs.answer': 'Resposta',
+    'faqs.answered': 'Respondida',
+    'faqs.pending': 'Pendente',
+    'faqs.noAnswerYet': 'Ainda sem resposta',
+    'faqs.addAnswer': 'Adicionar Resposta',
 
     // Statistics Page
     'statistics.title': 'Estatísticas',

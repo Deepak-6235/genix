@@ -168,12 +168,13 @@ model Review {
 
 model FAQ {
   id          String   @id @default(cuid())
+  faqId       String?  // Unique identifier for the same FAQ across all languages (optional for migration)
   languageId  String   // Foreign key to Language table
   language    Language @relation("FAQLanguage", fields: [languageId], references: [id])
 
   // Content fields
   question    String   @db.Text
-  answer      String   @db.Text
+  answer      String?  @db.Text // Nullable - can be empty for unanswered questions
 
   // Meta
   isActive    Boolean  @default(true)

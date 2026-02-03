@@ -1,12 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { translateContent } from '@/lib/translate';
+import { LanguageCode } from '@/lib/languages';
+import { randomUUID } from 'crypto';
 
-// GET /api/faqs - Fetch FAQs (supports admin=true for all FAQs)
+interface FAQContent {
+  question: string;
+  answer: string;
+}
+
+// GET /api/faqs - Fetch FAQs for a specific language
 export async function GET(request: NextRequest) {
     try {
         const { searchParams } = new URL(request.url);
         const lang = searchParams.get('lang') || 'en';
-        const isAdmin = searchParams.get('admin') === 'true';
 
         // Get language by code
         const language = await prisma.language.findUnique({
@@ -23,7 +30,7 @@ export async function GET(request: NextRequest) {
         const faqs = await prisma.fAQ.findMany({
             where: {
                 languageId: language.id,
-                ...(isAdmin ? {} : { isActive: true }), // Only filter by isActive for public
+                isActive: true,
             },
             orderBy: [
                 { order: 'asc' },
@@ -31,6 +38,7 @@ export async function GET(request: NextRequest) {
             ],
             select: {
                 id: true,
+                faqId: true,
                 question: true,
                 answer: true,
                 order: true,
@@ -48,16 +56,16 @@ export async function GET(request: NextRequest) {
     }
 }
 
-// POST /api/faqs - Create a new FAQ (auto-creates for all languages)
+// POST /api/faqs - Create a new FAQ in all languages (auto-translate)
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
         const { question, answer, isActive } = body;
 
         // Validation
-        if (!question || !answer) {
+        if (!question) {
             return NextResponse.json(
-                { success: false, message: 'Question and answer are required' },
+                { success: false, message: 'Question is required' },
                 { status: 400 }
             );
         }
@@ -67,20 +75,38 @@ export async function POST(request: NextRequest) {
             where: { isActive: true },
         });
 
+        // Generate unique faqId for this FAQ across all languages
+        const faqId = randomUUID();
+
         // Get the highest order number
         const maxOrderFaq = await prisma.fAQ.findFirst({
             orderBy: { order: 'desc' },
         });
         const nextOrder = (maxOrderFaq?.order ?? -1) + 1;
 
-        // Create FAQ for all languages
+        // Prepare English content
+        const englishContent: FAQContent = {
+            question,
+            answer: answer || '',
+        };
+
+        // Translate to all languages
+        console.log('Translating FAQ to all languages...');
+        const targetLanguages: LanguageCode[] = ['ar', 'pt', 'zh', 'ja', 'de', 'fr'];
+        const translations = await translateContent(englishContent, targetLanguages);
+
+        // Create FAQ for all languages with translations
         const createdFaqs = await Promise.all(
             languages.map(async (language) => {
+                const langCode = language.code as LanguageCode;
+                const translatedContent = translations[langCode] || englishContent;
+
                 return prisma.fAQ.create({
                     data: {
+                        faqId,
                         languageId: language.id,
-                        question,
-                        answer,
+                        question: translatedContent.question,
+                        answer: translatedContent.answer || null,
                         isActive: isActive !== undefined ? isActive : true,
                         order: nextOrder,
                     },
