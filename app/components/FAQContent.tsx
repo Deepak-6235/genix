@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useFAQContentTranslations } from "@/hooks/useTranslations";
 
 /**
  * FAQ Content Component
@@ -90,6 +91,8 @@ const faqs = [
 ];
 
 export default function FAQContent() {
+  const t = useFAQContentTranslations();
+  
   // State Management
   // Find the first FAQ with expanded: true to set initial open state
   // This ensures only one FAQ is open on page load
@@ -126,7 +129,7 @@ export default function FAQContent() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
-    alert("Thank you for your message! We will get back to you soon.");
+    alert(t.alertMessage);
     // Reset form after submission
     setFormData({
       firstName: "",
@@ -168,7 +171,7 @@ export default function FAQContent() {
               <ol className="flex items-center gap-2 text-sm sm:text-base text-slate-600">
                 <li>
                   <Link href="/" className="hover:text-blue-600 transition-colors">
-                    الرئيسية
+                    {t.breadcrumbHome}
                   </Link>
                 </li>
                 <li>
@@ -176,13 +179,13 @@ export default function FAQContent() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
                 </li>
-                <li className="text-slate-900 font-semibold">اسئلة شائعة</li>
+                <li className="text-slate-900 font-semibold">{t.breadcrumbFAQ}</li>
               </ol>
             </nav>
 
             {/* Main Page Title */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 mb-6 sm:mb-8 leading-tight">
-              Frequently Asked Questions
+              {t.pageTitle}
             </h1>
           </div>
         </div>
@@ -197,7 +200,7 @@ export default function FAQContent() {
             {/* Section Header - Secondary Title */}
             <div className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20">
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6 leading-tight">
-                You can find more information on frequently asked questions
+                {t.sectionTitle}
               </h2>
             </div>
 
@@ -353,8 +356,8 @@ export default function FAQContent() {
             <div className="mt-10 sm:mt-12 md:mt-14 mb-10 sm:mb-12 md:mb-14 rounded-3xl shadow-xl border border-slate-200">
               {/* Form Header - Solid background banner */}
               <div className="px-6 py-8 sm:px-8 sm:py-10 md:px-12 md:py-12">
-                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-3">Get in Touch</h3>
-                <p className="text-lg sm:text-xl text-slate-600 leading-relaxed">Send us a message and we'll get back to you as soon as possible</p>
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-3">{t.form.title}</h3>
+                <p className="text-lg sm:text-xl text-slate-600 leading-relaxed">{t.form.subtitle}</p>
               </div>
               
               {/* Contact Form */}

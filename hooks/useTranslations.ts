@@ -13,6 +13,8 @@ import { whatsAppSectionTranslations } from '@/translations/WhatsAppSection';
 import { blogTranslations } from '@/translations/Blog';
 import { blogContentTranslations } from '@/translations/BlogContent';
 import { servicesContentTranslations } from '@/translations/ServicesContent';
+import { aboutUsContentTranslations } from '@/translations/AboutUsContent';
+import { faqContentTranslations } from '@/translations/FAQContent';
 import { metadataTranslations } from '@/translations/Metadata';
 
 export function useMetadataTranslations() {
@@ -88,4 +90,14 @@ export function useBlogContentTranslations() {
 export function useServicesContentTranslations() {
   const { language } = useLanguage();
   return servicesContentTranslations[language];
+}
+
+export function useAboutUsContentTranslations() {
+  const { language } = useLanguage();
+  return aboutUsContentTranslations[language];
+}
+
+export function useFAQContentTranslations() {
+  const { language } = useLanguage();
+  return faqContentTranslations[language];
 }

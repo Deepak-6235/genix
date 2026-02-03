@@ -113,17 +113,16 @@ export default function AboutUsContent() {
             <div className="mb-16 sm:mb-20 md:mb-24">
               <div className="bg-gradient-to-r from-blue-600 to-cyan-500 rounded-2xl p-8 sm:p-10 md:p-12 lg:p-16 text-white text-center">
                 <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">
-                  ابحث في منزلك واتصل بنا
+                  {t.searchAndContactTitle}
                 </h3>
                 <p className="text-base sm:text-lg md:text-xl leading-relaxed max-w-3xl mx-auto mb-8">
-                  نحن متخصصون في تقديم جميع خدمات التنظيف والصيانة والتشغيل ومكافحة وإبادة الحشرات 
-                  داخل المملكة العربية السعودية. نعمل طوال أيام الأسبوع لخدمتك.
+                  {t.searchAndContactDescription}
                 </p>
                 <Link
                   href="/contact"
                   className="inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
                 >
-                  اتصل بنا الآن
+                  {t.contactUsNow}
                 </Link>
               </div>
             </div>
@@ -132,7 +131,7 @@ export default function AboutUsContent() {
             <div className="mb-16 sm:mb-20 md:mb-24">
               <div className="text-center mb-10 sm:mb-12 md:mb-16">
                 <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6 leading-tight">
-                  أفضل خدمة قدمناها
+                  {t.bestServicesTitle}
                 </h2>
               </div>
 
@@ -144,8 +143,8 @@ export default function AboutUsContent() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2">تعقيم ضد الفيروسات</h3>
-                  <p className="text-sm sm:text-base text-slate-600">خدمات تعقيم شاملة باستخدام أفضل المواد المعتمدة</p>
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2">{t.services.disinfection.title}</h3>
+                  <p className="text-sm sm:text-base text-slate-600">{t.services.disinfection.description}</p>
                 </div>
 
                 {/* Service 2 - Painting */}
@@ -155,8 +154,8 @@ export default function AboutUsContent() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
                     </svg>
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2">دهانات وديكورات</h3>
-                  <p className="text-sm sm:text-base text-slate-600">أحدث تقنيات الدهان والديكورات العصرية</p>
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2">{t.services.paints.title}</h3>
+                  <p className="text-sm sm:text-base text-slate-600">{t.services.paints.description}</p>
                 </div>
 
                 {/* Service 3 - AC Maintenance */}
@@ -166,8 +165,8 @@ export default function AboutUsContent() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2">صيانة المكيفات</h3>
-                  <p className="text-sm sm:text-base text-slate-600">صيانة شاملة للمكيفات بقطع غيار أصلية</p>
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2">{t.services.acMaintenance.title}</h3>
+                  <p className="text-sm sm:text-base text-slate-600">{t.services.acMaintenance.description}</p>
                 </div>
 
                 {/* Service 4 - Waterfalls */}
@@ -177,8 +176,8 @@ export default function AboutUsContent() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                     </svg>
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2">تصميم وإنشاء الشلالات والنوافير</h3>
-                  <p className="text-sm sm:text-base text-slate-600">تصاميم عصرية للشلالات والنوافير مع الإضاءة</p>
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2">{t.services.waterfalls.title}</h3>
+                  <p className="text-sm sm:text-base text-slate-600">{t.services.waterfalls.description}</p>
                 </div>
               </div>
             </div>
@@ -188,19 +187,19 @@ export default function AboutUsContent() {
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
                 <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-6 sm:p-8 rounded-xl shadow-lg text-white text-center">
                   <div className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2">1000+</div>
-                  <div className="text-sm sm:text-base md:text-lg">عملاء راضون</div>
+                  <div className="text-sm sm:text-base md:text-lg">{t.stats.satisfiedClients}</div>
                 </div>
                 <div className="bg-gradient-to-br from-emerald-600 to-emerald-700 p-6 sm:p-8 rounded-xl shadow-lg text-white text-center">
                   <div className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2">50+</div>
-                  <div className="text-sm sm:text-base md:text-lg">فريق العمل</div>
+                  <div className="text-sm sm:text-base md:text-lg">{t.stats.team}</div>
                 </div>
                 <div className="bg-gradient-to-br from-purple-600 to-purple-700 p-6 sm:p-8 rounded-xl shadow-lg text-white text-center">
                   <div className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2">1000+</div>
-                  <div className="text-sm sm:text-base md:text-lg">منزل</div>
+                  <div className="text-sm sm:text-base md:text-lg">{t.stats.homes}</div>
                 </div>
                 <div className="bg-gradient-to-br from-cyan-600 to-cyan-700 p-6 sm:p-8 rounded-xl shadow-lg text-white text-center">
                   <div className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2">12+</div>
-                  <div className="text-sm sm:text-base md:text-lg">سنوات خبرة</div>
+                  <div className="text-sm sm:text-base md:text-lg">{t.stats.yearsExperience}</div>
                 </div>
               </div>
             </div>
@@ -209,11 +208,10 @@ export default function AboutUsContent() {
             <div className="bg-slate-50 rounded-2xl p-8 sm:p-10 md:p-12 lg:p-16">
               <div className="max-w-4xl mx-auto">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-6 text-center">
-                  مؤسسة ركن النخيل
+                  {t.companyTitle}
                 </h2>
                 <p className="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed mb-8 text-center">
-                  مؤسسة ركن النخيل لخدمات التنظيف والصيانة والتشغيل ومكافحة وإبادة الحشرات داخل المملكة العربية السعودية. 
-                  نعمل طوال أيام الأسبوع لخدمتك وتلبية احتياجاتك.
+                  {t.companyDescription}
                 </p>
                 
                 {/* Contact Information */}
@@ -226,8 +224,8 @@ export default function AboutUsContent() {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-slate-900 mb-2">العنوان:</p>
-                      <p className="text-base text-slate-700">السعودية، الرياض</p>
+                      <p className="text-sm font-bold text-slate-900 mb-2">{t.contactInfo.address}</p>
+                      <p className="text-base text-slate-700">{t.contactInfo.addressValue}</p>
                     </div>
                   </div>
 
@@ -238,7 +236,7 @@ export default function AboutUsContent() {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-slate-900 mb-2">الهاتف:</p>
+                      <p className="text-sm font-bold text-slate-900 mb-2">{t.contactInfo.phone}</p>
                       <a href="tel:+966582010834" className="text-base text-slate-700 hover:text-blue-600 transition-colors font-medium">
                         0582010834
                       </a>
@@ -252,9 +250,9 @@ export default function AboutUsContent() {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-slate-900 mb-2">البريد الإلكتروني:</p>
-                      <a href="mailto:ruknalnakhil@gmail.com" className="text-base text-slate-700 hover:text-blue-600 transition-colors break-all font-medium">
-                        ruknalnakhil@gmail.com
+                      <p className="text-sm font-bold text-slate-900 mb-2">{t.contactInfo.email}</p>
+                      <a href={`mailto:${t.contactInfo.emailValue}`} className="text-base text-slate-700 hover:text-blue-600 transition-colors break-all font-medium">
+                        {t.contactInfo.emailValue}
                       </a>
                     </div>
                   </div>
@@ -266,8 +264,8 @@ export default function AboutUsContent() {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-slate-900 mb-2">ساعات العمل:</p>
-                      <p className="text-base text-slate-700">نعمل طوال أيام الأسبوع</p>
+                      <p className="text-sm font-bold text-slate-900 mb-2">{t.contactInfo.hours}</p>
+                      <p className="text-base text-slate-700">{t.contactInfo.hoursValue}</p>
                     </div>
                   </div>
                 </div>
