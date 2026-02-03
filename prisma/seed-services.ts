@@ -1,4 +1,47 @@
 import { PrismaClient } from '@prisma/client';
+import { uploadToS3 } from '../lib/s3';
+import * as fs from 'fs';
+import * as path from 'path';
+
+// Map service slugs to their image files
+const serviceImages: Record<string, string> = {
+  'pest-control': 'service-1.jpg',
+  'disinfection-against-viruses': 'service-2.jpg',
+  'paints-and-decorations': 'service-3.jpg',
+  'air-conditioner-maintenance': 'service-4.jpg',
+  'interior-exterior-restoration': 'service-5.jpg',
+  'swimming-pools-construction-maintenance': 'service-6.jpg',
+  'waterfalls-and-fountains': 'service-7.jpg',
+};
+
+async function uploadServiceImage(imageName: string): Promise<string | null> {
+  try {
+    const imagePath = path.join(process.cwd(), 'public', 'images', imageName);
+
+    // Check if file exists
+    if (!fs.existsSync(imagePath)) {
+      console.log(`⚠️  Image not found: ${imageName}`);
+      return null;
+    }
+
+    // Read the file
+    const fileBuffer = fs.readFileSync(imagePath);
+    const mimeType = imageName.endsWith('.jpg') || imageName.endsWith('.jpeg')
+      ? 'image/jpeg'
+      : imageName.endsWith('.png')
+      ? 'image/png'
+      : 'image/webp';
+
+    // Upload to S3
+    const imageUrl = await uploadToS3(fileBuffer, imageName, mimeType, 'services');
+    console.log(`✅ Uploaded ${imageName} to S3: ${imageUrl}`);
+
+    return imageUrl;
+  } catch (error) {
+    console.error(`❌ Failed to upload ${imageName}:`, error);
+    return null;
+  }
+}
 
 export const servicesData = [
   {
@@ -471,131 +514,62 @@ export async function seedServices(prisma: PrismaClient) {
   }
 
   for (const service of servicesData) {
-    // Create English version
-    const existingEnService = await prisma.service.findUnique({
-      where: {
-        slug_languageId: {
-          slug: service.slug,
-          languageId: langMap['en'],
-        },
-      },
-    });
+    console.log(`\n📦 Processing service: ${service.slug}`);
 
-    if (!existingEnService) {
-      await prisma.service.create({
-        data: {
-          slug: service.slug,
-          languageId: langMap['en'],
-          order: service.order,
-          isActive: true,
-          ...service.en,
-        },
-      });
-      console.log(`✅ Created English service: ${service.en.title}`);
-    } else {
-      console.log(`⏭️  English service already exists: ${service.en.title}`);
+    // Upload service image to S3
+    let imageUrl: string | null = null;
+    const imageName = serviceImages[service.slug];
+    if (imageName) {
+      console.log(`📸 Uploading image: ${imageName}`);
+      imageUrl = await uploadServiceImage(imageName);
     }
 
-    // Create Arabic version
-    const existingArService = await prisma.service.findUnique({
-      where: {
-        slug_languageId: {
-          slug: service.slug,
-          languageId: langMap['ar'],
-        },
-      },
-    });
+    // Create or update service for all languages
+    const languageCodes = ['en', 'ar', 'pt', 'zh', 'ja'] as const;
 
-    if (!existingArService) {
-      await prisma.service.create({
-        data: {
-          slug: service.slug,
-          languageId: langMap['ar'],
-          order: service.order,
-          isActive: true,
-          ...service.ar,
+    for (const langCode of languageCodes) {
+      const existingService = await prisma.service.findUnique({
+        where: {
+          slug_languageId: {
+            slug: service.slug,
+            languageId: langMap[langCode],
+          },
         },
       });
-      console.log(`✅ Created Arabic service: ${service.ar.title}`);
-    } else {
-      console.log(`⏭️  Arabic service already exists: ${service.ar.title}`);
-    }
 
-    // Create Portuguese version
-    const existingPtService = await prisma.service.findUnique({
-      where: {
-        slug_languageId: {
-          slug: service.slug,
-          languageId: langMap['pt'],
-        },
-      },
-    });
+      const serviceData = service[langCode];
+      const langName = langCode === 'en' ? 'English' : langCode === 'ar' ? 'Arabic' : langCode === 'pt' ? 'Portuguese' : langCode === 'zh' ? 'Chinese' : 'Japanese';
 
-    if (!existingPtService) {
-      await prisma.service.create({
-        data: {
-          slug: service.slug,
-          languageId: langMap['pt'],
-          order: service.order,
-          isActive: true,
-          ...service.pt,
-        },
-      });
-      console.log(`✅ Created Portuguese service: ${service.pt.title}`);
-    } else {
-      console.log(`⏭️  Portuguese service already exists: ${service.pt.title}`);
-    }
-
-    // Create Chinese version
-    const existingZhService = await prisma.service.findUnique({
-      where: {
-        slug_languageId: {
-          slug: service.slug,
-          languageId: langMap['zh'],
-        },
-      },
-    });
-
-    if (!existingZhService) {
-      await prisma.service.create({
-        data: {
-          slug: service.slug,
-          languageId: langMap['zh'],
-          order: service.order,
-          isActive: true,
-          ...service.zh,
-        },
-      });
-      console.log(`✅ Created Chinese service: ${service.zh.title}`);
-    } else {
-      console.log(`⏭️  Chinese service already exists: ${service.zh.title}`);
-    }
-
-    // Create Japanese version
-    const existingJaService = await prisma.service.findUnique({
-      where: {
-        slug_languageId: {
-          slug: service.slug,
-          languageId: langMap['ja'],
-        },
-      },
-    });
-
-    if (!existingJaService) {
-      await prisma.service.create({
-        data: {
-          slug: service.slug,
-          languageId: langMap['ja'],
-          order: service.order,
-          isActive: true,
-          ...service.ja,
-        },
-      });
-      console.log(`✅ Created Japanese service: ${service.ja.title}`);
-    } else {
-      console.log(`⏭️  Japanese service already exists: ${service.ja.title}`);
+      if (!existingService) {
+        await prisma.service.create({
+          data: {
+            slug: service.slug,
+            languageId: langMap[langCode],
+            order: service.order,
+            isActive: true,
+            imageUrl,
+            ...serviceData,
+          },
+        });
+        console.log(`✅ Created ${langName} service: ${serviceData.title}`);
+      } else {
+        // Update existing service with image URL if it doesn't have one
+        if (!existingService.imageUrl && imageUrl) {
+          await prisma.service.update({
+            where: {
+              id: existingService.id,
+            },
+            data: {
+              imageUrl,
+            },
+          });
+          console.log(`🔄 Updated ${langName} service with image: ${serviceData.title}`);
+        } else {
+          console.log(`⏭️  ${langName} service already exists: ${serviceData.title}`);
+        }
+      }
     }
   }
 
-  console.log('✅ Services seeding completed!');
+  console.log('\n✅ Services seeding completed!');
 }
