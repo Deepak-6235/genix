@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useAboutUsContentTranslations } from "@/hooks/useTranslations";
 
 /**
  * About Us Content Component
@@ -22,6 +23,8 @@ import Link from "next/link";
  */
 
 export default function AboutUsContent() {
+  const t = useAboutUsContentTranslations();
+  
   return (
     <div className="min-h-screen">
       {/* ============================================
@@ -35,7 +38,7 @@ export default function AboutUsContent() {
               <ol className="flex items-center gap-2 text-sm sm:text-base text-slate-600">
                 <li>
                   <Link href="/" className="hover:text-blue-600 transition-colors">
-                    الرئيسية
+                    {t.breadcrumbHome}
                   </Link>
                 </li>
                 <li>
@@ -43,21 +46,21 @@ export default function AboutUsContent() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
                 </li>
-                <li className="text-slate-900 font-semibold">من نحن</li>
+                <li className="text-slate-900 font-semibold">{t.breadcrumbAbout}</li>
               </ol>
             </nav>
 
             {/* Main Page Title */}
             <div className="text-center">
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 mb-4 sm:mb-6 leading-tight">
-                من نحن
+                {t.pageTitle}
               </h1>
               <div className="flex items-center justify-center gap-3 mb-6">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-600">
-                  ركن النخيل
+                  {t.companyName}
                 </h2>
                 <span className="text-lg sm:text-xl md:text-2xl text-slate-600 font-semibold">
-                  12+ عام خبرة
+                  {t.experience}
                 </span>
               </div>
             </div>
@@ -76,7 +79,7 @@ export default function AboutUsContent() {
             <div className="mb-16 sm:mb-20 md:mb-24">
               <div className="text-center mb-10 sm:mb-12 md:mb-16">
                 <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6 leading-tight">
-                  لماذا تختار خدماتنا؟
+                  {t.whyChooseTitle}
                 </h2>
               </div>
 
@@ -84,16 +87,13 @@ export default function AboutUsContent() {
                 {/* Content */}
                 <div>
                   <p className="text-base sm:text-lg md:text-xl text-slate-600 leading-relaxed mb-6">
-                    يتيح ركن النخيل لك طلب خدمات الصيانة والعناية لمنزلك وكذلك خدمات مكافحة وإبادة الحشرات. 
-                    نحن من أفضل محترفي الخدمات في منطقتك، لتختار أنسب من يخدمك بناء على نظام تقييم ومراجعات 
-                    لكل محترف خدمة ونظام حجز فوري وضمان على الخدمات وبأفضل الأسعار والعروض.
+                    {t.description1}
                   </p>
                   <p className="text-base sm:text-lg md:text-xl text-slate-600 leading-relaxed mb-6">
-                    الطريقة الأفضل لإتمام جميع أعمال منزلك! إن كنت تبحث عن فني محترف، فأنت في المكان الصحيح.
+                    {t.description2}
                   </p>
                   <p className="text-base sm:text-lg md:text-xl text-slate-600 leading-relaxed">
-                    سوف نعمل على توفير الراحة في كافة خدماتنا ونقوم بتنفيذ جميع الخدمات وتنظيف ما قمنا بفعله 
-                    حتى لا تشعر منا بأي إزعاج. نعمل دائماً من أجل سعادتك ورضاك.
+                    {t.description3}
                   </p>
                 </div>
 

@@ -1,5 +1,7 @@
 "use client";
 
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+
 export default function TopBar() {
     return (
         <div className="relative">
@@ -64,6 +66,11 @@ export default function TopBar() {
                                 <span className="font-semibold text-sm sm:text-base">Saudi Arabia</span>
                                 <span className="text-xs text-white/80">Riyadh</span>
                             </div>
+                        </div>
+
+                        {/* Language Switcher */}
+                        <div className="flex items-center">
+                            <LanguageSwitcher />
                         </div>
                     </div>
                 </div>
