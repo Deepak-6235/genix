@@ -31,9 +31,9 @@ interface Service {
 
 function ServiceCard({ service, onEdit, onDelete, onView, t, currentLang }: {
   service: Service;
-  onEdit: (service: Service) => void;
+  onEdit: (slug: string) => void;
   onDelete: (id: string) => void;
-  onView: (service: Service) => void;
+  onView: (slug: string) => void;
   t: (key: string) => string;
   currentLang: LanguageCode;
 }) {
@@ -41,7 +41,10 @@ function ServiceCard({ service, onEdit, onDelete, onView, t, currentLang }: {
   const displayDescription = service.translations?.[currentLang]?.shortDescription || service.shortDescription;
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition group">
+    <div
+      className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition group cursor-pointer"
+      onClick={() => onView(service.slug)}
+    >
       {/* Service Image */}
       <div className="relative h-48 bg-gradient-to-br from-purple-100 to-blue-100">
         {service.imageUrl ? (
@@ -78,21 +81,21 @@ function ServiceCard({ service, onEdit, onDelete, onView, t, currentLang }: {
         </p>
 
         {/* Action Buttons */}
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 gap-2">
           <button
-            onClick={() => onView(service)}
-            className="px-3 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium"
-          >
-            {t('button.view')}
-          </button>
-          <button
-            onClick={() => onEdit(service)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(service.slug);
+            }}
             className="px-3 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
           >
             {t('button.edit')}
           </button>
           <button
-            onClick={() => onDelete(service.slug)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(service.slug);
+            }}
             className="px-3 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium"
           >
             {t('button.delete')}
@@ -423,10 +426,12 @@ export default function ServicesPage() {
             service={service}
             t={t}
             currentLang={adminLanguage as LanguageCode}
-            onView={(service) => {
-              router.push(`/admin-genix/dashboard/services/${service.slug}`);
+            onView={(slug) => {
+              router.push(`/admin-genix/dashboard/services/${slug}`);
             }}
-            onEdit={openModal}
+            onEdit={(slug) => {
+              router.push(`/admin-genix/dashboard/services/${slug}?edit=true`);
+            }}
             onDelete={handleDelete}
           />
         ))}
