@@ -71,11 +71,10 @@ model Blog {
   language              Language @relation("BlogLanguage", fields: [languageId], references: [id])
 
   // Content fields
-  title                 String
-  excerpt               String   @db.Text
-  content               String   @db.Text
-  imageUrl              String?  // S3 image URL
-  author                String?
+  name                  String
+  shortDescription      String
+  author                String
+  imageUrl              String
   publishedAt           DateTime?
 
   // Meta
