@@ -20,6 +20,8 @@ export default function AboutUsPage() {
   const [saving, setSaving] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<Partial<AboutUsData>>({});
+  const [emailError, setEmailError] = useState('');
+  const [error, setError] = useState('');
 
   // Fetch about us data
   useEffect(() => {
@@ -46,8 +48,22 @@ export default function AboutUsPage() {
     setIsEditing(true);
   };
 
+  const validateEmail = (email: string): string => {
+    if (!email) return '';
+
+    // Standard email regex pattern
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      return 'Please enter a valid email address';
+    }
+    return '';
+  };
+
   const handleCancel = () => {
     setIsEditing(false);
+    setEmailError('');
+    setError('');
     // Reset form data to original
     if (aboutUs) {
       setFormData(aboutUs);
@@ -59,11 +75,29 @@ export default function AboutUsPage() {
       ...prev,
       [field]: value,
     }));
+
+    // Validate email in real-time
+    if (field === 'email') {
+      const error = validateEmail(value);
+      setEmailError(error);
+    }
   };
 
   const handleSave = async () => {
     try {
       setSaving(true);
+      setError('');
+
+      // Validate email if provided
+      if (formData.email) {
+        const emailValidationError = validateEmail(formData.email);
+        if (emailValidationError) {
+          setEmailError(emailValidationError);
+          setError('Please fix validation errors before saving');
+          setSaving(false);
+          return;
+        }
+      }
 
       const response = await fetch('/api/about-us', {
         method: 'PUT',
@@ -76,13 +110,15 @@ export default function AboutUsPage() {
       if (data.success) {
         await fetchAboutUs();
         setIsEditing(false);
+        setEmailError('');
+        setError('');
         alert('About Us information saved successfully');
       } else {
-        alert(data.message || 'Failed to save');
+        setError(data.message || 'Failed to save');
       }
     } catch (error) {
       console.error('Failed to save:', error);
-      alert('Failed to save');
+      setError('Failed to save');
     } finally {
       setSaving(false);
     }
@@ -156,6 +192,12 @@ export default function AboutUsPage() {
         ) : (
           // Edit Mode
           <div className="space-y-6">
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
+
             {/* Email */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">📧 Email</label>
@@ -164,8 +206,13 @@ export default function AboutUsPage() {
                 value={formData.email || ''}
                 onChange={(e) => handleChange('email', e.target.value)}
                 placeholder="example@email.com"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent ${
+                  emailError ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                }`}
               />
+              {emailError && (
+                <p className="mt-1 text-xs text-red-600 font-medium">{emailError}</p>
+              )}
             </div>
 
             {/* Phone Number 1 */}
