@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useServicesContentTranslations } from "@/hooks/useTranslations";
+import { useServicesContentTranslations, useSwimmingPoolsContentTranslations } from "@/hooks/useTranslations";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function SwimmingPoolsContent() {
   const t = useServicesContentTranslations();
+  const content = useSwimmingPoolsContentTranslations();
   const { dir } = useLanguage();
   const service = t.services.pools;
   return (
@@ -80,52 +81,25 @@ export default function SwimmingPoolsContent() {
             {/* Title Section */}
             <div className="mb-8 sm:mb-12">
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6 text-center leading-tight">
-                شركة إنشاء وصيانة المسابح
+                {content.title}
               </h2>
             </div>
 
             {/* Subtitle Section */}
             <div className="mb-8 sm:mb-12">
               <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold text-slate-800 mb-6 text-center">
-                حلول متكاملة لإنشاء وصيانة المسابح
+                {content.subtitle}
               </h3>
             </div>
 
             {/* Description Section */}
             <div className="mb-16 sm:mb-20 md:mb-24">
               <div className="max-w-4xl mx-auto">
-                <p className="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed mb-8 text-center">
-                  نحن في شركة ركن النخيل نفتخر بأننا الشركة الرائدة في مجال إنشاء وصيانة المسابح في المملكة العربية السعودية. 
-                  نقدم حلولاً متكاملة وشاملة لجميع احتياجات المسابح، من التصميم والإنشاء إلى الصيانة الدورية والإصلاحات. 
-                  مع سنوات من الخبرة في هذا المجال، أصبحنا الخيار الأول للعديد من العملاء في المملكة العربية السعودية. 
-                  نستخدم أحدث التقنيات والمواد عالية الجودة لضمان متانة المسابح وجمالها، مع الالتزام بأعلى معايير السلامة والجودة. 
-                  فريقنا من المهندسين والفنيين المتخصصين يعملون بجد لضمان تحقيق أفضل النتائج لعملائنا. 
-                  نستخدم أحدث المعدات والتقنيات في جميع مراحل العمل، مما يضمن جودة عالية ومتانة طويلة الأمد.
-                </p>
-                <p className="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed mb-8 text-center">
-                  خدمات إنشاء المسابح: نقدم خدمات إنشاء المسابح الكاملة من التصميم إلى التنفيذ، مع ضمان أعلى معايير الجودة والسلامة. 
-                  تشمل خدماتنا جميع أنواع المسابح: المسابح السكنية، المسابح التجارية، المسابح الرياضية، والمسابح العلاجية. 
-                  التصميم والتخطيط: نقدم خدمات التصميم والتخطيط المتخصصة لمسابحكم، مع مراعاة جميع المتطلبات والتفاصيل لضمان تحقيق رؤيتكم. 
-                  الحفر والإنشاء: نقوم بعمليات الحفر والإنشاء بدقة عالية باستخدام أحدث المعدات والتقنيات لضمان جودة البناء. 
-                  الإنهاء والتركيب: نقدم خدمات الإنهاء والتركيب المتخصصة لجميع أنظمة المسابح والمعدات المرتبطة بها. 
-                  أنواع المسابح: ننشئ جميع أنواع المسابح: السكنية، التجارية، الرياضية، والعلاجية، مع تلبية جميع المتطلبات الخاصة. 
-                  المعدات الحديثة: نستخدم أحدث المعدات والتقنيات في جميع مراحل إنشاء المسابح لضمان الجودة والمتانة. 
-                  مواد عالية الجودة: نستخدم فقط المواد عالية الجودة والمعتمدة لضمان متانة المسابح وجمالها على المدى الطويل.
-                </p>
-                <p className="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed mb-8 text-center">
-                  خدمات صيانة المسابح: نقدم خدمات صيانة شاملة ومتكاملة للمسابح لضمان استمرار عملها بكفاءة عالية. 
-                  تشمل خدمات الصيانة: التنظيف الدوري، فحص وصيانة المعدات، معالجة المياه، والإصلاحات اللازمة. 
-                  التنظيف الدوري: نقدم خدمات التنظيف الدوري الشاملة للمسابح، بما في ذلك تنظيف الجدران والأرضيات، وإزالة الأوساخ والطحالب. 
-                  صيانة المعدات: نقوم بفحص وصيانة جميع معدات المسابح بانتظام، بما في ذلك المضخات، الفلاتر، وأنظمة التدفئة والتبريد. 
-                  معالجة المياه: نقدم خدمات معالجة المياه المتخصصة لضمان نظافة وسلامة مياه المسابح، مع فحص مستويات الكلور والمواد الكيميائية. 
-                  الإصلاحات والتجديدات: نقدم خدمات الإصلاح والتجديد للمسابح القائمة، بما في ذلك إصلاح التشققات، استبدال البلاط، وتحديث الأنظمة.
-                </p>
-                <p className="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed text-center">
-                  لماذا تختار شركة ركن النخيل؟ خبرة واسعة: سنوات من الخبرة في مجال إنشاء وصيانة المسابح، مع فريق من المهندسين والفنيين المتخصصين. 
-                  ضمان الجودة: نضمن أعلى معايير الجودة في جميع خدماتنا، مع استخدام مواد ومعدات عالية الجودة ومعتمدة. 
-                  تقنيات حديثة: نستخدم أحدث التقنيات والمعدات في جميع مراحل العمل لضمان الكفاءة والجودة العالية. 
-                  خدمة عملاء متميزة: نقدم خدمة عملاء متميزة مع متابعة مستمرة ودعم فني متواصل لضمان رضاكم التام.
-                </p>
+                {content.paragraphs.map((paragraph, index) => (
+                  <p key={index} className="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed mb-8 text-center last:mb-0">
+                    {paragraph}
+                  </p>
+                ))}
               </div>
             </div>
           </div>
