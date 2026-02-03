@@ -1094,6 +1094,10 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'faqs.loading': '正在加载问题...',
     'faqs.question': '问题',
     'faqs.answer': '答案',
+    'faqs.answered': '已回答',
+    'faqs.pending': '待处理',
+    'faqs.noAnswerYet': '尚无答案',
+    'faqs.addAnswer': '添加答案',
 
     // Statistics Page
     'statistics.title': '统计',
@@ -1404,6 +1408,10 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'faqs.loading': '質問を読み込み中...',
     'faqs.question': '質問',
     'faqs.answer': '回答',
+    'faqs.answered': '回答済み',
+    'faqs.pending': '保留中',
+    'faqs.noAnswerYet': 'まだ回答がありません',
+    'faqs.addAnswer': '回答を追加',
 
     // Statistics Page
     'statistics.title': '統計',
@@ -1714,6 +1722,10 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'faqs.loading': 'Fragen werden geladen...',
     'faqs.question': 'Frage',
     'faqs.answer': 'Antwort',
+    'faqs.answered': 'Beantwortet',
+    'faqs.pending': 'Ausstehend',
+    'faqs.noAnswerYet': 'Noch keine Antwort',
+    'faqs.addAnswer': 'Antwort hinzufügen',
 
     // Statistics Page
     'statistics.title': 'Statistiken',
@@ -2024,6 +2036,10 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'faqs.loading': 'Chargement des questions...',
     'faqs.question': 'Question',
     'faqs.answer': 'Réponse',
+    'faqs.answered': 'Répondu',
+    'faqs.pending': 'En attente',
+    'faqs.noAnswerYet': 'Pas encore de réponse',
+    'faqs.addAnswer': 'Ajouter une réponse',
 
     // Statistics Page
     'statistics.title': 'Statistiques',

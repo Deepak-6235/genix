@@ -37,7 +37,7 @@ function FAQCard({ faq, onEdit, onDelete, onAnswer, t }: {
                 : 'bg-yellow-100 text-yellow-700'
             }`}
           >
-            {hasAnswer ? 'Answered' : 'Pending'}
+            {hasAnswer ? t('faqs.answered') : t('faqs.pending')}
           </span>
           <span
             className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
@@ -61,7 +61,7 @@ function FAQCard({ faq, onEdit, onDelete, onAnswer, t }: {
           </p>
         ) : (
           <p className="text-sm text-gray-400 italic mb-4">
-            No answer yet
+            {t('faqs.noAnswerYet')}
           </p>
         )}
 
@@ -72,7 +72,7 @@ function FAQCard({ faq, onEdit, onDelete, onAnswer, t }: {
               onClick={() => onAnswer(faq)}
               className="flex-1 px-3 py-2 text-sm bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition font-medium"
             >
-              Answer
+              {t('faqs.addAnswer')}
             </button>
           )}
           <button

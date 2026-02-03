@@ -117,9 +117,11 @@ model DetailedBlog {
 
 model Statistic {
   id        String   @id @default(cuid())
-  label     String   // e.g., "Specialized Technicians", "Happy Customers"
-  value     Int      // e.g., 45, 1230
+  key       String   @unique // e.g., "satisfied_customers", "work_team", "houses", "years_experience"
+  value     Int      // e.g., 1000, 50, 1000, 12
+  suffix    String?  // e.g., "+", "K", etc.
   icon      String?  // Icon emoji or name
+  color     String?  // Card background color (e.g., "blue", "green", "purple", "cyan")
   order     Int      @default(0)
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
