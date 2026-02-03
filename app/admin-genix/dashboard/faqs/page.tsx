@@ -126,6 +126,12 @@ export default function FAQsPage() {
   const [editingFaq, setEditingFaq] = useState<FAQ | null>(null);
   const [formLoading, setFormLoading] = useState(false);
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  const CHAR_LIMITS = {
+    question: 120,
+    answer: 205,
+  };
 
   const [formData, setFormData] = useState({
     question: '',
@@ -184,6 +190,18 @@ export default function FAQsPage() {
     }
   };
 
+  const validateField = (field: string, value: string): string => {
+    const limits = CHAR_LIMITS as Record<string, number>;
+    const charLimit = limits[field];
+
+    if (!charLimit) return '';
+
+    if (value.length > charLimit) {
+      return `Exceeds limit of ${charLimit} characters. Current: ${value.length}`;
+    }
+    return '';
+  };
+
   const openModal = (faq?: FAQ) => {
     if (faq) {
       setEditingFaq(faq);
@@ -202,21 +220,43 @@ export default function FAQsPage() {
     }
     setShowModal(true);
     setError('');
+    setFieldErrors({});
   };
 
   const closeModal = () => {
     setShowModal(false);
     setEditingFaq(null);
     setError('');
+    setFieldErrors({});
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormLoading(true);
     setError('');
+    setFieldErrors({});
 
     if (!formData.question || !formData.answer) {
       setError('Question and answer are required');
+      setFormLoading(false);
+      return;
+    }
+
+    // Validate character limits
+    const errors: Record<string, string> = {};
+    const questionError = validateField('question', formData.question);
+    const answerError = validateField('answer', formData.answer);
+
+    if (questionError) {
+      errors.question = questionError;
+    }
+    if (answerError) {
+      errors.answer = answerError;
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      setError('Please fix character limit errors before submitting');
       setFormLoading(false);
       return;
     }
@@ -318,27 +358,73 @@ export default function FAQsPage() {
 
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Question *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Question *
+                  <span className={`ml-2 text-xs ${formData.question.length > CHAR_LIMITS.question ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
+                    {formData.question.length}/{CHAR_LIMITS.question}
+                  </span>
+                </label>
                 <textarea
                   required
                   rows={2}
+                  maxLength={CHAR_LIMITS.question}
                   value={formData.question}
-                  onChange={(e) => setFormData({ ...formData, question: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
+                  onChange={(e) => {
+                    setFormData({ ...formData, question: e.target.value });
+                    const error = validateField('question', e.target.value);
+                    if (error) {
+                      setFieldErrors(prev => ({ ...prev, question: error }));
+                    } else {
+                      setFieldErrors(prev => {
+                        const updated = { ...prev };
+                        delete updated.question;
+                        return updated;
+                      });
+                    }
+                  }}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
+                    fieldErrors.question ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                  }`}
                   placeholder="Enter the question"
                 />
+                {fieldErrors.question && (
+                  <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.question}</p>
+                )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Answer *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Answer *
+                  <span className={`ml-2 text-xs ${formData.answer.length > CHAR_LIMITS.answer ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
+                    {formData.answer.length}/{CHAR_LIMITS.answer}
+                  </span>
+                </label>
                 <textarea
                   required
                   rows={6}
+                  maxLength={CHAR_LIMITS.answer}
                   value={formData.answer}
-                  onChange={(e) => setFormData({ ...formData, answer: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
+                  onChange={(e) => {
+                    setFormData({ ...formData, answer: e.target.value });
+                    const error = validateField('answer', e.target.value);
+                    if (error) {
+                      setFieldErrors(prev => ({ ...prev, answer: error }));
+                    } else {
+                      setFieldErrors(prev => {
+                        const updated = { ...prev };
+                        delete updated.answer;
+                        return updated;
+                      });
+                    }
+                  }}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
+                    fieldErrors.answer ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                  }`}
                   placeholder="Enter the answer"
                 />
+                {fieldErrors.answer && (
+                  <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.answer}</p>
+                )}
               </div>
 
               <div className="flex items-center">

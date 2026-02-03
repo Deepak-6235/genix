@@ -19,6 +19,12 @@ export default function ReviewsPage() {
   const [formData, setFormData] = useState<Partial<Review>>({});
   const [showForm, setShowForm] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [error, setError] = useState('');
+
+  const CHAR_LIMITS = {
+    text: 260,
+  };
 
   // Fetch reviews
   useEffect(() => {
@@ -40,24 +46,52 @@ export default function ReviewsPage() {
     }
   };
 
+  const validateField = (field: string, value: string): string => {
+    const limits = CHAR_LIMITS as Record<string, number>;
+    const charLimit = limits[field];
+
+    if (!charLimit) return '';
+
+    if (value.length > charLimit) {
+      return `Exceeds limit of ${charLimit} characters. Current: ${value.length}`;
+    }
+    return '';
+  };
+
   const handleEdit = (review: Review) => {
     setEditingId(review.id);
     setFormData({ ...review });
     setShowForm(true);
+    setFieldErrors({});
+    setError('');
   };
 
   const handleAddNew = () => {
     setEditingId(null);
     setFormData({ isActive: true, order: reviews.length });
     setShowForm(true);
+    setFieldErrors({});
+    setError('');
   };
 
   const handleSave = async () => {
     try {
       setSaving(true);
+      setError('');
+      setFieldErrors({});
 
       if (!formData.name || !formData.text) {
-        alert('Name and review text are required');
+        setError('Name and review text are required');
+        setSaving(false);
+        return;
+      }
+
+      // Validate character limit
+      const textError = validateField('text', formData.text);
+      if (textError) {
+        setFieldErrors({ text: textError });
+        setError('Please fix character limit errors before submitting');
+        setSaving(false);
         return;
       }
 
@@ -194,14 +228,33 @@ export default function ReviewsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Review Text</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Review Text
+                  <span className={`ml-2 text-xs ${(formData.text?.length ?? 0) > CHAR_LIMITS.text ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
+                    {formData.text?.length ?? 0}/{CHAR_LIMITS.text}
+                  </span>
+                </label>
                 <textarea
                   value={formData.text || ''}
-                  onChange={(e) => setFormData({ ...formData, text: e.target.value })}
+                  maxLength={CHAR_LIMITS.text}
+                  onChange={(e) => {
+                    setFormData({ ...formData, text: e.target.value });
+                    const error = validateField('text', e.target.value);
+                    if (error) {
+                      setFieldErrors({ text: error });
+                    } else {
+                      setFieldErrors({});
+                    }
+                  }}
                   placeholder="I thank you very much for the level of service in clearing the furniture..."
                   rows={6}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent ${
+                    fieldErrors.text ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                  }`}
                 />
+                {fieldErrors.text && (
+                  <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.text}</p>
+                )}
               </div>
 
               <div className="flex items-center">
@@ -215,6 +268,12 @@ export default function ReviewsPage() {
                   <span className="ml-2 text-sm text-gray-700">Active (Show on website)</span>
                 </label>
               </div>
+
+              {error && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                  {error}
+                </div>
+              )}
             </div>
 
             <div className="flex gap-4 mt-8">
