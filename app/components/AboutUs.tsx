@@ -1,18 +1,20 @@
 "use client";
 
 import Image from "next/image";
+import { useAboutUsTranslations } from "@/hooks/useTranslations";
 
 export default function AboutUs() {
+  const t = useAboutUsTranslations();
   return (
     <section id="about" className="py-20 sm:py-32 md:py-40 bg-gradient-to-b from-slate-50 to-white">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12 sm:mb-16 md:mb-20">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
-              تعرف على ركن النخيل
+              {t.title}
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
-              شركة رائدة في مجال خدمات التشغيل والصيانة
+              {t.subtitle}
             </p>
           </div>
 
@@ -20,15 +22,13 @@ export default function AboutUs() {
             {/* Content */}
             <div className="order-2 md:order-1">
               <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-4 sm:mb-6">
-                لماذا تختار خدماتنا؟
+                {t.whyChoose}
               </h3>
               <p className="text-base sm:text-lg text-slate-600 leading-relaxed mb-4 sm:mb-6">
-                يتيح ركن النخيل لك طلب خدمات الصيانة والعناية لمنزلك وكذلك خدمات مكافحة وإبادة الحشرات. 
-                نحن من أفضل محترفي الخدمات في منطقتك، لتختار أنسب من يخدمك بناء على نظام تقييم ومراجعات 
-                لكل محترف خدمة ونظام حجز فوري وضمان على الخدمات وبأفضل الأسعار والعروض.
+                {t.description1}
               </p>
               <p className="text-base sm:text-lg text-slate-600 leading-relaxed mb-4 sm:mb-6">
-                الطريقة الأفضل لإتمام جميع أعمال منزلك! إن كنت تبحث عن فني محترف، فأنت في المكان الصحيح.
+                {t.description2}
               </p>
             </div>
 
@@ -46,16 +46,16 @@ export default function AboutUs() {
             {/* Features Grid */}
             <div className="grid grid-cols-2 gap-4 sm:gap-6 md:gap-8">
               <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl shadow-md border border-slate-100 text-center">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-600 mb-1 sm:mb-2">أسعار رهيبة</div>
-                <div className="text-xs sm:text-sm md:text-base text-slate-600">وعروض دائمة</div>
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-600 mb-1 sm:mb-2">{t.features.prices}</div>
+                <div className="text-xs sm:text-sm md:text-base text-slate-600">{t.features.pricesSub}</div>
               </div>
               <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl shadow-md border border-slate-100 text-center">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600 mb-1 sm:mb-2">ضمان</div>
-                <div className="text-xs sm:text-sm md:text-base text-slate-600">يصل حتى 30 يوم</div>
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600 mb-1 sm:mb-2">{t.features.warranty}</div>
+                <div className="text-xs sm:text-sm md:text-base text-slate-600">{t.features.warrantySub}</div>
               </div>
               <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl shadow-md border border-slate-100 text-center col-span-2">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-purple-600 mb-1 sm:mb-2">اختر الوقت</div>
-                <div className="text-xs sm:text-sm md:text-base text-slate-600">الذي يناسبك</div>
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-purple-600 mb-1 sm:mb-2">{t.features.chooseTime}</div>
+                <div className="text-xs sm:text-sm md:text-base text-slate-600">{t.features.chooseTimeSub}</div>
               </div>
             </div>
           </div>
@@ -63,11 +63,10 @@ export default function AboutUs() {
           {/* Mission Statement */}
           <div className="bg-gradient-to-r from-blue-600 to-cyan-500 rounded-2xl p-6 sm:p-8 md:p-10 lg:p-16 text-white text-center">
             <h3 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">
-              ركن النخيل أفضل اختيار لك
+              {t.missionTitle}
             </h3>
             <p className="text-base sm:text-lg md:text-xl leading-relaxed max-w-3xl mx-auto px-4">
-              سوف نعمل على توفير الراحة في كافة خدماتنا ونقوم بتنفيذ جميع الخدمات وتنظيف ما قمنا بفعله 
-              حتى لا تشعر منا بأي إزعاج. نعمل دائماً من أجل سعادتك ورضاك.
+              {t.missionText}
             </p>
           </div>
         </div>

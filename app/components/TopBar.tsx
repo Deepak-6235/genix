@@ -1,8 +1,10 @@
 "use client";
 
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useTopBarTranslations } from "@/hooks/useTranslations";
 
 export default function TopBar() {
+  const t = useTopBarTranslations();
     return (
         <div className="relative">
             {/* Thin teal strip at the top */}
@@ -37,7 +39,7 @@ export default function TopBar() {
                             </div>
                             <div className="flex flex-col">
                                 <span className="font-semibold text-sm sm:text-base">0582010834</span>
-                                <span className="text-xs text-white/80">Phone</span>
+                                <span className="text-xs text-white/80">{t.phone}</span>
                             </div>
                         </a>
 
@@ -49,8 +51,8 @@ export default function TopBar() {
                                 </svg>
                             </div>
                             <div className="flex flex-col">
-                                <span className="font-semibold text-sm sm:text-base">Sunday - Friday</span>
-                                <span className="text-xs text-white/80">24h/7</span>
+                                <span className="font-semibold text-sm sm:text-base">{t.operatingHours}</span>
+                                <span className="text-xs text-white/80">{t.hours24}</span>
                             </div>
                         </div>
 
@@ -63,8 +65,8 @@ export default function TopBar() {
                                 </svg>
                             </div>
                             <div className="flex flex-col">
-                                <span className="font-semibold text-sm sm:text-base">Saudi Arabia</span>
-                                <span className="text-xs text-white/80">Riyadh</span>
+                                <span className="font-semibold text-sm sm:text-base">{t.location}</span>
+                                <span className="text-xs text-white/80">{t.city}</span>
                             </div>
                         </div>
 

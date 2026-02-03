@@ -15,6 +15,7 @@ import { blogContentTranslations } from '@/translations/BlogContent';
 import { servicesContentTranslations } from '@/translations/ServicesContent';
 import { aboutUsContentTranslations } from '@/translations/AboutUsContent';
 import { faqContentTranslations } from '@/translations/FAQContent';
+import { contactContentTranslations } from '@/translations/ContactContent';
 import { metadataTranslations } from '@/translations/Metadata';
 
 export function useMetadataTranslations() {
@@ -100,4 +101,9 @@ export function useAboutUsContentTranslations() {
 export function useFAQContentTranslations() {
   const { language } = useLanguage();
   return faqContentTranslations[language];
+}
+
+export function useContactContentTranslations() {
+  const { language } = useLanguage();
+  return contactContentTranslations[language];
 }

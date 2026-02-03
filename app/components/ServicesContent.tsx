@@ -60,8 +60,7 @@ const services = [
     ),
     color: "purple",
     imageId: "1581578731548-c64695cc6952",
-    useLocalImage: true,
-    localImagePath: "/images/service-3.jpg",
+    useLocalImage: false,
   },
   {
     id: 4,

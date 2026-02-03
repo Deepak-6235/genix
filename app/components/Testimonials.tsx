@@ -1,42 +1,24 @@
 "use client";
 
+import { useTestimonialsTranslations } from "@/hooks/useTranslations";
+
 export default function Testimonials() {
-    const testimonials = [
-        {
-            name: "أحمد المالكي",
-            role: "مدير مرافق",
-            company: "شركة النخبة التجارية",
-            image: "👤",
-            rating: 5,
-            text: "خدمة ممتازة واحترافية عالية. فريق العمل ملتزم ومحترف في التعامل. أنصح بالتعامل معهم بشدة."
-        },
-        {
-            name: "فهد العتيبي",
-            role: "مالك عقار",
-            company: "مجمع الفهد السكني",
-            image: "👤",
-            rating: 5,
-            text: "تعاملت معهم في صيانة المبنى وكانت النتيجة رائعة. سرعة في الإنجاز وجودة في العمل."
-        },
-        {
-            name: "خالد السعيد",
-            role: "مدير عام",
-            company: "مستشفى الرعاية الطبية",
-            image: "👤",
-            rating: 5,
-            text: "شركة موثوقة ومتعاونة. خدمة العملاء ممتازة والأسعار مناسبة جداً."
-        }
-    ];
+    const t = useTestimonialsTranslations();
+    const testimonials = t.testimonials.map((testimonial, index) => ({
+        ...testimonial,
+        image: "👤",
+        rating: 5,
+    }));
 
     return (
         <section className="py-20 sm:py-32 md:py-40 bg-white">
             <div className="container mx-auto px-4 sm:px-6">
                 <div className="text-center mb-12 sm:mb-16 md:mb-24">
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
-                        آراء عملائنا
+                        {t.title}
                     </h2>
                     <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
-                        نفخر بثقة عملائنا ورضاهم عن خدماتنا
+                        {t.subtitle}
                     </p>
                 </div>
 

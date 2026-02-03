@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useBlogContentTranslations } from "@/hooks/useTranslations";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 /**
  * Blog Content Component
@@ -18,93 +20,47 @@ import Link from "next/link";
  * - Local image support
  */
 
-// Blog posts data
-const blogPosts = [
-  {
-    id: 1,
-    title: "أفضل شركات تنظيف منازل في الرياض",
-    date: "أبريل 9, 2022",
-    author: "admin",
-    image: "/images/blog-1.jpg",
-    excerpt: "دليل شامل لأفضل شركات التنظيف في الرياض مع نصائح لاختيار الشركة المناسبة لاحتياجاتك.",
-  },
-  {
-    id: 2,
-    title: "شركة ركن النخيل لتصميم شلالات جدارية",
-    date: "أبريل 7, 2022",
-    author: "admin",
-    image: "/images/blog-2.jpg",
-    excerpt: "اكتشف كيف يمكن لشلالات جدارية أن تضيف لمسة جمالية فريدة لمنزلك أو مكتبك.",
-  },
-  {
-    id: 3,
-    title: "شركة تصليح مكيف سبلت بالرياض",
-    date: "أبريل 6, 2022",
-    author: "admin",
-    image: "/images/blog-3.jpg",
-    excerpt: "دليل شامل لصيانة وإصلاح مكيفات السبليت مع أهم النصائح للحفاظ على كفاءة المكيف.",
-  },
-  {
-    id: 4,
-    title: "اشهر شركات الدهانات بالرياض باحدث التقنيات المستخدمه",
-    date: "أبريل 4, 2022",
-    author: "admin",
-    image: "/images/blog-4.jpg",
-    excerpt: "تعرف على أحدث تقنيات الدهانات والديكورات المستخدمة في الرياض وأهم الاتجاهات الحديثة.",
-  },
-  {
-    id: 5,
-    title: "التعرف على كيفية تصليح مكيفات سبليت واكثر المشاكل شيوعاً",
-    date: "أبريل 4, 2022",
-    author: "admin",
-    image: "/images/blog-5.jpg",
-    excerpt: "دليل شامل لأكثر مشاكل مكيفات السبليت شيوعاً وكيفية إصلاحها بطرق احترافية.",
-  },
-  {
-    id: 6,
-    title: "شركة عزل الاسطح بالاسمنت الأبيض بأفضل الاسعار",
-    date: "أبريل 3, 2022",
-    author: "admin",
-    image: "/images/blog-6.jpg",
-    excerpt: "كل ما تحتاج معرفته عن عزل الأسطح بالأسمنت الأبيض وأهميته في حماية المباني.",
-  },
-];
-
 export default function BlogContent() {
+  const t = useBlogContentTranslations();
+  const { dir } = useLanguage();
+  
+  const blogPosts = t.posts.map((post, index) => ({
+    id: index + 1,
+    title: post.title,
+    date: post.date,
+    author: "admin",
+    image: `/images/blog-${index + 1}.jpg`,
+    excerpt: post.excerpt,
+  }));
   return (
     <div className="min-h-screen">
       {/* ============================================
           HERO SECTION WITH BREADCRUMB
           ============================================ */}
-      <section className="py-8 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-b from-blue-50 to-white">
+      <section className="py-6 sm:py-12 md:py-16 lg:py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             {/* Breadcrumb Navigation */}
-            <nav className="mb-6 sm:mb-8" aria-label="Breadcrumb">
-              <ol className="flex items-center gap-2 text-sm sm:text-base text-slate-600">
+            <nav className="mb-3 sm:mb-4" aria-label="Breadcrumb">
+              <ol className={`flex items-center gap-2 text-sm sm:text-base text-slate-600 justify-center ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}>
                 <li>
                   <Link href="/" className="hover:text-blue-600 transition-colors">
-                    الرئيسية
+                    {t.breadcrumbHome}
                   </Link>
                 </li>
                 <li>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
                 </li>
-                <li className="text-slate-900 font-semibold">المدونة</li>
+                <li className="text-slate-900 font-semibold">{t.breadcrumbBlog}</li>
               </ol>
             </nav>
 
             {/* Main Page Title */}
-            <div className="text-center">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 mb-4 sm:mb-6 leading-tight">
-                المدونة
-              </h1>
-              <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
-                نصائح ومعلومات مفيدة حول الصيانة والتحسينات المنزلية
-              </p>
-            </div>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 mb-4 sm:mb-6 leading-tight">
+              {t.pageTitle}
+            </h1>
           </div>
         </div>
       </section>
@@ -112,7 +68,7 @@ export default function BlogContent() {
       {/* ============================================
           BLOG GRID SECTION
           ============================================ */}
-      <section className="py-12 sm:py-16 md:py-20 lg:py-24">
+      <section className="pt-6 sm:pt-10 md:pt-12 pb-12 sm:pb-16 md:pb-20 lg:pb-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             {/* Blog Posts Grid */}
@@ -160,10 +116,10 @@ export default function BlogContent() {
                     {/* Read More Link */}
                     <Link
                       href="#"
-                      className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors group/link text-sm sm:text-base"
+                      className={`inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors group/link text-sm sm:text-base ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
                     >
-                      <span>اقرأ المزيد</span>
-                      <svg className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <span>{t.readMore}</span>
+                      <svg className={`w-4 h-4 transition-transform ${dir === 'rtl' ? 'group-hover/link:-translate-x-1 rotate-180' : 'group-hover/link:translate-x-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                       </svg>
                     </Link>
@@ -180,9 +136,9 @@ export default function BlogContent() {
               <button
                 className="px-4 py-2 sm:px-5 sm:py-2.5 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled
-                aria-label="الصفحة السابقة"
+                aria-label={dir === 'rtl' ? 'Previous Page' : 'Previous Page'}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </button>
@@ -202,9 +158,9 @@ export default function BlogContent() {
               {/* Next Button */}
               <button 
                 className="px-4 py-2 sm:px-5 sm:py-2.5 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors"
-                aria-label="الصفحة التالية"
+                aria-label={dir === 'rtl' ? 'Next Page' : 'Next Page'}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>

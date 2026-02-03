@@ -367,7 +367,7 @@ export default function FAQContent() {
                       LEFT COLUMN - Contact Information
                       ============================================ */}
                   <div className="flex flex-col">
-                    <h4 className="text-xl sm:text-2xl font-bold text-slate-900 mb-6">Contact Information</h4>
+                    <h4 className="text-xl sm:text-2xl font-bold text-slate-900 mb-6">{t.form.contactInfo}</h4>
                     
                     {/* Address Card */}
                     <div className="flex items-start gap-4 p-6 rounded-xl border border-slate-200 hover:border-slate-300 transition-colors mb-4">
@@ -378,8 +378,8 @@ export default function FAQContent() {
                         </svg>
                       </div>
                       <div>
-                        <p className="text-sm font-bold text-slate-900 mb-2">Address:</p>
-                        <p className="text-base text-slate-700">Riyadh, Saudi Arabia</p>
+                        <p className="text-sm font-bold text-slate-900 mb-2">{t.form.address}</p>
+                        <p className="text-base text-slate-700">{t.form.addressValue}</p>
                       </div>
                     </div>
 
@@ -391,7 +391,7 @@ export default function FAQContent() {
                         </svg>
                       </div>
                       <div>
-                        <p className="text-sm font-bold text-slate-900 mb-2">Communication:</p>
+                        <p className="text-sm font-bold text-slate-900 mb-2">{t.form.communication}</p>
                         <a href="tel:+966582598295" className="text-base text-slate-700 hover:text-blue-600 transition-colors font-medium">
                           0582598295
                         </a>
@@ -406,9 +406,9 @@ export default function FAQContent() {
                         </svg>
                       </div>
                       <div>
-                        <p className="text-sm font-bold text-slate-900 mb-3">Email:</p>
-                        <a href="mailto:roknakheel@gmail.com" className="text-base text-slate-700 hover:text-blue-600 transition-colors break-all font-medium">
-                          roknakheel@gmail.com
+                        <p className="text-sm font-bold text-slate-900 mb-3">{t.form.email}</p>
+                        <a href={`mailto:${t.form.emailValue}`} className="text-base text-slate-700 hover:text-blue-600 transition-colors break-all font-medium">
+                          {t.form.emailValue}
                         </a>
                       </div>
                     </div>
@@ -423,14 +423,14 @@ export default function FAQContent() {
                       {/* First Name Input */}
                       <div>
                         <label className="block text-sm font-bold text-slate-900 mb-4">
-                          First name <span className="text-red-500">*</span>
+                          {t.form.firstName} <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
                           name="firstName"
                           value={formData.firstName}
                           onChange={handleChange}
-                          placeholder="Type your first name"
+                          placeholder={t.form.firstNamePlaceholder}
                           className="w-full px-5 py-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white hover:border-blue-300"
                           required
                         />
@@ -439,14 +439,14 @@ export default function FAQContent() {
                       {/* Last Name Input */}
                       <div>
                         <label className="block text-sm font-bold text-slate-900 mb-4">
-                          Last name <span className="text-red-500">*</span>
+                          {t.form.lastName} <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
                           name="lastName"
                           value={formData.lastName}
                           onChange={handleChange}
-                          placeholder="Type your last name"
+                          placeholder={t.form.lastNamePlaceholder}
                           className="w-full px-5 py-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white hover:border-blue-300"
                           required
                         />
@@ -458,7 +458,7 @@ export default function FAQContent() {
                       {/* Service Selection Dropdown */}
                       <div>
                         <label className="block text-sm font-bold text-slate-900 mb-4">
-                          Select a service to get help <span className="text-red-500">*</span>
+                          {t.form.selectService} <span className="text-red-500">*</span>
                         </label>
                         <select
                           name="service"
@@ -467,7 +467,7 @@ export default function FAQContent() {
                           className="w-full px-5 py-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white hover:border-blue-300 cursor-pointer"
                           required
                         >
-                          <option value="">Choose services</option>
+                          <option value="">{t.form.chooseServices}</option>
                           <option value="disinfection">تعقيم ضد الفيروسات</option>
                           <option value="painting">دهانات وديكورات</option>
                           <option value="ac-maintenance">صيانة المكيفات</option>
@@ -481,14 +481,14 @@ export default function FAQContent() {
                       {/* Email Input */}
                       <div>
                         <label className="block text-sm font-bold text-slate-900 mb-4">
-                          Your mail address <span className="text-red-500">*</span>
+                          {t.form.mailAddress} <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="email"
                           name="email"
                           value={formData.email}
                           onChange={handleChange}
-                          placeholder="Type mail address"
+                          placeholder={t.form.mailAddressPlaceholder}
                           className="w-full px-5 py-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white hover:border-blue-300"
                           required
                         />
@@ -498,13 +498,13 @@ export default function FAQContent() {
                     {/* Message Textarea */}
                     <div>
                       <label className="block text-sm font-bold text-slate-900 mb-4">
-                        Message <span className="text-red-500">*</span>
+                        {t.form.message} <span className="text-red-500">*</span>
                       </label>
                       <textarea
                         name="message"
                         value={formData.message}
                         onChange={handleChange}
-                        placeholder="Type message"
+                        placeholder={t.form.messagePlaceholder}
                         rows={6}
                         className="w-full px-5 py-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none transition-all bg-white hover:border-blue-300"
                         required
@@ -517,7 +517,7 @@ export default function FAQContent() {
                         type="submit"
                         className="w-full sm:w-auto bg-blue-600 text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
                       >
-                        Submit now
+                        {t.form.submit}
                       </button>
                     </div>
                   </div>
