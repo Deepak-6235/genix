@@ -26,16 +26,16 @@ export default function AdminLanguageSwitcher() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+        className="flex items-center gap-2 px-3 h-10 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition"
         aria-label="Select admin language"
         title="Change admin panel language"
       >
-        <span className="text-lg">{languages[adminLanguage].flag}</span>
-        <span className="text-sm font-medium text-gray-700 max-w-[100px] truncate">
+        <span className="text-base">{languages[adminLanguage].flag}</span>
+        <span className="text-sm font-medium text-gray-700 max-w-[80px] truncate">
           {languages[adminLanguage].nativeName}
         </span>
         <svg
-          className={`w-4 h-4 text-gray-500 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-3.5 h-3.5 text-gray-500 transition-transform ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
