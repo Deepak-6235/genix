@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { LANGUAGES, type LanguageCode } from '@/lib/languages';
 import { translateContent } from '@/lib/translate';
 import { useAdminLanguage } from '@/contexts/AdminLanguageContext';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 interface ServiceTranslation {
@@ -113,15 +114,13 @@ function ServiceCard({ service, onEdit, onDelete, onView, t, currentLang }: {
 }
 
 export default function ServicesPage() {
+  const router = useRouter();
   const { t, adminLanguage } = useAdminLanguage();
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [showViewModal, setShowViewModal] = useState(false);
-  const [viewingService, setViewingService] = useState<Service | null>(null);
   const [editingService, setEditingService] = useState<Service | null>(null);
   const [activeTab, setActiveTab] = useState('basic');
-  const [viewLanguage, setViewLanguage] = useState<LanguageCode>('en');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
   const [uploadingImage, setUploadingImage] = useState(false);
@@ -460,9 +459,7 @@ export default function ServicesPage() {
             t={t}
             currentLang={adminLanguage as LanguageCode}
             onView={(service) => {
-              setViewingService(service);
-              setViewLanguage(adminLanguage as LanguageCode);
-              setShowViewModal(true);
+              router.push(`/admin-genix/dashboard/services/${service.slug}`);
             }}
             onEdit={openModal}
             onDelete={handleDelete}
@@ -832,182 +829,6 @@ export default function ServicesPage() {
         </div>
       )}
 
-      {/* View Details Modal - keeping existing */}
-      {showViewModal && viewingService && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white border-b px-6 py-4">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold text-gray-900">{t('services.serviceDetails')}</h2>
-                <button
-                  onClick={() => setShowViewModal(false)}
-                  className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
-                >
-                  ×
-                </button>
-              </div>
-
-              {viewingService.translations && Object.keys(viewingService.translations).length > 1 && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('services.viewLanguage')}: <span className="text-purple-600">{LANGUAGES[viewLanguage].nativeName}</span>
-                  </label>
-                  <div className="flex flex-wrap gap-2">
-                    {Object.keys(viewingService.translations).map((lang) => (
-                      <button
-                        key={lang}
-                        type="button"
-                        onClick={() => setViewLanguage(lang as LanguageCode)}
-                        className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                          viewLanguage === lang
-                            ? 'bg-purple-600 text-white'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }`}
-                      >
-                        {LANGUAGES[lang as LanguageCode]?.flag || ''} {LANGUAGES[lang as LanguageCode]?.name || lang}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="p-6 space-y-6">
-              {/* Service Image */}
-              {viewingService.imageUrl && (
-                <div className="relative h-64 rounded-xl overflow-hidden">
-                  <Image
-                    src={viewingService.imageUrl}
-                    alt={viewingService.translations?.[viewLanguage]?.title || viewingService.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              )}
-
-              {/* Basic Info Section */}
-              <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl p-6">
-                <div className="flex items-start gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-2xl font-bold text-gray-900" dir={LANGUAGES[viewLanguage].dir}>
-                        {viewingService.translations?.[viewLanguage]?.title || viewingService.title}
-                      </h3>
-                      <span
-                        className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                          viewingService.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                        }`}
-                      >
-                        {viewingService.isActive ? t('status.active') : t('status.inactive')}
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-600 mb-2">
-                      <span className="font-semibold">Slug:</span> {viewingService.slug}
-                    </p>
-                    <p className="text-gray-700" dir={LANGUAGES[viewLanguage].dir}>
-                      {viewingService.translations?.[viewLanguage]?.shortDescription || viewingService.shortDescription}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Full Description */}
-              {(viewingService.translations?.[viewLanguage]?.fullDescription || viewingService.fullDescription) && (
-                <div className="border-l-4 border-purple-500 pl-4">
-                  <h4 className="text-lg font-bold text-gray-900 mb-2">Full Description</h4>
-                  <p className="text-gray-700 whitespace-pre-wrap" dir={LANGUAGES[viewLanguage].dir}>
-                    {viewingService.translations?.[viewLanguage]?.fullDescription || viewingService.fullDescription}
-                  </p>
-                </div>
-              )}
-
-              {/* Services Provided */}
-              {(viewingService.translations?.[viewLanguage]?.servicesProvided || viewingService.servicesProvided) && (
-                <div className="bg-blue-50 rounded-xl p-4">
-                  <h4 className="text-lg font-bold text-gray-900 mb-2">Services Provided</h4>
-                  <p className="text-gray-700 whitespace-pre-wrap" dir={LANGUAGES[viewLanguage].dir}>
-                    {viewingService.translations?.[viewLanguage]?.servicesProvided || viewingService.servicesProvided}
-                  </p>
-                </div>
-              )}
-
-              {/* Target Insects */}
-              {(viewingService.translations?.[viewLanguage]?.targetInsects || viewingService.targetInsects) && (
-                <div className="bg-green-50 rounded-xl p-4">
-                  <h4 className="text-lg font-bold text-gray-900 mb-2">Target Insects/Pests</h4>
-                  <p className="text-gray-700 whitespace-pre-wrap" dir={LANGUAGES[viewLanguage].dir}>
-                    {viewingService.translations?.[viewLanguage]?.targetInsects || viewingService.targetInsects}
-                  </p>
-                </div>
-              )}
-
-              {/* Methods Section */}
-              {(viewingService.translations?.[viewLanguage]?.methodsTitle || viewingService.methodsTitle ||
-                viewingService.translations?.[viewLanguage]?.methodsDescription || viewingService.methodsDescription) && (
-                <div className="border rounded-xl p-4">
-                  <h4 className="text-lg font-bold text-gray-900 mb-2" dir={LANGUAGES[viewLanguage].dir}>
-                    {viewingService.translations?.[viewLanguage]?.methodsTitle || viewingService.methodsTitle || 'Methods & Approach'}
-                  </h4>
-                  {(viewingService.translations?.[viewLanguage]?.methodsDescription || viewingService.methodsDescription) && (
-                    <p className="text-gray-700 whitespace-pre-wrap" dir={LANGUAGES[viewLanguage].dir}>
-                      {viewingService.translations?.[viewLanguage]?.methodsDescription || viewingService.methodsDescription}
-                    </p>
-                  )}
-                </div>
-              )}
-
-              {/* Advanced Technologies */}
-              {(viewingService.translations?.[viewLanguage]?.advancedTechnologies || viewingService.advancedTechnologies) && (
-                <div className="bg-indigo-50 rounded-xl p-4">
-                  <h4 className="text-lg font-bold text-gray-900 mb-2">Advanced Technologies</h4>
-                  <p className="text-gray-700 whitespace-pre-wrap" dir={LANGUAGES[viewLanguage].dir}>
-                    {viewingService.translations?.[viewLanguage]?.advancedTechnologies || viewingService.advancedTechnologies}
-                  </p>
-                </div>
-              )}
-
-              {/* Safe Use Description */}
-              {(viewingService.translations?.[viewLanguage]?.safeUseDescription || viewingService.safeUseDescription) && (
-                <div className="bg-yellow-50 rounded-xl p-4">
-                  <h4 className="text-lg font-bold text-gray-900 mb-2">Safe Use & Environmental Impact</h4>
-                  <p className="text-gray-700 whitespace-pre-wrap" dir={LANGUAGES[viewLanguage].dir}>
-                    {viewingService.translations?.[viewLanguage]?.safeUseDescription || viewingService.safeUseDescription}
-                  </p>
-                </div>
-              )}
-
-              {/* Service Guarantee */}
-              {(viewingService.translations?.[viewLanguage]?.serviceGuarantee || viewingService.serviceGuarantee) && (
-                <div className="bg-purple-50 rounded-xl p-4">
-                  <h4 className="text-lg font-bold text-gray-900 mb-2">Service Guarantee</h4>
-                  <p className="text-gray-700 whitespace-pre-wrap" dir={LANGUAGES[viewLanguage].dir}>
-                    {viewingService.translations?.[viewLanguage]?.serviceGuarantee || viewingService.serviceGuarantee}
-                  </p>
-                </div>
-              )}
-
-              {/* Action Buttons */}
-              <div className="flex gap-3 pt-4 border-t">
-                <button
-                  onClick={() => {
-                    setShowViewModal(false);
-                    openModal(viewingService);
-                  }}
-                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                >
-                  {t('button.edit')}
-                </button>
-                <button
-                  onClick={() => setShowViewModal(false)}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
-                >
-                  {t('button.close')}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
