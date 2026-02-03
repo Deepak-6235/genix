@@ -22,6 +22,7 @@ model Language {
   services  Service[] @relation("ServiceLanguage")
   blogs     Blog[]    @relation("BlogLanguage")
   faqs      FAQ[]     @relation("FAQLanguage")
+  reviews   Review[]  @relation("ReviewLanguage")
 
   @@map("languages")
 }
@@ -116,14 +117,26 @@ model AboutUs {
 }
 
 model Review {
-  id        String   @id @default(cuid())
-  name      String   // Customer name
-  text      String   @db.Text // Review text
-  isActive  Boolean  @default(true)
-  order     Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  slug        String
+  languageId  String   // Foreign key to Language table
+  language    Language @relation("ReviewLanguage", fields: [languageId], references: [id])
 
+  // Content fields
+  name        String   // Customer name (e.g., "Ahmed Al-Maliki")
+  position    String   // Job title (e.g., "Facilities Manager")
+  company     String   // Company name (e.g., "Elite Trading Company")
+  text        String   @db.Text // Review text
+  rating      Int      @default(5) // Star rating (1-5)
+
+  // Meta
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Unique constraint: same slug can have multiple languages
+  @@unique([slug, languageId], name: "slug_languageId")
   @@map("reviews")
 }
 

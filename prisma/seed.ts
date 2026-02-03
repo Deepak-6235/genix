@@ -101,6 +101,11 @@ async function main() {
   const { seedServices } = await import('./seed-services');
   await seedServices(prisma);
 
+  // Import and run seedReviews
+  console.log('📦 Importing seed-reviews...');
+  const { seedReviews } = await import('./seed-reviews');
+  await seedReviews(prisma);
+
   console.log('✨ Seeding completed!');
 }
 
