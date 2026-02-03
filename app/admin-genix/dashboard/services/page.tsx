@@ -154,6 +154,21 @@ export default function ServicesPage() {
   });
   const [formLoading, setFormLoading] = useState(false);
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  // Character limits for each field
+  const CHAR_LIMITS = {
+    title: 52,
+    shortDescription: 140,
+    fullDescription: 745,
+    servicesProvided: 644,
+    targetInsects: 60,
+    methodsTitle: 43,
+    methodsDescription: 314,
+    advancedTechnologies: 223,
+    safeUseDescription: 314,
+    serviceGuarantee: 192,
+  };
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -254,6 +269,7 @@ export default function ServicesPage() {
     setEditingService(null);
     setActiveTab('basic');
     setError('');
+    setFieldErrors({});
   };
 
   const generateSlug = (title: string): string => {
@@ -261,6 +277,18 @@ export default function ServicesPage() {
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '');
+  };
+
+  const validateField = (field: string, value: string): string => {
+    const limits = CHAR_LIMITS as Record<string, number>;
+    const charLimit = limits[field];
+
+    if (!charLimit) return '';
+
+    if (value.length > charLimit) {
+      return `Exceeds limit of ${charLimit} characters. Current: ${value.length}`;
+    }
+    return '';
   };
 
   const updateFormData = (field: keyof typeof formData, value: string | boolean) => {
@@ -272,6 +300,20 @@ export default function ServicesPage() {
       }
       return updated;
     });
+
+    // Validate field if it's a string
+    if (typeof value === 'string') {
+      const fieldError = validateField(field, value);
+      setFieldErrors(prev => {
+        const updated = { ...prev };
+        if (fieldError) {
+          updated[field] = fieldError;
+        } else {
+          delete updated[field];
+        }
+        return updated;
+      });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -282,6 +324,24 @@ export default function ServicesPage() {
     // Validate English fields (required)
     if (!formData.title || !formData.shortDescription) {
       setError('Title and short description are required');
+      setFormLoading(false);
+      return;
+    }
+
+    // Validate character limits for all fields
+    const errors: Record<string, string> = {};
+    Object.entries(formData).forEach(([field, value]) => {
+      if (typeof value === 'string') {
+        const error = validateField(field, value);
+        if (error) {
+          errors[field] = error;
+        }
+      }
+    });
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      setError('Please fix character limit errors before submitting');
       setFormLoading(false);
       return;
     }
@@ -482,28 +542,46 @@ export default function ServicesPage() {
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         Title (English) *
+                        <span className={`ml-2 text-xs ${formData.title.length > CHAR_LIMITS.title ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
+                          {formData.title.length}/{CHAR_LIMITS.title}
+                        </span>
                       </label>
                       <input
                         type="text"
                         required
+                        maxLength={CHAR_LIMITS.title}
                         value={formData.title}
                         onChange={(e) => updateFormData('title', e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
+                        className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
+                          fieldErrors.title ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                        }`}
                         placeholder="Pest Control"
                       />
+                      {fieldErrors.title && (
+                        <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.title}</p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         Short Description (English) *
+                        <span className={`ml-2 text-xs ${formData.shortDescription.length > CHAR_LIMITS.shortDescription ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
+                          {formData.shortDescription.length}/{CHAR_LIMITS.shortDescription}
+                        </span>
                       </label>
                       <textarea
                         required
                         rows={3}
+                        maxLength={CHAR_LIMITS.shortDescription}
                         value={formData.shortDescription}
                         onChange={(e) => updateFormData('shortDescription', e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
+                        className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
+                          fieldErrors.shortDescription ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                        }`}
                         placeholder="Brief description shown on services page"
                       />
+                      {fieldErrors.shortDescription && (
+                        <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.shortDescription}</p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -518,38 +596,65 @@ export default function ServicesPage() {
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Full Description (English)
+                      <span className={`ml-2 text-xs ${formData.fullDescription.length > CHAR_LIMITS.fullDescription ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
+                        {formData.fullDescription.length}/{CHAR_LIMITS.fullDescription}
+                      </span>
                     </label>
                     <textarea
                       rows={4}
+                      maxLength={CHAR_LIMITS.fullDescription}
                       value={formData.fullDescription}
                       onChange={(e) => updateFormData('fullDescription', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
+                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
+                        fieldErrors.fullDescription ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                      }`}
                       placeholder="Detailed introduction paragraph"
                     />
+                    {fieldErrors.fullDescription && (
+                      <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.fullDescription}</p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Services Provided (English)
+                      <span className={`ml-2 text-xs ${formData.servicesProvided.length > CHAR_LIMITS.servicesProvided ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
+                        {formData.servicesProvided.length}/{CHAR_LIMITS.servicesProvided}
+                      </span>
                     </label>
                     <textarea
                       rows={4}
+                      maxLength={CHAR_LIMITS.servicesProvided}
                       value={formData.servicesProvided}
                       onChange={(e) => updateFormData('servicesProvided', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
+                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
+                        fieldErrors.servicesProvided ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                      }`}
                       placeholder="List of services provided"
                     />
+                    {fieldErrors.servicesProvided && (
+                      <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.servicesProvided}</p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Target Insects (English)
+                      <span className={`ml-2 text-xs ${formData.targetInsects.length > CHAR_LIMITS.targetInsects ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
+                        {formData.targetInsects.length}/{CHAR_LIMITS.targetInsects}
+                      </span>
                     </label>
                     <textarea
                       rows={4}
+                      maxLength={CHAR_LIMITS.targetInsects}
                       value={formData.targetInsects}
                       onChange={(e) => updateFormData('targetInsects', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
+                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
+                        fieldErrors.targetInsects ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                      }`}
                       placeholder="Types of insects targeted (Cockroaches, Rats, etc.)"
                     />
+                    {fieldErrors.targetInsects && (
+                      <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.targetInsects}</p>
+                    )}
                   </div>
                 </div>
               )}
@@ -563,62 +668,107 @@ export default function ServicesPage() {
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Methods Title (English)
+                      <span className={`ml-2 text-xs ${formData.methodsTitle.length > CHAR_LIMITS.methodsTitle ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
+                        {formData.methodsTitle.length}/{CHAR_LIMITS.methodsTitle}
+                      </span>
                     </label>
                     <input
                       type="text"
+                      maxLength={CHAR_LIMITS.methodsTitle}
                       value={formData.methodsTitle}
                       onChange={(e) => updateFormData('methodsTitle', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
+                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
+                        fieldErrors.methodsTitle ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                      }`}
                       placeholder="Methods of insect extermination"
                     />
+                    {fieldErrors.methodsTitle && (
+                      <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.methodsTitle}</p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Methods Description (English)
+                      <span className={`ml-2 text-xs ${formData.methodsDescription.length > CHAR_LIMITS.methodsDescription ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
+                        {formData.methodsDescription.length}/{CHAR_LIMITS.methodsDescription}
+                      </span>
                     </label>
                     <textarea
                       rows={4}
+                      maxLength={CHAR_LIMITS.methodsDescription}
                       value={formData.methodsDescription}
                       onChange={(e) => updateFormData('methodsDescription', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
+                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
+                        fieldErrors.methodsDescription ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                      }`}
                       placeholder="Description of methods used"
                     />
+                    {fieldErrors.methodsDescription && (
+                      <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.methodsDescription}</p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Advanced Technologies (English)
+                      <span className={`ml-2 text-xs ${formData.advancedTechnologies.length > CHAR_LIMITS.advancedTechnologies ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
+                        {formData.advancedTechnologies.length}/{CHAR_LIMITS.advancedTechnologies}
+                      </span>
                     </label>
                     <textarea
                       rows={4}
+                      maxLength={CHAR_LIMITS.advancedTechnologies}
                       value={formData.advancedTechnologies}
                       onChange={(e) => updateFormData('advancedTechnologies', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
+                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
+                        fieldErrors.advancedTechnologies ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                      }`}
                       placeholder="Technologies used (Thermal, Biological, Bio-radiation)"
                     />
+                    {fieldErrors.advancedTechnologies && (
+                      <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.advancedTechnologies}</p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Safe Use Description (English)
+                      <span className={`ml-2 text-xs ${formData.safeUseDescription.length > CHAR_LIMITS.safeUseDescription ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
+                        {formData.safeUseDescription.length}/{CHAR_LIMITS.safeUseDescription}
+                      </span>
                     </label>
                     <textarea
                       rows={4}
+                      maxLength={CHAR_LIMITS.safeUseDescription}
                       value={formData.safeUseDescription}
                       onChange={(e) => updateFormData('safeUseDescription', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
+                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
+                        fieldErrors.safeUseDescription ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                      }`}
                       placeholder="Safety measures and environmental considerations"
                     />
+                    {fieldErrors.safeUseDescription && (
+                      <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.safeUseDescription}</p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Service Guarantee (English)
+                      <span className={`ml-2 text-xs ${formData.serviceGuarantee.length > CHAR_LIMITS.serviceGuarantee ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
+                        {formData.serviceGuarantee.length}/{CHAR_LIMITS.serviceGuarantee}
+                      </span>
                     </label>
                     <textarea
                       rows={4}
+                      maxLength={CHAR_LIMITS.serviceGuarantee}
                       value={formData.serviceGuarantee}
                       onChange={(e) => updateFormData('serviceGuarantee', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
+                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
+                        fieldErrors.serviceGuarantee ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                      }`}
                       placeholder="Guarantee details (Effectiveness, Refund policy, etc.)"
                     />
+                    {fieldErrors.serviceGuarantee && (
+                      <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.serviceGuarantee}</p>
+                    )}
                   </div>
                 </div>
               )}
