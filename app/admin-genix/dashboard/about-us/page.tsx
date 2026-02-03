@@ -2,6 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useAdminLanguage } from '@/contexts/AdminLanguageContext';
+import ConfirmModal from '@/components/ConfirmModal';
+import Toast from '@/components/Toast';
+import { useToast } from '@/hooks/useToast';
+import { useConfirmModal } from '@/hooks/useConfirmModal';
 
 interface AboutUsData {
   id: string;
@@ -15,6 +19,8 @@ interface AboutUsData {
 
 export default function AboutUsPage() {
   const { t } = useAdminLanguage();
+  const { toast, showToast, closeToast } = useToast();
+  const { confirmModal, openConfirmModal, closeConfirmModal } = useConfirmModal();
   const [aboutUs, setAboutUs] = useState<AboutUsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -112,13 +118,15 @@ export default function AboutUsPage() {
         setIsEditing(false);
         setEmailError('');
         setError('');
-        alert(t('message.saved'));
+        showToast('About Us information saved successfully', 'success');
       } else {
         setError(data.message || 'Failed to save');
+        showToast(data.message || 'Failed to save', 'error');
       }
     } catch (error) {
       console.error('Failed to save:', error);
       setError('Failed to save');
+      showToast('Failed to save', 'error');
     } finally {
       setSaving(false);
     }
@@ -136,18 +144,31 @@ export default function AboutUsPage() {
   }
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-900">{t('aboutUs.title')}</h1>
-        {!isEditing && (
-          <button
-            onClick={handleEdit}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
-          >
-            {t('button.edit')}
-          </button>
-        )}
-      </div>
+    <>
+      {toast.show && <Toast message={toast.message} type={toast.type} onClose={closeToast} />}
+      <ConfirmModal
+        isOpen={confirmModal.isOpen}
+        onClose={closeConfirmModal}
+        onConfirm={confirmModal.onConfirm}
+        title={confirmModal.title}
+        message={confirmModal.message}
+        confirmText={confirmModal.confirmText}
+        cancelText={t('button.cancel')}
+        confirmButtonClass={confirmModal.confirmButtonClass}
+      />
+
+      <div>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-900">{t('aboutUs.title')}</h1>
+          {!isEditing && (
+            <button
+              onClick={handleEdit}
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
+            >
+              {t('button.edit')}
+            </button>
+          )}
+        </div>
 
       <div className="bg-white rounded-lg shadow p-8 max-w-2xl">
         {!isEditing ? (
@@ -294,6 +315,7 @@ export default function AboutUsPage() {
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </>
   );
 }

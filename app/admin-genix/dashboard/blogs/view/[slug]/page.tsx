@@ -5,6 +5,8 @@ import { useAdminLanguage } from '@/contexts/AdminLanguageContext';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { type LanguageCode } from '@/lib/languages';
 import { translateContent } from '@/lib/translate';
+import ConfirmModal from '@/components/ConfirmModal';
+import Toast, { ToastType } from '@/components/Toast';
 
 interface DetailedSection {
   id?: string;
@@ -851,6 +853,39 @@ function CommentsSection({
     comment: '',
   });
 
+  // Modal and Toast states
+  const [confirmModal, setConfirmModal] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+    confirmText?: string;
+    confirmButtonClass?: string;
+  }>({
+    isOpen: false,
+    title: '',
+    message: '',
+    onConfirm: () => {},
+  });
+
+  const [toast, setToast] = useState<{
+    show: boolean;
+    message: string;
+    type: ToastType;
+  }>({
+    show: false,
+    message: '',
+    type: 'success',
+  });
+
+  const showToast = (message: string, type: ToastType) => {
+    setToast({ show: true, message, type });
+  };
+
+  const closeToast = () => {
+    setToast({ ...toast, show: false });
+  };
+
   const fetchComments = async () => {
     try {
       setLoading(true);
@@ -872,40 +907,69 @@ function CommentsSection({
     fetchComments();
   }, [blogSlug, adminLanguage]);
 
-  const handleApprove = async (commentId: string, currentStatus: boolean) => {
-    if (!confirm(t('comments.approveConfirm'))) return;
+  const handleApprove = (commentId: string, currentStatus: boolean) => {
+    setConfirmModal({
+      isOpen: true,
+      title: currentStatus ? t('comments.unapprove') : t('comments.approve'),
+      message: currentStatus
+        ? 'Are you sure you want to unapprove this comment?'
+        : t('comments.approveConfirm'),
+      confirmText: currentStatus ? t('comments.unapprove') : t('comments.approve'),
+      confirmButtonClass: currentStatus
+        ? 'bg-gray-600 hover:bg-gray-700'
+        : 'bg-green-600 hover:bg-green-700',
+      onConfirm: async () => {
+        try {
+          const response = await fetch(`/api/comments/${commentId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ isApproved: !currentStatus }),
+          });
 
-    try {
-      const response = await fetch(`/api/comments/${commentId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ isApproved: !currentStatus }),
-      });
-
-      if (response.ok) {
-        await fetchComments();
-      }
-    } catch (error) {
-      console.error('Failed to approve comment:', error);
-      alert('Failed to update comment');
-    }
+          if (response.ok) {
+            await fetchComments();
+            showToast(
+              currentStatus
+                ? 'Comment unapproved successfully'
+                : 'Comment approved successfully',
+              'success'
+            );
+          } else {
+            throw new Error('Failed to update comment');
+          }
+        } catch (error) {
+          console.error('Failed to approve comment:', error);
+          showToast('Failed to update comment', 'error');
+        }
+      },
+    });
   };
 
-  const handleDelete = async (commentId: string) => {
-    if (!confirm(t('comments.deleteConfirm'))) return;
+  const handleDelete = (commentId: string) => {
+    setConfirmModal({
+      isOpen: true,
+      title: t('comments.delete'),
+      message: t('comments.deleteConfirm'),
+      confirmText: t('button.delete'),
+      confirmButtonClass: 'bg-red-600 hover:bg-red-700',
+      onConfirm: async () => {
+        try {
+          const response = await fetch(`/api/comments/${commentId}`, {
+            method: 'DELETE',
+          });
 
-    try {
-      const response = await fetch(`/api/comments/${commentId}`, {
-        method: 'DELETE',
-      });
-
-      if (response.ok) {
-        await fetchComments();
-      }
-    } catch (error) {
-      console.error('Failed to delete comment:', error);
-      alert('Failed to delete comment');
-    }
+          if (response.ok) {
+            await fetchComments();
+            showToast('Comment deleted successfully', 'success');
+          } else {
+            throw new Error('Failed to delete comment');
+          }
+        } catch (error) {
+          console.error('Failed to delete comment:', error);
+          showToast('Failed to delete comment', 'error');
+        }
+      },
+    });
   };
 
   const startEdit = (comment: any) => {
@@ -937,10 +1001,13 @@ function CommentsSection({
       if (response.ok) {
         await fetchComments();
         cancelEdit();
+        showToast('Comment updated successfully', 'success');
+      } else {
+        throw new Error('Failed to update comment');
       }
     } catch (error) {
       console.error('Failed to update comment:', error);
-      alert('Failed to update comment');
+      showToast('Failed to update comment', 'error');
     }
   };
 
@@ -956,10 +1023,28 @@ function CommentsSection({
   }
 
   return (
-    <section className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">
-        {t('comments.title')} ({comments.length})
-      </h2>
+    <>
+      {/* Toast Notification */}
+      {toast.show && (
+        <Toast message={toast.message} type={toast.type} onClose={closeToast} />
+      )}
+
+      {/* Confirmation Modal */}
+      <ConfirmModal
+        isOpen={confirmModal.isOpen}
+        onClose={() => setConfirmModal({ ...confirmModal, isOpen: false })}
+        onConfirm={confirmModal.onConfirm}
+        title={confirmModal.title}
+        message={confirmModal.message}
+        confirmText={confirmModal.confirmText}
+        cancelText={t('button.cancel')}
+        confirmButtonClass={confirmModal.confirmButtonClass}
+      />
+
+      <section className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">
+          {t('comments.title')} ({comments.length})
+        </h2>
 
       {comments.length === 0 ? (
         <div className="text-center py-12 bg-gray-50 rounded-xl">
@@ -1100,6 +1185,7 @@ function CommentsSection({
           ))}
         </div>
       )}
-    </section>
+      </section>
+    </>
   );
 }

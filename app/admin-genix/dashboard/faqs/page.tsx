@@ -2,6 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { useAdminLanguage } from '@/contexts/AdminLanguageContext';
+import ConfirmModal from '@/components/ConfirmModal';
+import Toast from '@/components/Toast';
+import { useToast } from '@/hooks/useToast';
+import { useConfirmModal } from '@/hooks/useConfirmModal';
 
 interface FAQ {
   id: string;
@@ -77,6 +81,8 @@ function FAQItem({ faq, onEdit, onDelete, t }: {
 
 export default function FAQsPage() {
   const { t } = useAdminLanguage();
+  const { toast, showToast, closeToast } = useToast();
+  const { confirmModal, openConfirmModal, closeConfirmModal } = useConfirmModal();
   const [faqs, setFaqs] = useState<FAQ[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -203,28 +209,37 @@ export default function FAQsPage() {
 
       await fetchFaqs();
       closeModal();
+      showToast(editingFaq ? 'FAQ updated successfully' : 'FAQ created successfully', 'success');
     } catch (err: any) {
       setError(err.message || 'An error occurred');
+      showToast(err.message || 'An error occurred', 'error');
     } finally {
       setFormLoading(false);
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm(t('message.deleteConfirm'))) return;
+    openConfirmModal(
+      'Confirm Delete',
+      'Are you sure you want to delete this FAQ?',
+      async () => {
+        try {
+          const response = await fetch(`/api/faqs/${id}`, {
+            method: 'DELETE',
+          });
 
-    try {
-      const response = await fetch(`/api/faqs/${id}`, {
-        method: 'DELETE',
-      });
+          if (!response.ok) throw new Error('Failed to delete');
 
-      if (!response.ok) throw new Error('Failed to delete');
-
-      await fetchFaqs();
-    } catch (error) {
-      console.error('Delete error:', error);
-      alert('Failed to delete FAQ');
-    }
+          await fetchFaqs();
+          showToast('FAQ deleted successfully', 'success');
+        } catch (error) {
+          console.error('Delete error:', error);
+          showToast('Failed to delete FAQ', 'error');
+        }
+      },
+      'Delete',
+      'bg-red-600 hover:bg-red-700'
+    );
   };
 
   if (loading) {
@@ -237,19 +252,32 @@ export default function FAQsPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">{t('faqs.title')}</h1>
-          <p className="mt-1 text-sm text-gray-600">{t('faqs.subtitle')}</p>
+    <>
+      {toast.show && <Toast message={toast.message} type={toast.type} onClose={closeToast} />}
+      <ConfirmModal
+        isOpen={confirmModal.isOpen}
+        onClose={closeConfirmModal}
+        onConfirm={confirmModal.onConfirm}
+        title={confirmModal.title}
+        message={confirmModal.message}
+        confirmText={confirmModal.confirmText}
+        cancelText={t('button.cancel')}
+        confirmButtonClass={confirmModal.confirmButtonClass}
+      />
+
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">{t('faqs.title')}</h1>
+            <p className="mt-1 text-sm text-gray-600">{t('faqs.subtitle')}</p>
+          </div>
+          <button
+            onClick={() => openModal()}
+            className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
+          >
+            {t('faqs.addNew')}
+          </button>
         </div>
-        <button
-          onClick={() => openModal()}
-          className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
-        >
-          {t('faqs.addNew')}
-        </button>
-      </div>
 
       {/* FAQs List */}
       <div className="space-y-4">
@@ -390,6 +418,7 @@ export default function FAQsPage() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

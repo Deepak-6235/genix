@@ -2,6 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useAdminLanguage } from '@/contexts/AdminLanguageContext';
+import ConfirmModal from '@/components/ConfirmModal';
+import Toast from '@/components/Toast';
+import { useToast } from '@/hooks/useToast';
+import { useConfirmModal } from '@/hooks/useConfirmModal';
 
 interface Statistic {
   id: string;
@@ -13,6 +17,8 @@ interface Statistic {
 
 export default function StatisticsPage() {
   const { t } = useAdminLanguage();
+  const { toast, showToast, closeToast } = useToast();
+  const { confirmModal, openConfirmModal, closeConfirmModal } = useConfirmModal();
   const [statistics, setStatistics] = useState<Statistic[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -81,12 +87,13 @@ export default function StatisticsPage() {
         setEditingId(null);
         setEditValue(0);
         setValueError('');
+        showToast('Statistic updated successfully', 'success');
       } else {
-        alert(data.message || 'Failed to save');
+        showToast(data.message || 'Failed to save', 'error');
       }
     } catch (error) {
       console.error('Failed to save:', error);
-      alert('Failed to save');
+      showToast('Failed to save', 'error');
     } finally {
       setSaving(false);
     }
@@ -110,11 +117,24 @@ export default function StatisticsPage() {
   }
 
   return (
-    <div>
-      <h1 className="text-4xl font-bold text-gray-900 mb-8">{t('statistics.title')}</h1>
+    <>
+      {toast.show && <Toast message={toast.message} type={toast.type} onClose={closeToast} />}
+      <ConfirmModal
+        isOpen={confirmModal.isOpen}
+        onClose={closeConfirmModal}
+        onConfirm={confirmModal.onConfirm}
+        title={confirmModal.title}
+        message={confirmModal.message}
+        confirmText={confirmModal.confirmText}
+        cancelText={t('button.cancel')}
+        confirmButtonClass={confirmModal.confirmButtonClass}
+      />
 
-      {/* Statistics Table */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div>
+        <h1 className="text-4xl font-bold text-gray-900 mb-8">{t('statistics.title')}</h1>
+
+        {/* Statistics Table */}
+        <div className="bg-white rounded-lg shadow overflow-hidden">
         <table className="w-full">
           <thead className="bg-gray-50 border-b">
             <tr>
@@ -186,6 +206,7 @@ export default function StatisticsPage() {
           </tbody>
         </table>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

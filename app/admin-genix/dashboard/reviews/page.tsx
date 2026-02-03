@@ -4,6 +4,10 @@ import { useEffect, useState } from 'react';
 import { useAdminLanguage } from '@/contexts/AdminLanguageContext';
 import { useRouter } from 'next/navigation';
 import { LANGUAGES, type LanguageCode } from '@/lib/languages';
+import ConfirmModal from '@/components/ConfirmModal';
+import Toast from '@/components/Toast';
+import { useToast } from '@/hooks/useToast';
+import { useConfirmModal } from '@/hooks/useConfirmModal';
 
 interface ReviewTranslation {
   name: string;
@@ -114,6 +118,8 @@ function ReviewCard({ review, onEdit, onDelete, currentLang, t }: {
 export default function ReviewsPage() {
   const router = useRouter();
   const { t, adminLanguage } = useAdminLanguage();
+  const { toast, showToast, closeToast } = useToast();
+  const { confirmModal, openConfirmModal, closeConfirmModal } = useConfirmModal();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -137,24 +143,31 @@ export default function ReviewsPage() {
   };
 
   const handleDelete = async (slug: string) => {
-    if (!confirm('Are you sure you want to delete this review?')) return;
+    openConfirmModal(
+      'Confirm Delete',
+      'Are you sure you want to delete this review?',
+      async () => {
+        try {
+          const response = await fetch(`/api/reviews/${encodeURIComponent(slug)}`, {
+            method: 'DELETE',
+          });
 
-    try {
-      const response = await fetch(`/api/reviews/${encodeURIComponent(slug)}`, {
-        method: 'DELETE',
-      });
+          const data = await response.json();
 
-      const data = await response.json();
-
-      if (data.success) {
-        await fetchReviews();
-      } else {
-        alert(data.message || 'Failed to delete review');
-      }
-    } catch (error) {
-      console.error('Failed to delete review:', error);
-      alert('Failed to delete review');
-    }
+          if (data.success) {
+            await fetchReviews();
+            showToast('Review deleted successfully', 'success');
+          } else {
+            showToast(data.message || 'Failed to delete review', 'error');
+          }
+        } catch (error) {
+          console.error('Failed to delete review:', error);
+          showToast('Failed to delete review', 'error');
+        }
+      },
+      'Delete',
+      'bg-red-600 hover:bg-red-700'
+    );
   };
 
   if (loading) {
@@ -169,19 +182,32 @@ export default function ReviewsPage() {
   }
 
   return (
-    <div className="space-y-8">
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">{t('reviews.title')}</h2>
-          <p className="mt-1 text-sm text-gray-600">{t('reviews.subtitle')}</p>
+    <>
+      {toast.show && <Toast message={toast.message} type={toast.type} onClose={closeToast} />}
+      <ConfirmModal
+        isOpen={confirmModal.isOpen}
+        onClose={closeConfirmModal}
+        onConfirm={confirmModal.onConfirm}
+        title={confirmModal.title}
+        message={confirmModal.message}
+        confirmText={confirmModal.confirmText}
+        cancelText={t('button.cancel')}
+        confirmButtonClass={confirmModal.confirmButtonClass}
+      />
+
+      <div className="space-y-8">
+        <div className="flex justify-between items-center">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">{t('reviews.title')}</h2>
+            <p className="mt-1 text-sm text-gray-600">{t('reviews.subtitle')}</p>
+          </div>
+          <button
+            onClick={() => router.push('/admin-genix/dashboard/reviews/new')}
+            className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium"
+          >
+            + {t('reviews.addNew')}
+          </button>
         </div>
-        <button
-          onClick={() => router.push('/admin-genix/dashboard/reviews/new')}
-          className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium"
-        >
-          + {t('reviews.addNew')}
-        </button>
-      </div>
 
       {/* Reviews Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -202,6 +228,7 @@ export default function ReviewsPage() {
           <p className="text-gray-500">{t('reviews.noReviews')}</p>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

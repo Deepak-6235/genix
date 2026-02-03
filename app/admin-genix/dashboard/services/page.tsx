@@ -6,6 +6,10 @@ import { translateContent } from '@/lib/translate';
 import { useAdminLanguage } from '@/contexts/AdminLanguageContext';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import ConfirmModal from '@/components/ConfirmModal';
+import Toast from '@/components/Toast';
+import { useToast } from '@/hooks/useToast';
+import { useConfirmModal } from '@/hooks/useConfirmModal';
 
 interface ServiceTranslation {
   name: string;
@@ -115,6 +119,8 @@ function ServiceCard({ service, onEdit, onDelete, onView, t, currentLang }: {
 export default function ServicesPage() {
   const router = useRouter();
   const { t, adminLanguage } = useAdminLanguage();
+  const { toast, showToast, closeToast } = useToast();
+  const { confirmModal, openConfirmModal, closeConfirmModal } = useConfirmModal();
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -372,6 +378,7 @@ export default function ServicesPage() {
       if (data.success) {
         await fetchServices();
         closeModal();
+        showToast(editingService ? 'Service updated successfully' : 'Service created successfully', 'success');
       } else {
         setError(data.message || 'Operation failed');
       }
@@ -384,21 +391,28 @@ export default function ServicesPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this service?')) return;
+    openConfirmModal(
+      'Confirm Delete',
+      'Are you sure you want to delete this service?',
+      async () => {
+        try {
+          const response = await fetch(`/api/services/${encodeURIComponent(id)}`, { method: 'DELETE' });
+          const data = await response.json();
 
-    try {
-      const response = await fetch(`/api/services/${encodeURIComponent(id)}`, { method: 'DELETE' });
-      const data = await response.json();
-
-      if (data.success) {
-        await fetchServices();
-      } else {
-        alert(data.message || 'Failed to delete service');
-      }
-    } catch (error) {
-      console.error('Delete error:', error);
-      alert('Failed to delete service');
-    }
+          if (data.success) {
+            await fetchServices();
+            showToast('Service deleted successfully', 'success');
+          } else {
+            showToast(data.message || 'Failed to delete service', 'error');
+          }
+        } catch (error) {
+          console.error('Delete error:', error);
+          showToast('Failed to delete service', 'error');
+        }
+      },
+      'Delete',
+      'bg-red-600 hover:bg-red-700'
+    );
   };
 
   if (loading) {
@@ -410,19 +424,32 @@ export default function ServicesPage() {
   }
 
   return (
-    <div className="space-y-8">
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">{t('services.title')}</h2>
-          <p className="mt-1 text-sm text-gray-600">{t('services.subtitle')}</p>
+    <>
+      {toast.show && <Toast message={toast.message} type={toast.type} onClose={closeToast} />}
+      <ConfirmModal
+        isOpen={confirmModal.isOpen}
+        onClose={closeConfirmModal}
+        onConfirm={confirmModal.onConfirm}
+        title={confirmModal.title}
+        message={confirmModal.message}
+        confirmText={confirmModal.confirmText}
+        cancelText={t('button.cancel')}
+        confirmButtonClass={confirmModal.confirmButtonClass}
+      />
+
+      <div className="space-y-8">
+        <div className="flex justify-between items-center">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">{t('services.title')}</h2>
+            <p className="mt-1 text-sm text-gray-600">{t('services.subtitle')}</p>
+          </div>
+          <button
+            onClick={() => openModal()}
+            className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium"
+          >
+            + {t('services.addService')}
+          </button>
         </div>
-        <button
-          onClick={() => openModal()}
-          className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium"
-        >
-          + {t('services.addService')}
-        </button>
-      </div>
 
       {/* Services Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -653,6 +680,7 @@ export default function ServicesPage() {
         </div>
       )}
 
-    </div>
+      </div>
+    </>
   );
 }

@@ -7,6 +7,10 @@ import { useAdminLanguage } from '@/contexts/AdminLanguageContext';
 import { translateContent } from '@/lib/translate';
 import Link from 'next/link';
 import Image from 'next/image';
+import ConfirmModal from '@/components/ConfirmModal';
+import Toast from '@/components/Toast';
+import { useToast } from '@/hooks/useToast';
+import { useConfirmModal } from '@/hooks/useConfirmModal';
 
 interface ServiceTranslation {
   name: string;
@@ -35,6 +39,8 @@ export default function ServiceDetailPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { t, adminLanguage } = useAdminLanguage();
+  const { toast, showToast, closeToast } = useToast();
+  const { confirmModal, openConfirmModal, closeConfirmModal } = useConfirmModal();
   const [service, setService] = useState<Service | null>(null);
   const [loading, setLoading] = useState(true);
   const [viewLanguage, setViewLanguage] = useState<LanguageCode>(adminLanguage as LanguageCode);
@@ -211,12 +217,16 @@ export default function ServiceDetailPage() {
         }
         setIsEditMode(false);
         setImageFile(null);
+        showToast('Service updated successfully', 'success');
       } else {
         setError(data.message || 'Failed to update service');
+        showToast(data.message || 'Failed to update service', 'error');
       }
     } catch (error) {
       console.error('Save error:', error);
-      setError(error instanceof Error ? error.message : 'An error occurred');
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+      setError(errorMessage);
+      showToast(errorMessage, 'error');
     } finally {
       setSaving(false);
     }
@@ -271,9 +281,22 @@ export default function ServiceDetailPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header with Back Button and Language Selector */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
+    <>
+      {toast.show && <Toast message={toast.message} type={toast.type} onClose={closeToast} />}
+      <ConfirmModal
+        isOpen={confirmModal.isOpen}
+        onClose={closeConfirmModal}
+        onConfirm={confirmModal.onConfirm}
+        title={confirmModal.title}
+        message={confirmModal.message}
+        confirmText={confirmModal.confirmText}
+        cancelText={t('button.cancel')}
+        confirmButtonClass={confirmModal.confirmButtonClass}
+      />
+
+      <div className="min-h-screen bg-white">
+        {/* Header with Back Button and Language Selector */}
+        <div className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -562,6 +585,7 @@ export default function ServiceDetailPage() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 }
