@@ -36,20 +36,25 @@ interface Service {
   translations?: Record<string, ServiceTranslation>;
 }
 
-function ServiceItem({ service, onEdit, onDelete, onView, t }: {
+function ServiceItem({ service, onEdit, onDelete, onView, t, currentLang }: {
   service: Service;
   onEdit: (service: Service) => void;
   onDelete: (id: string) => void;
   onView: (service: Service) => void;
   t: (key: string) => string;
+  currentLang: LanguageCode;
 }) {
+  // Get the title and description in the current language, fallback to English
+  const displayTitle = service.translations?.[currentLang]?.title || service.title;
+  const displayDescription = service.translations?.[currentLang]?.shortDescription || service.shortDescription;
+
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition">
       <div className="flex items-start gap-4">
         <div className="flex-1">
           <div className="flex justify-between items-start mb-4">
             <div>
-              <h3 className="text-lg font-bold text-gray-900">{service.title}</h3>
+              <h3 className="text-lg font-bold text-gray-900" dir={LANGUAGES[currentLang]?.dir}>{displayTitle}</h3>
             </div>
             <span
               className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
@@ -59,7 +64,7 @@ function ServiceItem({ service, onEdit, onDelete, onView, t }: {
               {service.isActive ? t('status.active') : t('status.inactive')}
             </span>
           </div>
-          <p className="text-sm text-gray-600 mb-4 line-clamp-3">{service.shortDescription}</p>
+          <p className="text-sm text-gray-600 mb-4 line-clamp-3" dir={LANGUAGES[currentLang]?.dir}>{displayDescription}</p>
           <div className="flex space-x-2">
             <button
               onClick={() => onView(service)}
@@ -87,7 +92,7 @@ function ServiceItem({ service, onEdit, onDelete, onView, t }: {
 }
 
 export default function ServicesPage() {
-  const { t } = useAdminLanguage();
+  const { t, adminLanguage } = useAdminLanguage();
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -129,8 +134,11 @@ export default function ServicesPage() {
   };
 
   const fetchServices = async () => {
+    setLoading(true);
     try {
-      const response = await fetch('/api/services?allLangs=true');
+      // Fetch services with all translations but trigger on language change
+      console.log(`Fetching services for language: ${adminLanguage}`);
+      const response = await fetch(`/api/services?allLangs=true&lang=${adminLanguage}`);
       const data = await response.json();
       if (data.success) {
         setServices(data.services);
@@ -144,7 +152,7 @@ export default function ServicesPage() {
 
   useEffect(() => {
     fetchServices();
-  }, []);
+  }, [adminLanguage]);
 
   const openModal = (service?: Service) => {
     if (service) {
@@ -373,9 +381,10 @@ export default function ServicesPage() {
             key={service.id}
             service={service}
             t={t}
+            currentLang={adminLanguage as LanguageCode}
             onView={(service) => {
               setViewingService(service);
-              setViewLanguage('en');
+              setViewLanguage(adminLanguage as LanguageCode);
               setShowViewModal(true);
             }}
             onEdit={openModal}

@@ -52,6 +52,66 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const lang = searchParams.get('lang') || DEFAULT_LANGUAGE;
+    const allLangs = searchParams.get('allLangs') === 'true';
+
+    // If allLangs is true, return services grouped by slug with all translations
+    if (allLangs) {
+      const allServices = await prisma.service.findMany({
+        orderBy: { order: 'asc' },
+        include: {
+          language: true,
+        },
+      });
+
+      // Group services by slug
+      const servicesBySlug = new Map();
+
+      for (const service of allServices) {
+        if (!servicesBySlug.has(service.slug)) {
+          // Initialize with the first service data
+          servicesBySlug.set(service.slug, {
+            id: service.id,
+            slug: service.slug,
+            title: service.title,
+            shortDescription: service.shortDescription,
+            fullDescription: service.fullDescription,
+            servicesProvided: service.servicesProvided,
+            targetInsects: service.targetInsects,
+            methodsTitle: service.methodsTitle,
+            methodsDescription: service.methodsDescription,
+            advancedTechnologies: service.advancedTechnologies,
+            safeUseDescription: service.safeUseDescription,
+            serviceGuarantee: service.serviceGuarantee,
+            isActive: service.isActive,
+            order: service.order,
+            translations: {},
+          });
+        }
+
+        const serviceData = servicesBySlug.get(service.slug);
+
+        // Add translation for this language
+        serviceData.translations[service.language.code] = {
+          title: service.title,
+          shortDescription: service.shortDescription,
+          fullDescription: service.fullDescription,
+          servicesProvided: service.servicesProvided,
+          targetInsects: service.targetInsects,
+          methodsTitle: service.methodsTitle,
+          methodsDescription: service.methodsDescription,
+          advancedTechnologies: service.advancedTechnologies,
+          safeUseDescription: service.safeUseDescription,
+          serviceGuarantee: service.serviceGuarantee,
+        };
+      }
+
+      const services = Array.from(servicesBySlug.values());
+
+      return NextResponse.json({
+        success: true,
+        services,
+      });
+    }
 
     // First, find the language
     const language = await prisma.language.findUnique({
