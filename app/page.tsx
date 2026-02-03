@@ -1,3 +1,5 @@
+'use client';
+
 import TopBar from "./components/TopBar";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
@@ -10,6 +12,8 @@ import FAQ from "./components/FAQ";
 import Blog from "./components/Blog";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useServices } from "@/hooks/useServices";
 
 export default function HomePage() {
   const { language, dir } = useLanguage();
