@@ -20,6 +20,10 @@ import { metadataTranslations } from '@/translations/Metadata';
 import { airConditionerMaintenanceContentTranslations } from '@/translations/AirConditionerMaintenanceContent';
 import { paintsDecorationsContentTranslations } from '@/translations/PaintsDecorationsContent';
 import { pestControlContentTranslations } from '@/translations/PestControlContent';
+import { disinfectionContentTranslations } from '@/translations/DisinfectionContent';
+import { waterfallsAndFountainsContentTranslations } from '@/translations/WaterfallsAndFountainsContent';
+import { swimmingPoolsContentTranslations } from '@/translations/SwimmingPoolsContent';
+import { interiorExteriorRestorationContentTranslations } from '@/translations/InteriorExteriorRestorationContent';
 
 export function useMetadataTranslations() {
   const { language } = useLanguage();
@@ -124,4 +128,24 @@ export function usePaintsDecorationsContentTranslations() {
 export function usePestControlContentTranslations() {
   const { language } = useLanguage();
   return pestControlContentTranslations[language];
+}
+
+export function useDisinfectionContentTranslations() {
+  const { language } = useLanguage();
+  return disinfectionContentTranslations[language];
+}
+
+export function useWaterfallsAndFountainsContentTranslations() {
+  const { language } = useLanguage();
+  return waterfallsAndFountainsContentTranslations[language];
+}
+
+export function useSwimmingPoolsContentTranslations() {
+  const { language } = useLanguage();
+  return swimmingPoolsContentTranslations[language];
+}
+
+export function useInteriorExteriorRestorationContentTranslations() {
+  const { language } = useLanguage();
+  return interiorExteriorRestorationContentTranslations[language];
 }
