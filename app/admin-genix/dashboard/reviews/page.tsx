@@ -171,8 +171,8 @@ export default function ReviewsPage() {
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-bold text-gray-900">{t('reviews.title') || 'Reviews'}</h2>
-          <p className="mt-2 text-gray-600">Manage customer reviews and testimonials</p>
+          <h2 className="text-2xl font-bold text-gray-900">{t('reviews.title') || 'Reviews'}</h2>
+          <p className="mt-1 text-sm text-gray-600">Manage customer reviews and testimonials</p>
         </div>
         <button
           onClick={() => router.push('/admin-genix/dashboard/reviews/new')}

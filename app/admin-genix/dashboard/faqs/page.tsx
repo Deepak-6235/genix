@@ -240,8 +240,8 @@ export default function FAQsPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">{t('faqs.title')}</h1>
-          <p className="mt-2 text-gray-600">{t('faqs.subtitle')}</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('faqs.title')}</h1>
+          <p className="mt-1 text-sm text-gray-600">{t('faqs.subtitle')}</p>
         </div>
         <button
           onClick={() => openModal()}

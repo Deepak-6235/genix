@@ -232,7 +232,7 @@ function DashboardLayoutContent({
         {/* Top Navigation Bar */}
         <header className="bg-white border-b border-gray-200 h-16 fixed top-0 right-0 z-20" style={{ left: isSidebarOpen ? '16rem' : '5rem' }}>
           <div className="h-full px-6 flex items-center justify-between">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <button
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                 className="p-2 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
@@ -241,11 +241,11 @@ function DashboardLayoutContent({
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </button>
-              <div className="border-l border-gray-200 pl-4">
-                <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent">
+              <div className="border-l border-gray-200 pl-3">
+                <h1 className="text-xs font-bold bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent leading-none">
                   ركن النخيل
                 </h1>
-                <p className="text-xs text-gray-500">Content Management System</p>
+                <p className="text-[8px] text-gray-500 leading-none mt-0.5">Content Management System</p>
               </div>
             </div>
 

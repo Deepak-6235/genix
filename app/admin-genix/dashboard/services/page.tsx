@@ -413,8 +413,8 @@ export default function ServicesPage() {
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-bold text-gray-900">{t('services.title')}</h2>
-          <p className="mt-2 text-gray-600">{t('services.subtitle')}</p>
+          <h2 className="text-2xl font-bold text-gray-900">{t('services.title')}</h2>
+          <p className="mt-1 text-sm text-gray-600">{t('services.subtitle')}</p>
         </div>
         <button
           onClick={() => openModal()}
