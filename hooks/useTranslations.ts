@@ -17,6 +17,8 @@ import { aboutUsContentTranslations } from '@/translations/AboutUsContent';
 import { faqContentTranslations } from '@/translations/FAQContent';
 import { contactContentTranslations } from '@/translations/ContactContent';
 import { metadataTranslations } from '@/translations/Metadata';
+import { airConditionerMaintenanceContentTranslations } from '@/translations/AirConditionerMaintenanceContent';
+import { pestControlContentTranslations } from '@/translations/PestControlContent';
 
 export function useMetadataTranslations() {
   const { language } = useLanguage();
@@ -106,4 +108,14 @@ export function useFAQContentTranslations() {
 export function useContactContentTranslations() {
   const { language } = useLanguage();
   return contactContentTranslations[language];
+}
+
+export function useAirConditionerMaintenanceContentTranslations() {
+  const { language } = useLanguage();
+  return airConditionerMaintenanceContentTranslations[language];
+}
+
+export function usePestControlContentTranslations() {
+  const { language } = useLanguage();
+  return pestControlContentTranslations[language];
 }

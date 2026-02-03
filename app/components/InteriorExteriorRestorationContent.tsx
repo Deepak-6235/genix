@@ -2,8 +2,13 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useServicesContentTranslations } from "@/hooks/useTranslations";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function InteriorExteriorRestorationContent() {
+  const t = useServicesContentTranslations();
+  const { dir } = useLanguage();
+  const service = t.services.restoration;
   return (
     <div className="min-h-screen bg-white">
       {/* ============================================
@@ -14,26 +19,26 @@ export default function InteriorExteriorRestorationContent() {
           <div className="max-w-7xl mx-auto">
             {/* Breadcrumb Navigation */}
             <nav className="mb-6 sm:mb-8" aria-label="Breadcrumb">
-              <ol className="flex items-center gap-2 text-sm sm:text-base text-slate-600 justify-center">
+              <ol className={`flex items-center gap-2 text-sm sm:text-base text-slate-600 justify-center ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}>
                 <li>
                   <Link href="/" className="hover:text-blue-600 transition-colors">
-                    الرئيسية
+                    {t.breadcrumbHome}
                   </Link>
                 </li>
                 <li>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
                 </li>
                 <li>
-                  <span className="text-slate-600">الخدمات</span>
+                  <span className="text-slate-600">{t.breadcrumbServices}</span>
                 </li>
                 <li>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
                 </li>
-                <li className="text-slate-900 font-semibold">الترميم الداخلي والخارجي</li>
+                <li className="text-slate-900 font-semibold">{service.title}</li>
               </ol>
             </nav>
 
@@ -41,12 +46,11 @@ export default function InteriorExteriorRestorationContent() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
               {/* Left Side: Service Name and Description */}
               <div className="order-2 lg:order-1">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4 sm:mb-6 leading-tight text-center lg:text-right">
-                  الترميم الداخلي والخارجي
+                <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4 sm:mb-6 leading-tight text-center ${dir === 'rtl' ? 'lg:text-right' : 'lg:text-left'}`}>
+                  {service.title}
                 </h1>
-                <p className="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed text-center lg:text-right">
-                  الترميم الداخلي والخارجي هو عملية شاملة لإعادة تأهيل وتجديد المباني والمساحات لاستعادة جمالها ووظائفها الأصلية. 
-                  نحن في شركة ركن النخيل نقدم خدمات ترميم متخصصة وشاملة للمنازل والمباني التجارية والصناعية، مع الحفاظ على القيمة التاريخية والجمالية للمباني.
+                <p className={`text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed text-center ${dir === 'rtl' ? 'lg:text-right' : 'lg:text-left'}`}>
+                  {service.description}
                 </p>
               </div>
 
@@ -54,7 +58,7 @@ export default function InteriorExteriorRestorationContent() {
               <div className="order-1 lg:order-2 relative w-full min-h-[256px] h-64 sm:h-80 md:h-96 lg:h-[500px] rounded-xl overflow-hidden shadow-lg bg-slate-200">
                 <Image
                   src="/images/service-7.jpg"
-                  alt="الترميم الداخلي والخارجي"
+                  alt={service.title}
                   fill
                   className="object-cover rounded-xl"
                   priority

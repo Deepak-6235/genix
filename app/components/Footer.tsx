@@ -32,8 +32,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6 mb-4 sm:mb-6">
           {/* Brand Section */}
           <div>
-            <h3 className="text-xl sm:text-2xl font-bold text-blue-400 mb-1.5 sm:mb-2">
-              ركن النخيل
+            <h3 className="text-xl sm:text-2xl font-bold !text-blue-300 mb-1.5 sm:mb-2">
+              {t.companyName}
             </h3>
             <p className="text-slate-300 leading-relaxed text-xs sm:text-sm">
               {t.description}
@@ -42,7 +42,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-base sm:text-lg font-bold mb-1.5 sm:mb-2 text-blue-400">{t.quickLinks}</h4>
+            <h4 className="text-base sm:text-lg font-bold mb-1.5 sm:mb-2 !text-blue-300">{t.quickLinks}</h4>
             <ul className="space-y-1 sm:space-y-1.5 text-slate-300">
               {navItems.map((item) => (
                 <li key={item.href}>
@@ -59,7 +59,7 @@ export default function Footer() {
 
           {/* Services Links */}
           <div>
-            <h4 className="text-base sm:text-lg font-bold mb-1.5 sm:mb-2 text-blue-400">{t.services}</h4>
+            <h4 className="text-base sm:text-lg font-bold mb-1.5 sm:mb-2 !text-blue-300">{t.services}</h4>
             <ul className="space-y-1 sm:space-y-1.5 text-slate-300">
               {services.map((service) => (
                 <li key={service.href}>
@@ -76,7 +76,7 @@ export default function Footer() {
 
           {/* Contact Info & Working Hours */}
           <div>
-            <h4 className="text-base sm:text-lg font-bold mb-1.5 sm:mb-2 text-blue-400">{t.contact}</h4>
+            <h4 className="text-base sm:text-lg font-bold mb-1.5 sm:mb-2 !text-blue-300">{t.contact}</h4>
             <ul className="space-y-1 sm:space-y-1.5 text-slate-300 mb-3">
               <li className="flex items-center gap-2 text-xs sm:text-sm">
                 <svg className="w-3 h-3 sm:w-4 sm:h-4 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -103,7 +103,7 @@ export default function Footer() {
               </li>
             </ul>
             <div>
-              <h4 className="text-base sm:text-lg font-bold mb-1.5 sm:mb-2 text-blue-400">{t.workingHours}</h4>
+              <h4 className="text-base sm:text-lg font-bold mb-1.5 sm:mb-2 !text-blue-300">{t.workingHours}</h4>
               <p className="text-slate-300 text-xs sm:text-sm">{t.workingHoursText}</p>
               <p className="text-white font-bold mt-1 text-sm sm:text-base">24/7</p>
             </div>
@@ -112,7 +112,7 @@ export default function Footer() {
 
         {/* Copyright */}
         <div className="border-t border-slate-700 pt-3 sm:pt-4 text-center">
-          <p className="text-slate-400 text-[10px] sm:text-xs">© {new Date().getFullYear()} مؤسسة ركن النخيل. {t.copyright}</p>
+          <p className="text-slate-400 text-[10px] sm:text-xs">© {new Date().getFullYear()} {t.companyName}. {t.copyright}</p>
         </div>
       </div>
     </footer>

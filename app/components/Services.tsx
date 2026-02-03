@@ -140,10 +140,6 @@ const getServiceImageId = (id: number): string => {
                   unoptimized
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                {/* Icon Overlay */}
-                <div className={`absolute top-4 right-4 w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-white/90 backdrop-blur-sm ${colorClasses[service.color]} rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                  {service.icon}
-                </div>
               </div>
               
               <div className="p-6 sm:p-8 md:p-10">

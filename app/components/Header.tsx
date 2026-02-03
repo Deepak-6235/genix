@@ -86,18 +86,20 @@ export default function Header() {
                       </svg>
                     </a>
                     {isServicesOpen && (
-                      <div className={`absolute top-full mt-2 w-64 bg-white rounded-xl shadow-xl border border-slate-200 py-2 ${dir === 'rtl' ? 'right-0' : 'left-0'}`}>
-                        {services.map((service) => (
-                          <a
-                            key={service.label}
-                            href={service.href}
-                            className="block px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition-colors text-sm"
-                            onClick={() => setIsServicesOpen(false)}
-                            suppressHydrationWarning
-                          >
-                            {service.label}
-                          </a>
-                        ))}
+                      <div className={`absolute top-full pt-2 w-64 ${dir === 'rtl' ? 'right-0' : 'left-0'}`}>
+                        <div className="bg-white rounded-xl shadow-xl border border-slate-200 py-2">
+                          {services.map((service) => (
+                            <a
+                              key={service.label}
+                              href={service.href}
+                              className="block px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition-colors text-sm"
+                              onClick={() => setIsServicesOpen(false)}
+                              suppressHydrationWarning
+                            >
+                              {service.label}
+                            </a>
+                          ))}
+                        </div>
                       </div>
                     )}
                   </div>

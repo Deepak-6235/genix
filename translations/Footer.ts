@@ -1,6 +1,7 @@
 import { LanguageCode } from '@/lib/languages';
 
 export const footerTranslations: Record<LanguageCode, {
+  companyName: string;
   description: string;
   quickLinks: string;
   services: string;
@@ -28,6 +29,7 @@ export const footerTranslations: Record<LanguageCode, {
   };
 }> = {
   ar: {
+    companyName: 'ركن النخيل',
     description: 'مؤسسة ركن النخيل لخدمات التنظيف والصيانة والتشغيل ومكافحة وإبادة الحشرات داخل المملكة العربية السعودية',
     quickLinks: 'روابط سريعة',
     services: 'الخدمات',
@@ -55,6 +57,7 @@ export const footerTranslations: Record<LanguageCode, {
     },
   },
   en: {
+    companyName: 'Rukn Al-Nakheel',
     description: 'Rukn Al-Nakheel Foundation for cleaning, maintenance, operations, and pest control and extermination services within the Kingdom of Saudi Arabia',
     quickLinks: 'Quick Links',
     services: 'Services',
@@ -82,6 +85,7 @@ export const footerTranslations: Record<LanguageCode, {
     },
   },
   pt: {
+    companyName: 'Rukn Al-Nakheel',
     description: 'Fundação Rukn Al-Nakheel para serviços de limpeza, manutenção, operações e controle e extermínio de pragas no Reino da Arábia Saudita',
     quickLinks: 'Links Rápidos',
     services: 'Serviços',
@@ -109,6 +113,7 @@ export const footerTranslations: Record<LanguageCode, {
     },
   },
   zh: {
+    companyName: '棕榈角',
     description: '棕榈角基金会，在沙特阿拉伯王国内提供清洁、维护、运营以及害虫控制和消灭服务',
     quickLinks: '快速链接',
     services: '服务',
@@ -136,6 +141,7 @@ export const footerTranslations: Record<LanguageCode, {
     },
   },
   ja: {
+    companyName: 'ルクン・アルナキール',
     description: 'サウジアラビア王国内での清掃、メンテナンス、運営、害虫駆除サービスを提供するルクン・アルナキール財団',
     quickLinks: 'クイックリンク',
     services: 'サービス',
@@ -163,6 +169,7 @@ export const footerTranslations: Record<LanguageCode, {
     },
   },
   de: {
+    companyName: 'Rukn Al-Nakheel',
     description: 'Rukn Al-Nakheel Stiftung für Reinigungs-, Wartungs-, Betriebs- und Schädlingsbekämpfungsdienste im Königreich Saudi-Arabien',
     quickLinks: 'Schnelllinks',
     services: 'Dienstleistungen',
@@ -190,6 +197,7 @@ export const footerTranslations: Record<LanguageCode, {
     },
   },
   fr: {
+    companyName: 'Rukn Al-Nakheel',
     description: 'Fondation Rukn Al-Nakheel pour les services de nettoyage, de maintenance, d\'exploitation et de lutte contre les nuisibles dans le Royaume d\'Arabie Saoudite',
     quickLinks: 'Liens Rapides',
     services: 'Services',
