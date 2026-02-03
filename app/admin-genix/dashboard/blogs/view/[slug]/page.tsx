@@ -818,6 +818,288 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
           </div>
         </div>
       </section>
+
+      {/* Comments Section (View Mode Only) */}
+      {!isEditMode && (
+        <CommentsSection
+          blogSlug={slug}
+          adminLanguage={adminLanguage}
+          t={t}
+        />
+      )}
     </div>
+  );
+}
+
+// Comments Section Component
+function CommentsSection({
+  blogSlug,
+  adminLanguage,
+  t,
+}: {
+  blogSlug: string;
+  adminLanguage: string;
+  t: (key: string) => string;
+}) {
+  const [comments, setComments] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
+  const [editFormData, setEditFormData] = useState({
+    name: '',
+    email: '',
+    website: '',
+    comment: '',
+  });
+
+  const fetchComments = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `/api/comments?blogSlug=${encodeURIComponent(blogSlug)}&lang=${adminLanguage}&includeUnapproved=true`
+      );
+      const data = await response.json();
+      if (data.success) {
+        setComments(data.comments);
+      }
+    } catch (error) {
+      console.error('Failed to fetch comments:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchComments();
+  }, [blogSlug, adminLanguage]);
+
+  const handleApprove = async (commentId: string, currentStatus: boolean) => {
+    if (!confirm(t('comments.approveConfirm'))) return;
+
+    try {
+      const response = await fetch(`/api/comments/${commentId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isApproved: !currentStatus }),
+      });
+
+      if (response.ok) {
+        await fetchComments();
+      }
+    } catch (error) {
+      console.error('Failed to approve comment:', error);
+      alert('Failed to update comment');
+    }
+  };
+
+  const handleDelete = async (commentId: string) => {
+    if (!confirm(t('comments.deleteConfirm'))) return;
+
+    try {
+      const response = await fetch(`/api/comments/${commentId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        await fetchComments();
+      }
+    } catch (error) {
+      console.error('Failed to delete comment:', error);
+      alert('Failed to delete comment');
+    }
+  };
+
+  const startEdit = (comment: any) => {
+    setEditingCommentId(comment.id);
+    setEditFormData({
+      name: comment.name,
+      email: comment.email,
+      website: comment.website || '',
+      comment: comment.comment,
+    });
+  };
+
+  const cancelEdit = () => {
+    setEditingCommentId(null);
+    setEditFormData({ name: '', email: '', website: '', comment: '' });
+  };
+
+  const handleUpdate = async (commentId: string) => {
+    try {
+      const response = await fetch(`/api/comments/${commentId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...editFormData,
+          languageId: adminLanguage,
+        }),
+      });
+
+      if (response.ok) {
+        await fetchComments();
+        cancelEdit();
+      }
+    } catch (error) {
+      console.error('Failed to update comment:', error);
+      alert('Failed to update comment');
+    }
+  };
+
+  if (loading) {
+    return (
+      <section className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('comments.title')}</h2>
+        <div className="text-center py-8">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">
+        {t('comments.title')} ({comments.length})
+      </h2>
+
+      {comments.length === 0 ? (
+        <div className="text-center py-12 bg-gray-50 rounded-xl">
+          <p className="text-gray-500">{t('comments.noComments')}</p>
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {comments.map((comment) => (
+            <div
+              key={comment.id}
+              className={`border rounded-xl p-6 ${
+                comment.isApproved
+                  ? 'border-gray-200 bg-white'
+                  : 'border-yellow-200 bg-yellow-50'
+              }`}
+            >
+              {editingCommentId === comment.id ? (
+                // Edit Mode
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <input
+                      type="text"
+                      value={editFormData.name}
+                      onChange={(e) =>
+                        setEditFormData({ ...editFormData, name: e.target.value })
+                      }
+                      placeholder={t('comments.name')}
+                      className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+                    />
+                    <input
+                      type="email"
+                      value={editFormData.email}
+                      onChange={(e) =>
+                        setEditFormData({ ...editFormData, email: e.target.value })
+                      }
+                      placeholder={t('comments.email')}
+                      className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+                    />
+                  </div>
+                  <input
+                    type="text"
+                    value={editFormData.website}
+                    onChange={(e) =>
+                      setEditFormData({ ...editFormData, website: e.target.value })
+                    }
+                    placeholder={t('comments.website')}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+                  />
+                  <textarea
+                    value={editFormData.comment}
+                    onChange={(e) =>
+                      setEditFormData({ ...editFormData, comment: e.target.value })
+                    }
+                    placeholder={t('comments.comment')}
+                    rows={4}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+                  />
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => handleUpdate(comment.id)}
+                      className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
+                    >
+                      {t('comments.saveChanges')}
+                    </button>
+                    <button
+                      onClick={cancelEdit}
+                      className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
+                    >
+                      {t('button.cancel')}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                // View Mode
+                <>
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <h3 className="font-bold text-gray-900">{comment.name}</h3>
+                      <div className="flex items-center gap-3 text-sm text-gray-600 mt-1">
+                        <span>{comment.email}</span>
+                        {comment.website && (
+                          <>
+                            <span>•</span>
+                            <a
+                              href={comment.website}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-purple-600 hover:underline"
+                            >
+                              {comment.website}
+                            </a>
+                          </>
+                        )}
+                        <span>•</span>
+                        <span>{new Date(comment.createdAt).toLocaleDateString()}</span>
+                      </div>
+                    </div>
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        comment.isApproved
+                          ? 'bg-green-100 text-green-700'
+                          : 'bg-yellow-100 text-yellow-700'
+                      }`}
+                    >
+                      {comment.isApproved ? t('comments.approved') : t('comments.pending')}
+                    </span>
+                  </div>
+
+                  <p className="text-gray-700 mb-4 whitespace-pre-wrap">{comment.comment}</p>
+
+                  <div className="flex gap-3 pt-4 border-t border-gray-200">
+                    <button
+                      onClick={() => handleApprove(comment.id, comment.isApproved)}
+                      className={`px-4 py-2 text-sm font-medium rounded-lg transition ${
+                        comment.isApproved
+                          ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          : 'bg-green-100 text-green-700 hover:bg-green-200'
+                      }`}
+                    >
+                      {comment.isApproved ? t('comments.unapprove') : t('comments.approve')}
+                    </button>
+                    <button
+                      onClick={() => startEdit(comment)}
+                      className="px-4 py-2 text-sm font-medium bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition"
+                    >
+                      {t('button.edit')}
+                    </button>
+                    <button
+                      onClick={() => handleDelete(comment.id)}
+                      className="px-4 py-2 text-sm font-medium bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition"
+                    >
+                      {t('button.delete')}
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
   );
 }

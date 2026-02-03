@@ -24,6 +24,7 @@ model Language {
   detailedBlogs DetailedBlog[] @relation("DetailedBlogLanguage")
   faqs          FAQ[]          @relation("FAQLanguage")
   reviews       Review[]       @relation("ReviewLanguage")
+  comments      Comment[]      @relation("CommentLanguage")
 
   @@map("languages")
 }
@@ -169,11 +170,11 @@ model FAQ {
   id          String   @id @default(cuid())
   languageId  String   // Foreign key to Language table
   language    Language @relation("FAQLanguage", fields: [languageId], references: [id])
-  
+
   // Content fields
   question    String   @db.Text
   answer      String   @db.Text
-  
+
   // Meta
   isActive    Boolean  @default(true)
   order       Int      @default(0)
@@ -181,4 +182,29 @@ model FAQ {
   updatedAt   DateTime @updatedAt
 
   @@map("faqs")
+}
+
+model Comment {
+  id          String   @id @default(cuid())
+  commentId   String   // Unique identifier for the same comment across all languages
+  blogSlug    String   // The blog slug this comment belongs to
+  languageId  String   // Foreign key to Language table
+  language    Language @relation("CommentLanguage", fields: [languageId], references: [id])
+
+  // User fields
+  name        String
+  email       String
+  website     String?
+
+  // Content (translated)
+  comment     String   @db.Text
+
+  // Meta
+  isApproved  Boolean  @default(false) // Admin can approve comments
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([commentId, languageId], name: "commentId_languageId")
+  @@index([blogSlug])
+  @@map("comments")
 }
