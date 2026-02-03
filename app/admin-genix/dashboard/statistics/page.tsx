@@ -18,6 +18,7 @@ export default function StatisticsPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editValue, setEditValue] = useState<number>(0);
   const [saving, setSaving] = useState(false);
+  const [valueError, setValueError] = useState('');
 
   // Fetch statistics
   useEffect(() => {
@@ -39,14 +40,33 @@ export default function StatisticsPage() {
     }
   };
 
+  const validateValue = (value: number): string => {
+    if (value < 0) {
+      return 'Value cannot be negative';
+    }
+    if (value.toString().startsWith('0') && value !== 0) {
+      return 'Value cannot start with 0';
+    }
+    return '';
+  };
+
   const handleEdit = (statistic: Statistic) => {
     setEditingId(statistic.id);
     setEditValue(statistic.value);
+    setValueError('');
   };
 
   const handleSave = async (id: string) => {
     try {
       setSaving(true);
+
+      // Validate value
+      const error = validateValue(editValue);
+      if (error) {
+        setValueError(error);
+        setSaving(false);
+        return;
+      }
 
       const response = await fetch(`/api/statistics/${id}`, {
         method: 'PUT',
@@ -60,6 +80,7 @@ export default function StatisticsPage() {
         await fetchStatistics();
         setEditingId(null);
         setEditValue(0);
+        setValueError('');
       } else {
         alert(data.message || 'Failed to save');
       }
@@ -74,6 +95,7 @@ export default function StatisticsPage() {
   const handleCancel = () => {
     setEditingId(null);
     setEditValue(0);
+    setValueError('');
   };
 
   if (loading) {
@@ -109,13 +131,26 @@ export default function StatisticsPage() {
                 <td className="px-6 py-4 text-gray-900 font-medium">{stat.label}</td>
                 <td className="px-6 py-4">
                   {editingId === stat.id ? (
-                    <input
-                      type="number"
-                      value={editValue}
-                      onChange={(e) => setEditValue(parseInt(e.target.value) || 0)}
-                      className="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                      autoFocus
-                    />
+                    <div>
+                      <input
+                        type="number"
+                        value={editValue}
+                        onChange={(e) => {
+                          const value = parseInt(e.target.value) || 0;
+                          setEditValue(value);
+                          const error = validateValue(value);
+                          setValueError(error);
+                        }}
+                        className={`w-24 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent ${
+                          valueError ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                        }`}
+                        autoFocus
+                        min="0"
+                      />
+                      {valueError && (
+                        <p className="mt-1 text-xs text-red-600 font-medium">{valueError}</p>
+                      )}
+                    </div>
                   ) : (
                     <span className="text-gray-900 font-bold text-lg">{stat.value}</span>
                   )}
@@ -125,7 +160,7 @@ export default function StatisticsPage() {
                     <div className="space-x-2">
                       <button
                         onClick={() => handleSave(stat.id)}
-                        disabled={saving}
+                        disabled={saving || !!valueError}
                         className="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {saving ? 'Saving...' : 'Save'}
