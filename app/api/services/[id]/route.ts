@@ -86,7 +86,7 @@ export async function PUT(
 
     const body = await request.json();
     const {
-      icon,
+      imageUrl,
       slug,
       isActive,
       order,
@@ -121,20 +121,15 @@ export async function PUT(
       const updatedService = await prisma.service.update({
         where: { id: service.id },
         data: {
-          icon: icon !== undefined ? icon : service.icon,
+          imageUrl: imageUrl !== undefined ? imageUrl : service.imageUrl,
           slug: slug !== undefined ? slug : service.slug,
           isActive: isActive !== undefined ? isActive : service.isActive,
           order: order !== undefined ? order : service.order,
+          name: langTranslation?.name || service.name,
           title: langTranslation?.title || service.title,
+          subtitle: langTranslation?.subtitle || service.subtitle,
           shortDescription: langTranslation?.shortDescription || service.shortDescription,
           fullDescription: langTranslation?.fullDescription || service.fullDescription,
-          servicesProvided: langTranslation?.servicesProvided || service.servicesProvided,
-          targetInsects: langTranslation?.targetInsects || service.targetInsects,
-          methodsTitle: langTranslation?.methodsTitle || service.methodsTitle,
-          methodsDescription: langTranslation?.methodsDescription || service.methodsDescription,
-          advancedTechnologies: langTranslation?.advancedTechnologies || service.advancedTechnologies,
-          safeUseDescription: langTranslation?.safeUseDescription || service.safeUseDescription,
-          serviceGuarantee: langTranslation?.serviceGuarantee || service.serviceGuarantee,
         },
       });
       updatedServices.push(updatedService);

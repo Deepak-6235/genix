@@ -45,16 +45,11 @@ model Service {
   language              Language @relation("ServiceLanguage", fields: [languageId], references: [id])
 
   // Content fields
-  title                 String
+  name                  String
   shortDescription      String   @db.Text
+  title                 String
+  subtitle              String
   fullDescription       String?  @db.Text
-  servicesProvided      String?  @db.Text
-  targetInsects         String?  @db.Text
-  methodsTitle          String?
-  methodsDescription    String?  @db.Text
-  advancedTechnologies  String?  @db.Text
-  safeUseDescription    String?  @db.Text
-  serviceGuarantee      String?  @db.Text
   imageUrl              String?  // S3 image URL
 
   // Meta

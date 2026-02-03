@@ -72,16 +72,11 @@ export async function GET(request: NextRequest) {
           servicesBySlug.set(service.slug, {
             id: service.id,
             slug: service.slug,
+            name: service.name,
             title: service.title,
+            subtitle: service.subtitle,
             shortDescription: service.shortDescription,
             fullDescription: service.fullDescription,
-            servicesProvided: service.servicesProvided,
-            targetInsects: service.targetInsects,
-            methodsTitle: service.methodsTitle,
-            methodsDescription: service.methodsDescription,
-            advancedTechnologies: service.advancedTechnologies,
-            safeUseDescription: service.safeUseDescription,
-            serviceGuarantee: service.serviceGuarantee,
             isActive: service.isActive,
             order: service.order,
             imageUrl: service.imageUrl,
@@ -93,16 +88,11 @@ export async function GET(request: NextRequest) {
 
         // Add translation for this language
         serviceData.translations[service.language.code] = {
+          name: service.name,
           title: service.title,
+          subtitle: service.subtitle,
           shortDescription: service.shortDescription,
           fullDescription: service.fullDescription,
-          servicesProvided: service.servicesProvided,
-          targetInsects: service.targetInsects,
-          methodsTitle: service.methodsTitle,
-          methodsDescription: service.methodsDescription,
-          advancedTechnologies: service.advancedTechnologies,
-          safeUseDescription: service.safeUseDescription,
-          serviceGuarantee: service.serviceGuarantee,
         };
       }
 
@@ -174,9 +164,9 @@ export async function POST(request: NextRequest) {
     } = body;
 
     // Validation - check if translations from client has English content
-    if (!clientTranslations || !clientTranslations.en || !clientTranslations.en.title || !clientTranslations.en.shortDescription) {
+    if (!clientTranslations || !clientTranslations.en || !clientTranslations.en.name || !clientTranslations.en.title || !clientTranslations.en.subtitle || !clientTranslations.en.shortDescription) {
       return NextResponse.json(
-        { success: false, message: 'Title and short description are required' },
+        { success: false, message: 'Name, title, subtitle, and short description are required' },
         { status: 400 }
       );
     }
@@ -217,16 +207,11 @@ export async function POST(request: NextRequest) {
             },
           },
           update: {
+            name: finalContent.name,
             title: finalContent.title,
+            subtitle: finalContent.subtitle,
             shortDescription: finalContent.shortDescription,
             fullDescription: finalContent.fullDescription || null,
-            servicesProvided: finalContent.servicesProvided || null,
-            targetInsects: finalContent.targetInsects || null,
-            methodsTitle: finalContent.methodsTitle || null,
-            methodsDescription: finalContent.methodsDescription || null,
-            advancedTechnologies: finalContent.advancedTechnologies || null,
-            safeUseDescription: finalContent.safeUseDescription || null,
-            serviceGuarantee: finalContent.serviceGuarantee || null,
             imageUrl: imageUrl || null,
             isActive: isActive !== undefined ? isActive : true,
             order: order || 0,
@@ -234,16 +219,11 @@ export async function POST(request: NextRequest) {
           create: {
             slug: generatedSlug,
             languageId: lang.id,
+            name: finalContent.name,
             title: finalContent.title,
+            subtitle: finalContent.subtitle,
             shortDescription: finalContent.shortDescription,
             fullDescription: finalContent.fullDescription || null,
-            servicesProvided: finalContent.servicesProvided || null,
-            targetInsects: finalContent.targetInsects || null,
-            methodsTitle: finalContent.methodsTitle || null,
-            methodsDescription: finalContent.methodsDescription || null,
-            advancedTechnologies: finalContent.advancedTechnologies || null,
-            safeUseDescription: finalContent.safeUseDescription || null,
-            serviceGuarantee: finalContent.serviceGuarantee || null,
             imageUrl: imageUrl || null,
             isActive: isActive !== undefined ? isActive : true,
             order: order || 0,
