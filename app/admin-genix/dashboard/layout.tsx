@@ -222,7 +222,11 @@ function DashboardLayoutContent({
         >
           <nav className="mt-8 px-4 space-y-2">
             {navItems.map((item) => {
-              const isActive = pathname === item.path;
+              // Check if current path starts with item path (for nested routes like /services/[slug])
+              // But for dashboard root, require exact match
+              const isActive = item.path === '/admin-genix/dashboard'
+                ? pathname === item.path
+                : pathname.startsWith(item.path);
               return (
                 <Link
                   key={item.path}
