@@ -89,19 +89,17 @@ function BlogItem({ blog, onDelete, onView, onEdit, t }: {
 
 export default function BlogsPage() {
   const router = useRouter();
-  const { t } = useAdminLanguage();
+  const { t, adminLanguage } = useAdminLanguage();
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
   const [showViewModal, setShowViewModal] = useState(false);
   const [viewingBlog, setViewingBlog] = useState<Blog | null>(null);
 
-  useEffect(() => {
-    fetchBlogs();
-  }, []);
-
   const fetchBlogs = async () => {
     try {
-      const response = await fetch('/api/blogs?lang=en');
+      setLoading(true);
+      console.log(`Fetching blogs for language: ${adminLanguage}`);
+      const response = await fetch(`/api/blogs?lang=${adminLanguage}`);
       const data = await response.json();
       if (data.success) {
         setBlogs(data.blogs);
@@ -112,6 +110,10 @@ export default function BlogsPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchBlogs();
+  }, [adminLanguage]);
 
 
   const handleDelete = async (slug: string) => {

@@ -168,7 +168,7 @@ function DashboardLayoutContent({
           <div className="h-16 flex items-center justify-center border-b border-gray-200 px-4">
             {isSidebarOpen ? (
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 flex items-center justify-center">
                   <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
@@ -176,7 +176,7 @@ function DashboardLayoutContent({
                 <span className="text-lg font-bold text-gray-900">Admin Panel</span>
               </div>
             ) : (
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 flex items-center justify-center">
                 <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
@@ -196,19 +196,19 @@ function DashboardLayoutContent({
                   href={item.path}
                   className={`flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg transition-all duration-200 group ${
                     isActive
-                      ? 'bg-indigo-50 text-indigo-600'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      ? 'bg-gradient-to-r from-cyan-50 to-blue-50 text-blue-600 border border-cyan-100'
+                      : 'text-gray-700 hover:bg-gray-50'
                   }`}
                   title={!isSidebarOpen ? item.name : undefined}
                 >
-                  <span className={`${isActive ? 'text-indigo-600' : 'text-gray-400 group-hover:text-gray-600'} transition-colors`}>
+                  <span className={`${isActive ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'} transition-colors`}>
                     {item.icon}
                   </span>
                   {isSidebarOpen && (
                     <span className="font-medium text-sm">{item.name}</span>
                   )}
                   {isActive && isSidebarOpen && (
-                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-indigo-600"></div>
+                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-blue-600"></div>
                   )}
                 </Link>
               );
@@ -218,9 +218,9 @@ function DashboardLayoutContent({
           {/* Sidebar Footer */}
           {isSidebarOpen && (
             <div className="p-3 border-t border-gray-200">
-              <div className="bg-indigo-50 rounded-lg p-3">
-                <p className="text-xs font-semibold text-indigo-900 mb-1">Need Help?</p>
-                <p className="text-xs text-indigo-700">Check documentation</p>
+              <div className="bg-gradient-to-r from-cyan-50 to-blue-50 rounded-lg p-3 border border-cyan-100">
+                <p className="text-xs font-semibold text-blue-900 mb-1">Need Help?</p>
+                <p className="text-xs text-blue-700">Check documentation</p>
               </div>
             </div>
           )}
@@ -230,19 +230,21 @@ function DashboardLayoutContent({
       {/* Main Content Area */}
       <div className={`${isSidebarOpen ? 'ml-64' : 'ml-20'} transition-all duration-300`}>
         {/* Top Navigation Bar */}
-        <header className="bg-white border-b border-gray-200 h-16 fixed top-0 right-0 left-0 z-20" style={{ marginLeft: isSidebarOpen ? '16rem' : '5rem' }}>
-          <div className="h-full px-4 flex items-center justify-between">
+        <header className="bg-white border-b border-gray-200 h-16 fixed top-0 right-0 z-20" style={{ left: isSidebarOpen ? '16rem' : '5rem' }}>
+          <div className="h-full px-6 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+                className="p-2 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </button>
-              <div>
-                <h1 className="text-sm font-semibold text-gray-900">ركن النخيل</h1>
+              <div className="border-l border-gray-200 pl-4">
+                <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent">
+                  ركن النخيل
+                </h1>
                 <p className="text-xs text-gray-500">Content Management System</p>
               </div>
             </div>
@@ -250,20 +252,20 @@ function DashboardLayoutContent({
             <div className="flex items-center gap-3">
               <AdminLanguageSwitcher />
 
-              <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gray-50 rounded-lg border border-gray-200">
-                <div className="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs font-semibold">
+              <div className="hidden sm:flex items-center gap-2.5 px-3 py-2 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-lg border border-cyan-100">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 flex items-center justify-center text-white text-xs font-semibold">
                   {userEmail.charAt(0).toUpperCase()}
                 </div>
                 <div className="text-left">
                   <p className="text-xs text-gray-500">Signed in as</p>
-                  <p className="text-sm font-medium text-gray-900">{userEmail}</p>
+                  <p className="text-sm font-semibold text-gray-900">{userEmail}</p>
                 </div>
               </div>
 
               <button
                 onClick={handleLogout}
                 disabled={loggingOut}
-                className="px-3 py-1.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

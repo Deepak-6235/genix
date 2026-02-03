@@ -5,14 +5,13 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 interface Blog {
   id: string;
-  title: string;
-  excerpt: string;
-  content: string;
-  author: string | null;
-  imageUrl: string | null;
+  name: string;
+  shortDescription: string;
+  author: string;
+  imageUrl: string;
   slug: string;
   isActive: boolean;
-  publishedAt: string | null;
+  publishedAt: string;
   order: number;
 }
 

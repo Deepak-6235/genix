@@ -400,17 +400,35 @@ export async function seedBlogs(prisma: PrismaClient) {
       for (const lang of languages) {
         const translation = blogData.translations[lang.code as keyof typeof blogData.translations];
 
-        if (!translation) {
-          console.log(`  Skipping language ${lang.code} - no translation available`);
+        // Use English as fallback if translation is not available
+        const finalTranslation = translation || blogData.translations.en;
+
+        if (!finalTranslation) {
+          console.log(`  ⚠️  Skipping language ${lang.code} - no translation or fallback available`);
           continue;
         }
 
-        const blog = await prisma.blog.create({
-          data: {
+        const blog = await prisma.blog.upsert({
+          where: {
+            slug_languageId: {
+              slug: blogData.slug,
+              languageId: lang.id,
+            },
+          },
+          update: {
+            name: finalTranslation.name,
+            shortDescription: finalTranslation.shortDescription,
+            author: blogData.author,
+            imageUrl: blogData.imageUrl,
+            publishedAt: blogData.publishedAt,
+            isActive: blogData.isActive,
+            order: blogData.order,
+          },
+          create: {
             slug: blogData.slug,
             languageId: lang.id,
-            name: translation.name,
-            shortDescription: translation.shortDescription,
+            name: finalTranslation.name,
+            shortDescription: finalTranslation.shortDescription,
             author: blogData.author,
             imageUrl: blogData.imageUrl,
             publishedAt: blogData.publishedAt,
@@ -420,7 +438,11 @@ export async function seedBlogs(prisma: PrismaClient) {
         });
 
         createdBlogs.push({ blog, langCode: lang.code });
-        console.log(`  ✓ Created blog for ${lang.code}`);
+        if (translation) {
+          console.log(`  ✓ Created blog for ${lang.code}`);
+        } else {
+          console.log(`  ✓ Created blog for ${lang.code} (using English fallback)`);
+        }
       }
 
       // Create detailed sections for each language
@@ -429,23 +451,38 @@ export async function seedBlogs(prisma: PrismaClient) {
           for (const { blog, langCode } of createdBlogs) {
             const sectionTranslation = section.translations[langCode as keyof typeof section.translations];
 
-            if (!sectionTranslation) {
+            // Use English as fallback if translation is not available
+            const finalSectionTranslation = sectionTranslation || section.translations.en;
+
+            if (!finalSectionTranslation) {
               continue;
             }
 
-            await prisma.detailedBlog.create({
-              data: {
+            await prisma.detailedBlog.upsert({
+              where: {
+                blog_language_order: {
+                  blogId: blog.id,
+                  languageId: blog.languageId,
+                  order: section.order,
+                },
+              },
+              update: {
+                title: finalSectionTranslation.title,
+                description: finalSectionTranslation.description,
+                imageUrl: section.imageUrl,
+              },
+              create: {
                 blogId: blog.id,
                 languageId: blog.languageId,
-                title: sectionTranslation.title,
-                description: sectionTranslation.description,
+                title: finalSectionTranslation.title,
+                description: finalSectionTranslation.description,
                 imageUrl: section.imageUrl,
                 order: section.order,
               },
             });
           }
         }
-        console.log(`  ✓ Created ${blogData.detailedSections.length} detailed sections`);
+        console.log(`  ✓ Created ${blogData.detailedSections.length} detailed sections for all languages`);
       }
     }
 
