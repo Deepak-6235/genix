@@ -164,24 +164,34 @@ function DashboardLayoutContent({
         } bg-white border-r border-gray-200 min-h-screen transition-all duration-300 fixed left-0 top-0 z-30`}
       >
         <div className="h-full flex flex-col">
-          {/* Logo Section */}
-          <div className="h-16 flex items-center justify-center border-b border-gray-200 px-4">
-            {isSidebarOpen ? (
-              <div className="flex items-center gap-2">
+          {/* Logo Section with Toggle */}
+          <div className="h-16 flex items-center justify-between border-b border-gray-200 px-4">
+            <div className="flex items-center gap-2">
+              {isSidebarOpen ? (
+                <>
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 flex items-center justify-center">
+                    <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <span className="text-lg font-bold text-gray-900">Admin Panel</span>
+                </>
+              ) : (
                 <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 flex items-center justify-center">
                   <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 </div>
-                <span className="text-lg font-bold text-gray-900">Admin Panel</span>
-              </div>
-            ) : (
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-            )}
+              )}
+            </div>
+            <button
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="p-1.5 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+            >
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
           </div>
 
           {/* Navigation */}
@@ -232,40 +242,32 @@ function DashboardLayoutContent({
         {/* Top Navigation Bar */}
         <header className="bg-white border-b border-gray-200 h-16 fixed top-0 right-0 z-20" style={{ left: isSidebarOpen ? '16rem' : '5rem' }}>
           <div className="h-full px-6 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="p-2 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
-              >
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
-              <div className="border-l border-gray-200 pl-3">
-                <h1 className="text-xs font-bold bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent leading-none">
-                  ركن النخيل
-                </h1>
-                <p className="text-[8px] text-gray-500 leading-none mt-0.5">Content Management System</p>
-              </div>
+            <div>
+              <h1 style={{ fontSize: '22px' }} className="font-bold bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent leading-none">
+                ركن النخيل
+              </h1>
+              <p style={{ fontSize: '10px' }} className="text-gray-500 leading-none mt-1">Content Management System</p>
             </div>
 
             <div className="flex items-center gap-3">
-              <AdminLanguageSwitcher />
+              <div className="h-10">
+                <AdminLanguageSwitcher />
+              </div>
 
-              <div className="hidden sm:flex items-center gap-2.5 px-3 py-2 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-lg border border-cyan-100">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 flex items-center justify-center text-white text-xs font-semibold">
+              <div className="hidden sm:flex items-center gap-2 px-3 py-2 h-10 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-lg border border-cyan-100">
+                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 flex items-center justify-center text-white text-[10px] font-semibold">
                   {userEmail.charAt(0).toUpperCase()}
                 </div>
                 <div className="text-left">
-                  <p className="text-xs text-gray-500">Signed in as</p>
-                  <p className="text-sm font-semibold text-gray-900">{userEmail}</p>
+                  <p className="text-[9px] text-gray-500 leading-tight">Signed in as</p>
+                  <p className="text-xs font-semibold text-gray-900 leading-tight">{userEmail}</p>
                 </div>
               </div>
 
               <button
                 onClick={handleLogout}
                 disabled={loggingOut}
-                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm"
+                className="h-10 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
