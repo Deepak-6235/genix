@@ -1,6 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { useBlogTranslations } from "@/hooks/useTranslations";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Placeholder image IDs for Unsplash
 const getBlogImageId = (id: number): string => {
@@ -15,67 +18,27 @@ const getBlogImageId = (id: number): string => {
   return imageIds[id] || "1564013799919-ab608027fe79";
 };
 
-const blogPosts = [
-  {
-    id: 1,
-    title: "أفضل شركات تنظيف منازل في الرياض",
-    date: "09 أبريل 2022",
-    category: "مقالات عامة ركن النخيل",
-    excerpt: "دليل شامل لأفضل شركات التنظيف في الرياض مع نصائح لاختيار الشركة المناسبة لاحتياجاتك.",
-    image: "🧹"
-  },
-  {
-    id: 2,
-    title: "شركة ركن النخيل لتصميم شلالات جدارية",
-    date: "07 أبريل 2022",
-    category: "مقالات عامة ركن النخيل",
-    excerpt: "اكتشف كيف يمكن لشلالات جدارية أن تضيف لمسة جمالية فريدة لمنزلك أو مكتبك.",
-    image: "💧"
-  },
-  {
-    id: 3,
-    title: "شركة تصليح مكيف سبلت بالرياض",
-    date: "06 أبريل 2022",
-    category: "مقالات عامة ركن النخيل",
-    excerpt: "دليل شامل لصيانة وإصلاح مكيفات السبليت مع أهم النصائح للحفاظ على كفاءة المكيف.",
-    image: "❄️"
-  },
-  {
-    id: 4,
-    title: "اشهر شركات الدهانات بالرياض باحدث التقنيات المستخدمه",
-    date: "04 أبريل 2022",
-    category: "مقالات عامة ركن النخيل",
-    excerpt: "تعرف على أحدث تقنيات الدهانات والديكورات المستخدمة في الرياض وأهم الاتجاهات الحديثة.",
-    image: "🎨"
-  },
-  {
-    id: 5,
-    title: "التعرف على كيفية تصليح مكيفات سبليت واكثر المشاكل شيوعاً",
-    date: "04 أبريل 2022",
-    category: "مقالات عامة ركن النخيل",
-    excerpt: "دليل شامل لأكثر مشاكل مكيفات السبليت شيوعاً وكيفية إصلاحها بطرق احترافية.",
-    image: "🔧"
-  },
-  {
-    id: 6,
-    title: "شركة عزل الاسطح بالاسمنت الأبيض بأفضل الاسعار",
-    date: "03 أبريل 2022",
-    category: "مقالات عامة ركن النخيل",
-    excerpt: "كل ما تحتاج معرفته عن عزل الأسطح بالأسمنت الأبيض وأهميته في حماية المباني.",
-    image: "🏗️"
-  }
-];
-
 export default function Blog() {
+  const t = useBlogTranslations();
+  const { dir } = useLanguage();
+
+  const blogPosts = t.posts.map((post, index) => ({
+    id: index + 1,
+    title: post.title,
+    date: post.date,
+    category: post.category,
+    excerpt: post.excerpt,
+  }));
+
   return (
     <section id="blog" className="py-10 sm:py-16 md:py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center mb-6 sm:mb-8 md:mb-12">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
-            مقالات منزلية تهمك
+            {t.title}
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
-            نصائح ومعلومات مفيدة حول الصيانة والتحسينات المنزلية
+            {t.subtitle}
           </p>
         </div>
 
@@ -113,30 +76,30 @@ export default function Blog() {
                   {post.excerpt}
                 </p>
 
-                <a
+                <Link
                   href="#"
-                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors"
+                  className={`inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
                 >
-                  اقرأ المزيد
-                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <span>{t.readMore}</span>
+                  <svg className={`w-4 h-4 transition-transform ${dir === 'rtl' ? 'group-hover:-translate-x-1 rotate-180' : 'group-hover:translate-x-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
-                </a>
+                </Link>
               </div>
             </article>
           ))}
         </div>
 
         <div className="text-center mt-6 sm:mt-8 px-4">
-          <a
-            href="#"
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-2xl font-bold text-sm sm:text-base hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+          <Link
+            href="/blog"
+            className={`inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-2xl font-bold text-sm sm:text-base hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
           >
-            مشاهدة المزيد
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <span>{t.viewMore}</span>
+            <svg className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-          </a>
+          </Link>
         </div>
       </div>
     </section>

@@ -98,18 +98,18 @@ const colorClasses: { [key: string]: string } = {
   rose: "from-rose-500 to-rose-600",
 };
 
-// Placeholder image URLs for services
-const getServiceImageId = (id: number): string => {
-  const imageIds: { [key: number]: string } = {
-    1: "1564013799919-ab608027fe79", // Disinfection - cleaning/medical
-    2: "1581578731548-c64695cc6952", // Painting - interior design
-    3: "1621906116683-7a4c85a3a8c1", // AC Maintenance - home maintenance
-    4: "1564013799919-ab608027fe79", // Home Renovation - construction
-    5: "1571896349842-33c89424de2d", // Pool - swimming pool
-    6: "1600585154340-be6161a56a0c", // Waterfall - landscape
-    7: "1584622782905-0c0c0c0c0c0c", // Pest Control - service
+// Local image paths for services
+const getServiceImagePath = (id: number): string => {
+  const imagePaths: { [key: number]: string } = {
+    1: "/images/service-2.jpg", // Disinfection
+    2: "/images/service-3.jpg", // Painting
+    3: "/images/service-4.jpg", // AC Maintenance
+    4: "/images/service-4.jpg", // Home Renovation
+    5: "/images/service-7.jpg", // Pool
+    6: "/images/service-5.jpg", // Waterfall
+    7: "/images/service-1.jpg", // Pest Control
   };
-  return imageIds[id] || "1564013799919-ab608027fe79";
+  return imagePaths[id] || "/images/service-1.jpg";
 };
 
   return (
@@ -133,7 +133,7 @@ const getServiceImageId = (id: number): string => {
               {/* Service Image */}
               <div className="relative h-48 w-full overflow-hidden">
                 <Image
-                  src={`https://images.unsplash.com/photo-${getServiceImageId(service.id)}?w=600&h=400&fit=crop&q=80`}
+                  src={getServiceImagePath(service.id)}
                   alt={service.title}
                   fill
                   className="object-cover group-hover:scale-110 transition-transform duration-300"

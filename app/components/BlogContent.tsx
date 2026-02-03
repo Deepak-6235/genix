@@ -69,7 +69,7 @@ export default function BlogContent() {
       {/* ============================================
           STATISTICS SECTION
           ============================================ */}
-      <Statistics variant="light" className="py-8 sm:py-12 md:py-16" />
+      <Statistics variant="dark" className="py-8 sm:py-12 md:py-16" />
 
       {/* ============================================
           BLOG GRID SECTION

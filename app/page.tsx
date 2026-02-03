@@ -1,5 +1,6 @@
 import Header from "./components/Header";
 import Hero from "./components/Hero";
+import Statistics from "./components/Statistics";
 import AboutUs from "./components/AboutUs";
 import Services from "./components/Services";
 import WhyChooseUs from "./components/WhyChooseUs";
@@ -15,6 +16,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-white">
       <Header />
       <Hero />
+      <Statistics variant="dark" />
       <AboutUs />
       <Services />
       <WhyChooseUs />

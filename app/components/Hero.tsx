@@ -54,37 +54,6 @@ export default function Hero() {
             </a>
           </div>
         </div>
-
-        {/* Stats Section */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 max-w-5xl mx-auto mt-6 sm:mt-8 px-4">
-          <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl shadow-md hover:shadow-lg text-center transition-all duration-300 border border-slate-100">
-            <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-blue-600 mb-1 sm:mb-2">
-              1+
-            </div>
-            <div className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">{t.stats.years}</div>
-          </div>
-
-          <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl shadow-md hover:shadow-lg text-center transition-all duration-300 border border-slate-100">
-            <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-emerald-600 mb-1 sm:mb-2">
-              10k+
-            </div>
-            <div className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">{t.stats.clients}</div>
-          </div>
-
-          <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl shadow-md hover:shadow-lg text-center transition-all duration-300 border border-slate-100">
-            <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-purple-600 mb-1 sm:mb-2">
-              1+
-            </div>
-            <div className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">{t.stats.homes}</div>
-          </div>
-
-          <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl shadow-md hover:shadow-lg text-center transition-all duration-300 border border-slate-100">
-            <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-orange-600 mb-1 sm:mb-2">
-              1+
-            </div>
-            <div className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">{t.stats.technicians}</div>
-          </div>
-        </div>
       </div>
     </section>
   );
