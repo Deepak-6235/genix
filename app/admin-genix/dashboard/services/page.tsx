@@ -157,20 +157,21 @@ export default function ServicesPage() {
   const openModal = (service?: Service) => {
     if (service) {
       setEditingService(service);
-      const englishTranslation = service.translations?.en;
+      // Use the currently selected admin language, fallback to English
+      const currentTranslation = service.translations?.[adminLanguage] || service.translations?.en;
       setFormData({
         slug: service.slug,
         isActive: service.isActive,
-        title: englishTranslation?.title || '',
-        shortDescription: englishTranslation?.shortDescription || '',
-        fullDescription: englishTranslation?.fullDescription || '',
-        servicesProvided: englishTranslation?.servicesProvided || '',
-        targetInsects: englishTranslation?.targetInsects || '',
-        methodsTitle: englishTranslation?.methodsTitle || '',
-        methodsDescription: englishTranslation?.methodsDescription || '',
-        advancedTechnologies: englishTranslation?.advancedTechnologies || '',
-        safeUseDescription: englishTranslation?.safeUseDescription || '',
-        serviceGuarantee: englishTranslation?.serviceGuarantee || '',
+        title: currentTranslation?.title || service.title || '',
+        shortDescription: currentTranslation?.shortDescription || service.shortDescription || '',
+        fullDescription: currentTranslation?.fullDescription || service.fullDescription || '',
+        servicesProvided: currentTranslation?.servicesProvided || service.servicesProvided || '',
+        targetInsects: currentTranslation?.targetInsects || service.targetInsects || '',
+        methodsTitle: currentTranslation?.methodsTitle || service.methodsTitle || '',
+        methodsDescription: currentTranslation?.methodsDescription || service.methodsDescription || '',
+        advancedTechnologies: currentTranslation?.advancedTechnologies || service.advancedTechnologies || '',
+        safeUseDescription: currentTranslation?.safeUseDescription || service.safeUseDescription || '',
+        serviceGuarantee: currentTranslation?.serviceGuarantee || service.serviceGuarantee || '',
       });
     } else {
       setEditingService(null);
