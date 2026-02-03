@@ -146,9 +146,9 @@ function DashboardLayoutContent({
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-indigo-200 border-t-indigo-600"></div>
+          <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-gray-200 border-t-indigo-600"></div>
           <p className="mt-4 text-gray-700 font-medium">Loading your dashboard...</p>
         </div>
       </div>
@@ -156,57 +156,114 @@ function DashboardLayoutContent({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50">
-      {/* Top Decorative Strip - matching static site */}
-      <div className="fixed top-0 left-0 right-0 z-40">
-        <div className="h-1 bg-gradient-to-r from-cyan-400 to-teal-400"></div>
-      </div>
-
-      {/* Top Navigation Bar */}
-      <nav className="bg-white/80 backdrop-blur-md shadow-lg border-b border-slate-200/50 fixed w-full z-30 mt-1">
-        <div className="px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="p-2 rounded-xl text-slate-600 hover:bg-cyan-50 hover:text-cyan-600 transition-all duration-200"
-              >
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 flex items-center justify-center shadow-lg">
-                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <div className="min-h-screen bg-gray-50">
+      {/* Sidebar */}
+      <aside
+        className={`${
+          isSidebarOpen ? 'w-64' : 'w-20'
+        } bg-white border-r border-gray-200 min-h-screen transition-all duration-300 fixed left-0 top-0 z-30`}
+      >
+        <div className="h-full flex flex-col">
+          {/* Logo Section */}
+          <div className="h-16 flex items-center justify-center border-b border-gray-200 px-4">
+            {isSidebarOpen ? (
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 </div>
-                <div>
-                  <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent">
-                    ركن النخيل Admin
-                  </h1>
-                  <p className="text-xs text-slate-600">Content Management</p>
-                </div>
+                <span className="text-lg font-bold text-gray-900">Admin Panel</span>
+              </div>
+            ) : (
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+            )}
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex-1 overflow-y-auto py-4 px-2">
+            {navItems.map((item) => {
+              const isActive = item.path === '/admin-genix/dashboard'
+                ? pathname === item.path
+                : pathname.startsWith(item.path);
+              return (
+                <Link
+                  key={item.path}
+                  href={item.path}
+                  className={`flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg transition-all duration-200 group ${
+                    isActive
+                      ? 'bg-indigo-50 text-indigo-600'
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }`}
+                  title={!isSidebarOpen ? item.name : undefined}
+                >
+                  <span className={`${isActive ? 'text-indigo-600' : 'text-gray-400 group-hover:text-gray-600'} transition-colors`}>
+                    {item.icon}
+                  </span>
+                  {isSidebarOpen && (
+                    <span className="font-medium text-sm">{item.name}</span>
+                  )}
+                  {isActive && isSidebarOpen && (
+                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-indigo-600"></div>
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Sidebar Footer */}
+          {isSidebarOpen && (
+            <div className="p-3 border-t border-gray-200">
+              <div className="bg-indigo-50 rounded-lg p-3">
+                <p className="text-xs font-semibold text-indigo-900 mb-1">Need Help?</p>
+                <p className="text-xs text-indigo-700">Check documentation</p>
+              </div>
+            </div>
+          )}
+        </div>
+      </aside>
+
+      {/* Main Content Area */}
+      <div className={`${isSidebarOpen ? 'ml-64' : 'ml-20'} transition-all duration-300`}>
+        {/* Top Navigation Bar */}
+        <header className="bg-white border-b border-gray-200 h-16 fixed top-0 right-0 left-0 z-20" style={{ marginLeft: isSidebarOpen ? '16rem' : '5rem' }}>
+          <div className="h-full px-4 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+              <div>
+                <h1 className="text-sm font-semibold text-gray-900">ركن النخيل</h1>
+                <p className="text-xs text-gray-500">Content Management System</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <AdminLanguageSwitcher />
-              <div className="hidden sm:block px-4 py-2 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-xl border border-cyan-100">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 flex items-center justify-center text-white text-sm font-bold">
-                    {userEmail.charAt(0).toUpperCase()}
-                  </div>
-                  <div>
-                    <p className="text-xs text-slate-600">Signed in as</p>
-                    <p className="text-sm font-semibold text-slate-900">{userEmail}</p>
-                  </div>
+
+              <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gray-50 rounded-lg border border-gray-200">
+                <div className="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs font-semibold">
+                  {userEmail.charAt(0).toUpperCase()}
+                </div>
+                <div className="text-left">
+                  <p className="text-xs text-gray-500">Signed in as</p>
+                  <p className="text-sm font-medium text-gray-900">{userEmail}</p>
                 </div>
               </div>
+
               <button
                 onClick={handleLogout}
                 disabled={loggingOut}
-                className="px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-200 text-sm font-semibold shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="px-3 py-1.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -215,63 +272,11 @@ function DashboardLayoutContent({
               </button>
             </div>
           </div>
-        </div>
-      </nav>
+        </header>
 
-      <div className="pt-17 flex">
-        {/* Sidebar */}
-        <aside
-          className={`${
-            isSidebarOpen ? 'w-72' : 'w-0'
-          } bg-white/80 backdrop-blur-md border-r border-slate-200/50 min-h-screen transition-all duration-300 overflow-hidden fixed z-20 shadow-xl mt-1`}
-        >
-          <nav className="mt-8 px-4 space-y-2">
-            {navItems.map((item) => {
-              // Check if current path starts with item path (for nested routes like /services/[slug])
-              // But for dashboard root, require exact match
-              const isActive = item.path === '/admin-genix/dashboard'
-                ? pathname === item.path
-                : pathname.startsWith(item.path);
-              return (
-                <Link
-                  key={item.path}
-                  href={item.path}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
-                    isActive
-                      ? 'bg-gradient-to-r from-teal-500 via-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-200'
-                      : 'text-slate-700 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-blue-50 hover:text-blue-600'
-                  }`}
-                >
-                  <span className={`${isActive ? 'text-white' : 'text-slate-400 group-hover:text-blue-600'} transition-colors`}>
-                    {item.icon}
-                  </span>
-                  <span className="font-semibold">{item.name}</span>
-                  {isActive && (
-                    <svg className="w-4 h-4 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  )}
-                </Link>
-              );
-            })}
-          </nav>
-
-          {/* Sidebar Footer */}
-          <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-200/50">
-            <div className="bg-gradient-to-r from-teal-500 via-cyan-500 to-blue-600 rounded-xl p-4 text-white shadow-lg">
-              <p className="text-sm font-semibold mb-1">Need Help?</p>
-              <p className="text-xs opacity-90">Check our documentation</p>
-            </div>
-          </div>
-        </aside>
-
-        {/* Main Content */}
-        <main
-          className={`flex-1 transition-all duration-300 ${
-            isSidebarOpen ? 'ml-72' : 'ml-0'
-          }`}
-        >
-          <div className="p-8">
+        {/* Page Content */}
+        <main className="pt-16">
+          <div className="p-6">
             {children}
           </div>
         </main>
