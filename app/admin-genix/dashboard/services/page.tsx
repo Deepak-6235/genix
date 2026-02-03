@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { LANGUAGES, type LanguageCode } from '@/lib/languages';
 import { translateContent } from '@/lib/translate';
 import { useAdminLanguage } from '@/contexts/AdminLanguageContext';
+import Image from 'next/image';
 
 interface ServiceTranslation {
   title: string;
@@ -31,12 +32,13 @@ interface Service {
   advancedTechnologies: string | null;
   safeUseDescription: string | null;
   serviceGuarantee: string | null;
+  imageUrl: string | null;
   isActive: boolean;
   order: number;
   translations?: Record<string, ServiceTranslation>;
 }
 
-function ServiceItem({ service, onEdit, onDelete, onView, t, currentLang }: {
+function ServiceCard({ service, onEdit, onDelete, onView, t, currentLang }: {
   service: Service;
   onEdit: (service: Service) => void;
   onDelete: (id: string) => void;
@@ -44,47 +46,66 @@ function ServiceItem({ service, onEdit, onDelete, onView, t, currentLang }: {
   t: (key: string) => string;
   currentLang: LanguageCode;
 }) {
-  // Get the title and description in the current language, fallback to English
   const displayTitle = service.translations?.[currentLang]?.title || service.title;
   const displayDescription = service.translations?.[currentLang]?.shortDescription || service.shortDescription;
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition">
-      <div className="flex items-start gap-4">
-        <div className="flex-1">
-          <div className="flex justify-between items-start mb-4">
-            <div>
-              <h3 className="text-lg font-bold text-gray-900" dir={LANGUAGES[currentLang]?.dir}>{displayTitle}</h3>
-            </div>
-            <span
-              className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                service.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-              }`}
-            >
-              {service.isActive ? t('status.active') : t('status.inactive')}
-            </span>
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition group">
+      {/* Service Image */}
+      <div className="relative h-48 bg-gradient-to-br from-purple-100 to-blue-100">
+        {service.imageUrl ? (
+          <Image
+            src={service.imageUrl}
+            alt={displayTitle}
+            fill
+            className="object-cover"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-6xl">🔧</div>
           </div>
-          <p className="text-sm text-gray-600 mb-4 line-clamp-3" dir={LANGUAGES[currentLang]?.dir}>{displayDescription}</p>
-          <div className="flex space-x-2">
-            <button
-              onClick={() => onView(service)}
-              className="flex-1 px-3 py-2 text-sm bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition"
-            >
-              {t('button.view')}
-            </button>
-            <button
-              onClick={() => onEdit(service)}
-              className="flex-1 px-3 py-2 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition"
-            >
-              {t('button.edit')}
-            </button>
-            <button
-              onClick={() => onDelete(service.slug)}
-              className="flex-1 px-3 py-2 text-sm bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition"
-            >
-              {t('button.delete')}
-            </button>
-          </div>
+        )}
+        {/* Status Badge */}
+        <div className="absolute top-3 right-3">
+          <span
+            className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
+              service.isActive ? 'bg-green-500 text-white' : 'bg-gray-500 text-white'
+            }`}
+          >
+            {service.isActive ? t('status.active') : t('status.inactive')}
+          </span>
+        </div>
+      </div>
+
+      {/* Service Content */}
+      <div className="p-5">
+        <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-1" dir={LANGUAGES[currentLang]?.dir}>
+          {displayTitle}
+        </h3>
+        <p className="text-sm text-gray-600 mb-4 line-clamp-3" dir={LANGUAGES[currentLang]?.dir}>
+          {displayDescription}
+        </p>
+
+        {/* Action Buttons */}
+        <div className="grid grid-cols-3 gap-2">
+          <button
+            onClick={() => onView(service)}
+            className="px-3 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium"
+          >
+            {t('button.view')}
+          </button>
+          <button
+            onClick={() => onEdit(service)}
+            className="px-3 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
+          >
+            {t('button.edit')}
+          </button>
+          <button
+            onClick={() => onDelete(service.slug)}
+            className="px-3 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium"
+          >
+            {t('button.delete')}
+          </button>
         </div>
       </div>
     </div>
@@ -101,9 +122,13 @@ export default function ServicesPage() {
   const [editingService, setEditingService] = useState<Service | null>(null);
   const [activeTab, setActiveTab] = useState('basic');
   const [viewLanguage, setViewLanguage] = useState<LanguageCode>('en');
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('');
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [formData, setFormData] = useState({
     slug: '',
     isActive: true,
+    imageUrl: '',
     title: '',
     shortDescription: '',
     fullDescription: '',
@@ -136,7 +161,6 @@ export default function ServicesPage() {
   const fetchServices = async () => {
     setLoading(true);
     try {
-      // Fetch services with all translations but trigger on language change
       console.log(`Fetching services for language: ${adminLanguage}`);
       const response = await fetch(`/api/services?allLangs=true&lang=${adminLanguage}`);
       const data = await response.json();
@@ -154,14 +178,55 @@ export default function ServicesPage() {
     fetchServices();
   }, [adminLanguage]);
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const uploadImage = async (): Promise<string | null> => {
+    if (!imageFile) return formData.imageUrl || null;
+
+    setUploadingImage(true);
+    try {
+      const formDataUpload = new FormData();
+      formDataUpload.append('image', imageFile);
+
+      const response = await fetch('/api/upload/service-image', {
+        method: 'POST',
+        body: formDataUpload,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || 'Failed to upload image');
+      }
+
+      return data.imageUrl;
+    } catch (error) {
+      console.error('Image upload error:', error);
+      setError(error instanceof Error ? error.message : 'Failed to upload image');
+      return null;
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
   const openModal = (service?: Service) => {
     if (service) {
       setEditingService(service);
-      // Use the currently selected admin language, fallback to English
       const currentTranslation = service.translations?.[adminLanguage] || service.translations?.en;
       setFormData({
         slug: service.slug,
         isActive: service.isActive,
+        imageUrl: service.imageUrl || '',
         title: currentTranslation?.title || service.title || '',
         shortDescription: currentTranslation?.shortDescription || service.shortDescription || '',
         fullDescription: currentTranslation?.fullDescription || service.fullDescription || '',
@@ -173,11 +238,13 @@ export default function ServicesPage() {
         safeUseDescription: currentTranslation?.safeUseDescription || service.safeUseDescription || '',
         serviceGuarantee: currentTranslation?.serviceGuarantee || service.serviceGuarantee || '',
       });
+      setImagePreview(service.imageUrl || '');
     } else {
       setEditingService(null);
       setFormData({
         slug: '',
         isActive: true,
+        imageUrl: '',
         title: '',
         shortDescription: '',
         fullDescription: '',
@@ -189,7 +256,9 @@ export default function ServicesPage() {
         safeUseDescription: '',
         serviceGuarantee: '',
       });
+      setImagePreview('');
     }
+    setImageFile(null);
     setActiveTab('basic');
     setShowModal(true);
     setError('');
@@ -201,6 +270,8 @@ export default function ServicesPage() {
     setActiveTab('basic');
     setError('');
     setFieldErrors({});
+    setImageFile(null);
+    setImagePreview('');
   };
 
   const generateSlug = (title: string): string => {
@@ -225,14 +296,12 @@ export default function ServicesPage() {
   const updateFormData = (field: keyof typeof formData, value: string | boolean) => {
     setFormData(prev => {
       const updated = { ...prev, [field]: value };
-      // Auto-generate slug from title (always)
       if (field === 'title' && typeof value === 'string') {
         updated.slug = generateSlug(value);
       }
       return updated;
     });
 
-    // Validate field if it's a string
     if (typeof value === 'string') {
       const fieldError = validateField(field, value);
       setFieldErrors(prev => {
@@ -252,14 +321,12 @@ export default function ServicesPage() {
     setFormLoading(true);
     setError('');
 
-    // Validate English fields (required)
     if (!formData.title || !formData.shortDescription) {
       setError('Title and short description are required');
       setFormLoading(false);
       return;
     }
 
-    // Validate character limits for all fields
     const errors: Record<string, string> = {};
     Object.entries(formData).forEach(([field, value]) => {
       if (typeof value === 'string') {
@@ -278,7 +345,17 @@ export default function ServicesPage() {
     }
 
     try {
-      // Create English content object
+      // Upload image if new file selected
+      let imageUrl = formData.imageUrl;
+      if (imageFile) {
+        const uploadedUrl = await uploadImage();
+        if (!uploadedUrl) {
+          setFormLoading(false);
+          return;
+        }
+        imageUrl = uploadedUrl;
+      }
+
       const englishContent: ServiceTranslation = {
         title: formData.title,
         shortDescription: formData.shortDescription,
@@ -292,12 +369,10 @@ export default function ServicesPage() {
         serviceGuarantee: formData.serviceGuarantee,
       };
 
-      // Auto-translate to all 5 languages
       setError('Translating content to all languages...');
       const targetLanguages: LanguageCode[] = ['ar', 'pt', 'zh', 'ja'];
       const translations = await translateContent(englishContent, targetLanguages);
 
-      // Clear the translating message
       setError('');
 
       const url = editingService ? `/api/services/${encodeURIComponent(editingService.slug)}` : '/api/services';
@@ -309,6 +384,7 @@ export default function ServicesPage() {
         body: JSON.stringify({
           slug: formData.slug,
           isActive: formData.isActive,
+          imageUrl,
           translations,
           order: editingService ? editingService.order : services.length,
         }),
@@ -375,10 +451,10 @@ export default function ServicesPage() {
         </button>
       </div>
 
-      {/* Services List */}
-      <div className="space-y-4">
+      {/* Services Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {services.map((service) => (
-          <ServiceItem
+          <ServiceCard
             key={service.id}
             service={service}
             t={t}
@@ -463,6 +539,34 @@ export default function ServicesPage() {
                     </label>
                   </div>
 
+                  {/* Image Upload */}
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Service Image
+                    </label>
+                    <div className="flex items-center gap-4">
+                      {imagePreview && (
+                        <div className="relative w-32 h-32 rounded-lg overflow-hidden border-2 border-gray-200">
+                          <Image
+                            src={imagePreview}
+                            alt="Preview"
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      )}
+                      <div className="flex-1">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageChange}
+                          className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">Max 5MB. JPG, PNG, WebP</p>
+                      </div>
+                    </div>
+                  </div>
+
                   <div className="space-y-4 pt-4 border-t border-gray-200">
                     <div className="bg-blue-50 p-3 rounded-lg mb-4">
                       <p className="text-xs text-blue-700 font-medium">{t('services.autoTranslateNote')}</p>
@@ -515,7 +619,7 @@ export default function ServicesPage() {
                 </div>
               )}
 
-              {/* Detailed Content Tab */}
+              {/* Detailed Content Tab - keeping existing fields */}
               {activeTab === 'detailed' && (
                 <div className="space-y-4">
                   <div className="bg-blue-50 p-3 rounded-lg mb-4">
@@ -587,7 +691,7 @@ export default function ServicesPage() {
                 </div>
               )}
 
-              {/* Methods & Guarantee Tab */}
+              {/* Methods & Guarantee Tab - keeping existing fields */}
               {activeTab === 'methods' && (
                 <div className="space-y-4">
                   <div className="bg-blue-50 p-3 rounded-lg mb-4">
@@ -717,10 +821,10 @@ export default function ServicesPage() {
                 </button>
                 <button
                   type="submit"
-                  disabled={formLoading}
+                  disabled={formLoading || uploadingImage}
                   className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition disabled:opacity-50"
                 >
-                  {formLoading ? t('modal.saving') : editingService ? t('button.update') : t('button.create')}
+                  {formLoading || uploadingImage ? t('modal.saving') : editingService ? t('button.update') : t('button.create')}
                 </button>
               </div>
             </form>
@@ -728,7 +832,7 @@ export default function ServicesPage() {
         </div>
       )}
 
-      {/* View Details Modal */}
+      {/* View Details Modal - keeping existing */}
       {showViewModal && viewingService && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -743,7 +847,6 @@ export default function ServicesPage() {
                 </button>
               </div>
 
-              {/* Language Selector for View */}
               {viewingService.translations && Object.keys(viewingService.translations).length > 1 && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -770,6 +873,18 @@ export default function ServicesPage() {
             </div>
 
             <div className="p-6 space-y-6">
+              {/* Service Image */}
+              {viewingService.imageUrl && (
+                <div className="relative h-64 rounded-xl overflow-hidden">
+                  <Image
+                    src={viewingService.imageUrl}
+                    alt={viewingService.translations?.[viewLanguage]?.title || viewingService.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              )}
+
               {/* Basic Info Section */}
               <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl p-6">
                 <div className="flex items-start gap-4">

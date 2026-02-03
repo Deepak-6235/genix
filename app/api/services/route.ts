@@ -167,6 +167,7 @@ export async function POST(request: NextRequest) {
     const {
       slug,
       isActive,
+      imageUrl,
       order,
       translations: clientTranslations,
     } = body;
@@ -225,6 +226,7 @@ export async function POST(request: NextRequest) {
             advancedTechnologies: finalContent.advancedTechnologies || null,
             safeUseDescription: finalContent.safeUseDescription || null,
             serviceGuarantee: finalContent.serviceGuarantee || null,
+            imageUrl: imageUrl || null,
             isActive: isActive !== undefined ? isActive : true,
             order: order || 0,
           },
@@ -241,6 +243,7 @@ export async function POST(request: NextRequest) {
             advancedTechnologies: finalContent.advancedTechnologies || null,
             safeUseDescription: finalContent.safeUseDescription || null,
             serviceGuarantee: finalContent.serviceGuarantee || null,
+            imageUrl: imageUrl || null,
             isActive: isActive !== undefined ? isActive : true,
             order: order || 0,
           },

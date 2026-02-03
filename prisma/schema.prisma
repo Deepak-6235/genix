@@ -55,6 +55,7 @@ model Service {
   advancedTechnologies  String?  @db.Text
   safeUseDescription    String?  @db.Text
   serviceGuarantee      String?  @db.Text
+  imageUrl              String?  // S3 image URL
 
   // Meta
   isActive              Boolean  @default(true)

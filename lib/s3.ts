@@ -11,10 +11,11 @@ const s3Client = new S3Client({
 export async function uploadToS3(
   file: Buffer,
   fileName: string,
-  mimeType: string
+  mimeType: string,
+  folder: string = 'blogs'
 ): Promise<string> {
   const timestamp = Date.now();
-  const uniqueFileName = `blogs/${timestamp}-${fileName}`;
+  const uniqueFileName = `${folder}/${timestamp}-${fileName}`;
 
   const params = {
     Bucket: process.env.AWS_S3_BUCKET_NAME || '',
