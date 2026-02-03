@@ -156,45 +156,50 @@ function DashboardLayoutContent({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50">
+      {/* Top Decorative Strip - matching static site */}
+      <div className="fixed top-0 left-0 right-0 z-40">
+        <div className="h-1 bg-gradient-to-r from-cyan-400 to-teal-400"></div>
+      </div>
+
       {/* Top Navigation Bar */}
-      <nav className="bg-white/80 backdrop-blur-md shadow-lg border-b border-gray-200/50 fixed w-full z-30">
+      <nav className="bg-white/80 backdrop-blur-md shadow-lg border-b border-slate-200/50 fixed w-full z-30 mt-1">
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="p-2 rounded-xl text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200"
+                className="p-2 rounded-xl text-slate-600 hover:bg-cyan-50 hover:text-cyan-600 transition-all duration-200"
               >
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </button>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 flex items-center justify-center shadow-lg">
                   <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                    Genix Admin
+                  <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent">
+                    ركن النخيل Admin
                   </h1>
-                  <p className="text-xs text-gray-500">Content Management</p>
+                  <p className="text-xs text-slate-600">Content Management</p>
                 </div>
               </div>
             </div>
 
             <div className="flex items-center gap-4">
               <AdminLanguageSwitcher />
-              <div className="hidden sm:block px-4 py-2 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl border border-indigo-100">
+              <div className="hidden sm:block px-4 py-2 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-xl border border-cyan-100">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 flex items-center justify-center text-white text-sm font-bold">
                     {userEmail.charAt(0).toUpperCase()}
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500">Signed in as</p>
-                    <p className="text-sm font-semibold text-gray-900">{userEmail}</p>
+                    <p className="text-xs text-slate-600">Signed in as</p>
+                    <p className="text-sm font-semibold text-slate-900">{userEmail}</p>
                   </div>
                 </div>
               </div>
@@ -213,12 +218,12 @@ function DashboardLayoutContent({
         </div>
       </nav>
 
-      <div className="pt-16 flex">
+      <div className="pt-17 flex">
         {/* Sidebar */}
         <aside
           className={`${
             isSidebarOpen ? 'w-72' : 'w-0'
-          } bg-white/80 backdrop-blur-md border-r border-gray-200/50 min-h-screen transition-all duration-300 overflow-hidden fixed z-20 shadow-xl`}
+          } bg-white/80 backdrop-blur-md border-r border-slate-200/50 min-h-screen transition-all duration-300 overflow-hidden fixed z-20 shadow-xl mt-1`}
         >
           <nav className="mt-8 px-4 space-y-2">
             {navItems.map((item) => {
@@ -233,14 +238,14 @@ function DashboardLayoutContent({
                   href={item.path}
                   className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
                     isActive
-                      ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-200'
-                      : 'text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600'
+                      ? 'bg-gradient-to-r from-teal-500 via-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-200'
+                      : 'text-slate-700 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-blue-50 hover:text-blue-600'
                   }`}
                 >
-                  <span className={`${isActive ? 'text-white' : 'text-gray-400 group-hover:text-indigo-500'} transition-colors`}>
+                  <span className={`${isActive ? 'text-white' : 'text-slate-400 group-hover:text-blue-600'} transition-colors`}>
                     {item.icon}
                   </span>
-                  <span className="font-medium">{item.name}</span>
+                  <span className="font-semibold">{item.name}</span>
                   {isActive && (
                     <svg className="w-4 h-4 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -252,8 +257,8 @@ function DashboardLayoutContent({
           </nav>
 
           {/* Sidebar Footer */}
-          <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200/50">
-            <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-4 text-white shadow-lg">
+          <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-200/50">
+            <div className="bg-gradient-to-r from-teal-500 via-cyan-500 to-blue-600 rounded-xl p-4 text-white shadow-lg">
               <p className="text-sm font-semibold mb-1">Need Help?</p>
               <p className="text-xs opacity-90">Check our documentation</p>
             </div>

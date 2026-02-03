@@ -38,6 +38,7 @@ export default function EditBlogPage() {
   const [error, setError] = useState('');
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [blogId, setBlogId] = useState<string>('');
 
   // Main blog data
   const [formData, setFormData] = useState({
@@ -62,6 +63,7 @@ export default function EditBlogPage() {
 
       if (data.success && data.blog) {
         const blog = data.blog;
+        setBlogId(blog.id);
         setFormData({
           name: blog.name,
           shortDescription: blog.shortDescription,
@@ -131,7 +133,33 @@ export default function EditBlogPage() {
     reader.readAsDataURL(file);
   };
 
-  const removeDetailedSection = (index: number) => {
+  const removeDetailedSection = async (index: number) => {
+    const section = detailedSections[index];
+
+    // If section has an ID, it exists in database - delete from DB
+    if (section.id && blogId) {
+      if (!confirm('Are you sure you want to delete this section? This will remove it from all languages.')) {
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/blogs/detailed/${blogId}/${section.order}`, {
+          method: 'DELETE',
+        });
+
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.message || 'Failed to delete section');
+        }
+
+        setError('');
+      } catch (err: any) {
+        setError(err.message || 'Failed to delete section');
+        return;
+      }
+    }
+
+    // Remove from local state
     const updated = detailedSections.filter((_, i) => i !== index);
     // Reorder
     updated.forEach((section, i) => {
