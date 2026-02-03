@@ -1,23 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
-} from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  useSortable,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 
 interface Blog {
   id: string;
@@ -32,44 +15,15 @@ interface Blog {
   order: number;
 }
 
-function SortableBlogItem({ blog, onEdit, onDelete, onView }: {
+function BlogItem({ blog, onEdit, onDelete, onView }: {
   blog: Blog;
   onEdit: (blog: Blog) => void;
   onDelete: (id: string) => void;
   onView: (blog: Blog) => void;
 }) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: blog.id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-  };
-
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition"
-    >
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition">
       <div className="flex items-start gap-4">
-        <button
-          {...attributes}
-          {...listeners}
-          className="cursor-grab active:cursor-grabbing mt-1 text-gray-400 hover:text-gray-600"
-        >
-          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" />
-          </svg>
-        </button>
-
         {blog.imageUrl && (
           <img
             src={blog.imageUrl}
@@ -143,13 +97,6 @@ export default function BlogsPage() {
     publishedAt: new Date().toISOString().split('T')[0],
   });
 
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-
   useEffect(() => {
     fetchBlogs();
   }, []);
@@ -165,32 +112,6 @@ export default function BlogsPage() {
       console.error('Failed to fetch blogs:', error);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleDragEnd = async (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (over && active.id !== over.id) {
-      const oldIndex = blogs.findIndex((b) => b.id === active.id);
-      const newIndex = blogs.findIndex((b) => b.id === over.id);
-      const newBlogs = arrayMove(blogs, oldIndex, newIndex);
-      setBlogs(newBlogs);
-
-      // Update order in database
-      const reorderedBlogs = newBlogs.map((b, index) => ({
-        slug: b.slug,
-        order: index,
-      }));
-
-      try {
-        await fetch('/api/blogs/reorder', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ blogs: reorderedBlogs }),
-        });
-      } catch (error) {
-        console.error('Failed to reorder:', error);
-      }
     }
   };
 
@@ -328,7 +249,10 @@ export default function BlogsPage() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">Blogs</h1>
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Blogs</h1>
+          <p className="mt-2 text-gray-600">Manage your blog posts</p>
+        </div>
         <button
           onClick={() => openModal()}
           className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
@@ -337,25 +261,21 @@ export default function BlogsPage() {
         </button>
       </div>
 
-      {/* Draggable Blogs List */}
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext items={blogs.map((b) => b.id)} strategy={verticalListSortingStrategy}>
-          <div className="space-y-4">
-            {blogs.map((blog) => (
-              <SortableBlogItem
-                key={blog.id}
-                blog={blog}
-                onView={(blog) => {
-                  setViewingBlog(blog);
-                  setShowViewModal(true);
-                }}
-                onEdit={openModal}
-                onDelete={handleDelete}
-              />
-            ))}
-          </div>
-        </SortableContext>
-      </DndContext>
+      {/* Blogs List */}
+      <div className="space-y-4">
+        {blogs.map((blog) => (
+          <BlogItem
+            key={blog.id}
+            blog={blog}
+            onView={(blog) => {
+              setViewingBlog(blog);
+              setShowViewModal(true);
+            }}
+            onEdit={openModal}
+            onDelete={handleDelete}
+          />
+        ))}
+      </div>
 
       {blogs.length === 0 && (
         <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
@@ -446,8 +366,6 @@ export default function BlogsPage() {
                   placeholder="Author name"
                 />
               </div>
-
-
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Published Date</label>

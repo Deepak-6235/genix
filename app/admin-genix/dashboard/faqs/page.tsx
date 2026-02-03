@@ -1,23 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
-} from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  useSortable,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 
 interface FAQ {
   id: string;
@@ -27,45 +10,16 @@ interface FAQ {
   order: number;
 }
 
-function SortableFAQItem({ faq, onEdit, onDelete }: {
+function FAQItem({ faq, onEdit, onDelete }: {
   faq: FAQ;
   onEdit: (faq: FAQ) => void;
   onDelete: (id: string) => void;
 }) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: faq.id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-  };
-
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition"
-    >
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition">
       <div className="flex items-start gap-4 p-4">
-        <button
-          {...attributes}
-          {...listeners}
-          className="cursor-grab active:cursor-grabbing mt-1 text-gray-400 hover:text-gray-600"
-        >
-          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" />
-          </svg>
-        </button>
-
         <div className="flex-1">
           <div className="flex justify-between items-start mb-2">
             <div className="flex-1">
@@ -139,20 +93,13 @@ export default function FAQsPage() {
     isActive: true,
   });
 
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-
   useEffect(() => {
     fetchFaqs();
   }, []);
 
   const fetchFaqs = async () => {
     try {
-      const response = await fetch('/api/faqs?lang=en');
+      const response = await fetch('/api/faqs?lang=en&admin=true');
       const data = await response.json();
       if (data.success) {
         setFaqs(data.faqs);
@@ -161,32 +108,6 @@ export default function FAQsPage() {
       console.error('Failed to fetch FAQs:', error);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleDragEnd = async (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (over && active.id !== over.id) {
-      const oldIndex = faqs.findIndex((f) => f.id === active.id);
-      const newIndex = faqs.findIndex((f) => f.id === over.id);
-      const newFaqs = arrayMove(faqs, oldIndex, newIndex);
-      setFaqs(newFaqs);
-
-      // Update order in database
-      const reorderedFaqs = newFaqs.map((f, index) => ({
-        id: f.id,
-        order: index,
-      }));
-
-      try {
-        await fetch('/api/faqs/reorder', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ faqs: reorderedFaqs }),
-        });
-      } catch (error) {
-        console.error('Failed to reorder:', error);
-      }
     }
   };
 
@@ -315,7 +236,10 @@ export default function FAQsPage() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">FAQs</h1>
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">FAQs</h1>
+          <p className="mt-2 text-gray-600">Manage your frequently asked questions</p>
+        </div>
         <button
           onClick={() => openModal()}
           className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
@@ -324,21 +248,17 @@ export default function FAQsPage() {
         </button>
       </div>
 
-      {/* Draggable FAQs List */}
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext items={faqs.map((f) => f.id)} strategy={verticalListSortingStrategy}>
-          <div className="space-y-4">
-            {faqs.map((faq) => (
-              <SortableFAQItem
-                key={faq.id}
-                faq={faq}
-                onEdit={openModal}
-                onDelete={handleDelete}
-              />
-            ))}
-          </div>
-        </SortableContext>
-      </DndContext>
+      {/* FAQs List */}
+      <div className="space-y-4">
+        {faqs.map((faq) => (
+          <FAQItem
+            key={faq.id}
+            faq={faq}
+            onEdit={openModal}
+            onDelete={handleDelete}
+          />
+        ))}
+      </div>
 
       {faqs.length === 0 && (
         <div className="text-center py-12 bg-white rounded-xl border border-gray-200">

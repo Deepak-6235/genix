@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { blogs } = body; // Array of { slug, order }
+    const { blogs } = body; // Array of { id, order } or { slug, order }
 
     if (!Array.isArray(blogs)) {
       return NextResponse.json(
@@ -40,14 +40,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Update order for each blog slug (all language versions)
+    // Update order for each blog (all language versions)
     await Promise.all(
-      blogs.map((item: { slug: string; order: number }) =>
-        prisma.blog.updateMany({
-          where: { slug: item.slug },
-          data: { order: item.order },
-        })
-      )
+      blogs.map(async (item: { id?: string; slug?: string; order: number }) => {
+        if (item.slug) {
+          // If slug is provided, update by slug
+          return prisma.blog.updateMany({
+            where: { slug: item.slug },
+            data: { order: item.order },
+          });
+        } else if (item.id) {
+          // If id is provided, get slug first then update all versions
+          const blog = await prisma.blog.findUnique({
+            where: { id: item.id },
+            select: { slug: true },
+          });
+
+          if (blog) {
+            return prisma.blog.updateMany({
+              where: { slug: blog.slug },
+              data: { order: item.order },
+            });
+          }
+        }
+      })
     );
 
     return NextResponse.json({

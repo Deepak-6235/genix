@@ -1,24 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
-} from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  useSortable,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { LANGUAGES, LANGUAGE_CODES, type LanguageCode } from '@/lib/languages';
+import { LANGUAGES, type LanguageCode } from '@/lib/languages';
 import { translateContent } from '@/lib/translate';
 
 interface ServiceTranslation {
@@ -52,43 +35,15 @@ interface Service {
   translations?: Record<string, ServiceTranslation>;
 }
 
-function SortableServiceItem({ service, onEdit, onDelete, onView }: {
+function ServiceItem({ service, onEdit, onDelete, onView }: {
   service: Service;
   onEdit: (service: Service) => void;
   onDelete: (id: string) => void;
   onView: (service: Service) => void;
 }) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: service.id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-  };
-
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition"
-    >
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition">
       <div className="flex items-start gap-4">
-        <button
-          {...attributes}
-          {...listeners}
-          className="cursor-grab active:cursor-grabbing mt-1 text-gray-400 hover:text-gray-600"
-        >
-          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" />
-          </svg>
-        </button>
         <div className="flex-1">
           <div className="flex justify-between items-start mb-4">
             <div>
@@ -170,13 +125,6 @@ export default function ServicesPage() {
     serviceGuarantee: 192,
   };
 
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-
   const fetchServices = async () => {
     try {
       const response = await fetch('/api/services?allLangs=true');
@@ -194,35 +142,6 @@ export default function ServicesPage() {
   useEffect(() => {
     fetchServices();
   }, []);
-
-  const handleDragEnd = async (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (over && active.id !== over.id) {
-      const oldIndex = services.findIndex((s) => s.id === active.id);
-      const newIndex = services.findIndex((s) => s.id === over.id);
-
-      const newServices = arrayMove(services, oldIndex, newIndex);
-      setServices(newServices);
-
-      // Update order in database
-      try {
-        const updatedServices = newServices.map((service, index) => ({
-          id: service.id,
-          order: index,
-        }));
-
-        await fetch('/api/services/reorder', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ services: updatedServices }),
-        });
-      } catch (error) {
-        console.error('Failed to update order:', error);
-        fetchServices(); // Revert on error
-      }
-    }
-  };
 
   const openModal = (service?: Service) => {
     if (service) {
@@ -376,7 +295,6 @@ export default function ServicesPage() {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          icon: formData.icon,
           slug: formData.slug,
           isActive: formData.isActive,
           translations,
@@ -435,7 +353,7 @@ export default function ServicesPage() {
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-3xl font-bold text-gray-900">Services</h2>
-          <p className="mt-2 text-gray-600">Drag to reorder services</p>
+          <p className="mt-2 text-gray-600">Manage your services</p>
         </div>
         <button
           onClick={() => openModal()}
@@ -445,26 +363,22 @@ export default function ServicesPage() {
         </button>
       </div>
 
-      {/* Draggable Services List */}
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext items={services.map(s => s.id)} strategy={verticalListSortingStrategy}>
-          <div className="space-y-4">
-            {services.map((service) => (
-              <SortableServiceItem
-                key={service.id}
-                service={service}
-                onView={(service) => {
-                  setViewingService(service);
-                  setViewLanguage('en');
-                  setShowViewModal(true);
-                }}
-                onEdit={openModal}
-                onDelete={handleDelete}
-              />
-            ))}
-          </div>
-        </SortableContext>
-      </DndContext>
+      {/* Services List */}
+      <div className="space-y-4">
+        {services.map((service) => (
+          <ServiceItem
+            key={service.id}
+            service={service}
+            onView={(service) => {
+              setViewingService(service);
+              setViewLanguage('en');
+              setShowViewModal(true);
+            }}
+            onEdit={openModal}
+            onDelete={handleDelete}
+          />
+        ))}
+      </div>
 
       {services.length === 0 && (
         <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
@@ -845,9 +759,6 @@ export default function ServicesPage() {
               {/* Basic Info Section */}
               <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl p-6">
                 <div className="flex items-start gap-4">
-                  {viewingService.icon && (
-                    <div className="text-5xl">{viewingService.icon}</div>
-                  )}
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <h3 className="text-2xl font-bold text-gray-900" dir={LANGUAGES[viewLanguage].dir}>

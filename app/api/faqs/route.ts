@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-// GET /api/faqs - Fetch active FAQs for public display
+// GET /api/faqs - Fetch FAQs (supports admin=true for all FAQs)
 export async function GET(request: NextRequest) {
     try {
         const { searchParams } = new URL(request.url);
         const lang = searchParams.get('lang') || 'en';
+        const isAdmin = searchParams.get('admin') === 'true';
 
         // Get language by code
         const language = await prisma.language.findUnique({
@@ -22,7 +23,7 @@ export async function GET(request: NextRequest) {
         const faqs = await prisma.fAQ.findMany({
             where: {
                 languageId: language.id,
-                isActive: true,
+                ...(isAdmin ? {} : { isActive: true }), // Only filter by isActive for public
             },
             orderBy: [
                 { order: 'asc' },
@@ -33,12 +34,13 @@ export async function GET(request: NextRequest) {
                 question: true,
                 answer: true,
                 order: true,
+                isActive: true,
             },
         });
 
         return NextResponse.json({ success: true, faqs });
     } catch (error) {
-        console.error('Error fetching public FAQs:', error);
+        console.error('Error fetching FAQs:', error);
         return NextResponse.json(
             { success: false, message: 'Failed to fetch FAQs' },
             { status: 500 }

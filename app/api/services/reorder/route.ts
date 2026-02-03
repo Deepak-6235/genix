@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { services } = body; // Array of { slug, order }
+    const { services } = body; // Array of { id, order }
 
     if (!Array.isArray(services)) {
       return NextResponse.json(
@@ -40,14 +40,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Update order for each service slug (all language versions)
+    // Get the slug for each service ID, then update all language versions
     await Promise.all(
-      services.map((item: { slug: string; order: number }) =>
-        prisma.service.updateMany({
-          where: { slug: item.slug },
-          data: { order: item.order },
-        })
-      )
+      services.map(async (item: { id: string; order: number }) => {
+        // First get the slug from the service ID
+        const service = await prisma.service.findUnique({
+          where: { id: item.id },
+          select: { slug: true },
+        });
+
+        if (service) {
+          // Update all language versions with same slug
+          return prisma.service.updateMany({
+            where: { slug: service.slug },
+            data: { order: item.order },
+          });
+        }
+      })
     );
 
     return NextResponse.json({
