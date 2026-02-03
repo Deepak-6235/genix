@@ -6,11 +6,12 @@ import { LANGUAGE_CODES } from '@/lib/languages';
 // GET - Fetch single comment (admin only)
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const comment = await prisma.comment.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         language: true,
       },
@@ -50,9 +51,10 @@ export async function GET(
 // PUT - Update comment (admin only - updates all language versions)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const { name, email, website, comment, languageId } = body;
 
@@ -65,7 +67,7 @@ export async function PUT(
 
     // Get the original comment to find commentId
     const originalComment = await prisma.comment.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!originalComment) {
@@ -136,7 +138,7 @@ export async function PUT(
     );
 
     const updatedComment = await prisma.comment.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json({
@@ -156,12 +158,13 @@ export async function PUT(
 // DELETE - Delete comment (admin only - deletes all language versions)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     // Get the comment to find commentId
     const comment = await prisma.comment.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!comment) {
@@ -194,9 +197,10 @@ export async function DELETE(
 // PATCH - Approve/unapprove comment (admin only - updates all language versions)
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const { isApproved } = body;
 
@@ -209,7 +213,7 @@ export async function PATCH(
 
     // Get the comment to find commentId
     const comment = await prisma.comment.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!comment) {
