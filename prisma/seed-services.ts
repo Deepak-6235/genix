@@ -20,25 +20,30 @@ async function uploadServiceImage(imageName: string): Promise<string | null> {
 
     // Check if file exists
     if (!fs.existsSync(imagePath)) {
-      console.log(`⚠️  Image not found: ${imageName}`);
+      console.log(`   ⚠️  Image not found: ${imageName}`);
       return null;
     }
+
+    // Get file stats
+    const stats = fs.statSync(imagePath);
+    const fileSizeMB = (stats.size / 1024 / 1024).toFixed(2);
+    console.log(`   📁 File size: ${fileSizeMB} MB`);
 
     // Read the file
     const fileBuffer = fs.readFileSync(imagePath);
     const mimeType = imageName.endsWith('.jpg') || imageName.endsWith('.jpeg')
       ? 'image/jpeg'
       : imageName.endsWith('.png')
-      ? 'image/png'
-      : 'image/webp';
+        ? 'image/png'
+        : 'image/webp';
 
-    // Upload to S3
+    // Upload to S3 with retry logic
     const imageUrl = await uploadToS3(fileBuffer, imageName, mimeType, 'services');
-    console.log(`✅ Uploaded ${imageName} to S3: ${imageUrl}`);
 
     return imageUrl;
-  } catch (error) {
-    console.error(`❌ Failed to upload ${imageName}:`, error);
+  } catch (error: any) {
+    console.error(`   ❌ Failed to upload ${imageName}:`, error.message);
+    console.error(`   💡 Tip: Check AWS credentials, bucket permissions, and network connection`);
     return null;
   }
 }
@@ -516,15 +521,18 @@ export async function seedServices(prisma: PrismaClient) {
   for (const service of servicesData) {
     console.log(`\n📦 Processing service: ${service.slug}`);
 
-    // Upload service image to S3
+    // Upload ONE image per service (not per language)
     let imageUrl: string | null = null;
     const imageName = serviceImages[service.slug];
     if (imageName) {
       console.log(`📸 Uploading image: ${imageName}`);
       imageUrl = await uploadServiceImage(imageName);
+      if (imageUrl) {
+        console.log(`✅ Uploaded to S3: ${imageUrl}`);
+      }
     }
 
-    // Create or update service for all languages
+    // Create or update service for all languages with the SAME imageUrl
     const languageCodes = ['en', 'ar', 'pt', 'zh', 'ja'] as const;
 
     for (const langCode of languageCodes) {
@@ -541,32 +549,30 @@ export async function seedServices(prisma: PrismaClient) {
       const langName = langCode === 'en' ? 'English' : langCode === 'ar' ? 'Arabic' : langCode === 'pt' ? 'Portuguese' : langCode === 'zh' ? 'Chinese' : 'Japanese';
 
       if (!existingService) {
+        // Create new service with the S3 imageUrl
         await prisma.service.create({
           data: {
             slug: service.slug,
             languageId: langMap[langCode],
             order: service.order,
             isActive: true,
-            imageUrl,
+            imageUrl: imageUrl, // Use the same S3 URL for all languages
             ...serviceData,
           },
         });
-        console.log(`✅ Created ${langName} service: ${serviceData.title}`);
+        console.log(`   ✅ Created ${langName} service: ${serviceData.title}`);
       } else {
-        // Update existing service with image URL if it doesn't have one
-        if (!existingService.imageUrl && imageUrl) {
-          await prisma.service.update({
-            where: {
-              id: existingService.id,
-            },
-            data: {
-              imageUrl,
-            },
-          });
-          console.log(`🔄 Updated ${langName} service with image: ${serviceData.title}`);
-        } else {
-          console.log(`⏭️  ${langName} service already exists: ${serviceData.title}`);
-        }
+        // Update existing service with image URL
+        await prisma.service.update({
+          where: {
+            id: existingService.id,
+          },
+          data: {
+            imageUrl: imageUrl, // Always update with the S3 URL
+            ...serviceData,
+          },
+        });
+        console.log(`   🔄 Updated ${langName} service: ${serviceData.title}`);
       }
     }
   }

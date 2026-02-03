@@ -84,6 +84,7 @@ export async function GET(request: NextRequest) {
             serviceGuarantee: service.serviceGuarantee,
             isActive: service.isActive,
             order: service.order,
+            imageUrl: service.imageUrl,
             translations: {},
           });
         }

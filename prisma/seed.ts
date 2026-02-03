@@ -1,12 +1,11 @@
+// Load environment variables FIRST before any other imports
 import { config } from 'dotenv';
+config({ path: '.env.local' });
+
 import bcrypt from 'bcrypt';
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
-import { seedServices } from './seed-services';
-
-// Load environment variables
-config({ path: '.env.local' });
 
 // Create pool and adapter for Prisma 7
 const pool = new Pool({
@@ -97,7 +96,9 @@ async function main() {
   console.log('📧 Email: admin@genix.com');
   console.log('🔑 Password: Admin@123!');
 
-  // Seed services
+  // Import and run seedServices dynamically to ensure env vars are loaded
+  console.log('📦 Importing seed-services...');
+  const { seedServices } = await import('./seed-services');
   await seedServices(prisma);
 
   console.log('✨ Seeding completed!');
