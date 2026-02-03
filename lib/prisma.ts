@@ -15,7 +15,6 @@ if (!globalForPrisma.pool) {
     min: 2,
     idleTimeoutMillis: 90000,
     connectionTimeoutMillis: 60000,
-    acquireTimeoutMillis: 60000,
     statement_timeout: 60000,
   });
 }

@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
       // Recent blogs (3)
       prisma.blog.findMany({
         where: { languageId: enLangId },
-        select: { id: true, title: true, isActive: true },
+        select: { id: true, name: true, isActive: true },
         orderBy: { createdAt: 'desc' },
         take: 3,
       }),

@@ -4,12 +4,12 @@ import { prisma } from '@/lib/prisma';
 // PUT /api/faqs/[id] - Update an existing FAQ (updates all language versions)
 export async function PUT(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         const body = await request.json();
         const { question, answer, isActive } = body;
-        const { id } = params;
+        const { id } = await params;
 
         // Check if FAQ exists
         const existingFaq = await prisma.fAQ.findUnique({
@@ -46,10 +46,10 @@ export async function PUT(
 // DELETE /api/faqs/[id] - Delete an FAQ (deletes all language versions)
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const { id } = params;
+        const { id } = await params;
 
         // Check if FAQ exists
         const existingFaq = await prisma.fAQ.findUnique({

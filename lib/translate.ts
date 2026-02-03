@@ -80,31 +80,32 @@ async function translateText(text: string, targetLanguage: LanguageCode): Promis
   }
 }
 
-export async function translateContent(
-  englishContent: TranslatedContent,
+export async function translateContent<T extends Record<string, any>>(
+  englishContent: T,
   targetLanguages: LanguageCode[]
-): Promise<Record<LanguageCode, TranslatedContent>> {
-  const translations: Record<LanguageCode, TranslatedContent> = {
+): Promise<Record<LanguageCode, T>> {
+  const translations: Record<LanguageCode, T> = {
     en: englishContent,
-  } as Record<LanguageCode, TranslatedContent>;
+  } as Record<LanguageCode, T>;
 
   // Translate to each target language
   for (const lang of targetLanguages) {
     if (lang === 'en') continue;
 
     try {
-      translations[lang] = {
-        title: await translateText(englishContent.title, lang),
-        shortDescription: await translateText(englishContent.shortDescription, lang),
-        fullDescription: await translateText(englishContent.fullDescription, lang),
-        servicesProvided: await translateText(englishContent.servicesProvided, lang),
-        targetInsects: await translateText(englishContent.targetInsects, lang),
-        methodsTitle: await translateText(englishContent.methodsTitle, lang),
-        methodsDescription: await translateText(englishContent.methodsDescription, lang),
-        advancedTechnologies: await translateText(englishContent.advancedTechnologies, lang),
-        safeUseDescription: await translateText(englishContent.safeUseDescription, lang),
-        serviceGuarantee: await translateText(englishContent.serviceGuarantee, lang),
-      };
+      const translatedContent: any = {};
+
+      // Translate each string field in the content
+      for (const [key, value] of Object.entries(englishContent)) {
+        if (typeof value === 'string') {
+          translatedContent[key] = await translateText(value, lang);
+        } else {
+          // Keep non-string values as-is
+          translatedContent[key] = value;
+        }
+      }
+
+      translations[lang] = translatedContent as T;
     } catch (error) {
       console.error(`Failed to translate to ${lang}:`, error);
       // Return English as fallback

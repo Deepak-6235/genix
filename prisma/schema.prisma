@@ -19,10 +19,11 @@ model Language {
   updatedAt DateTime @updatedAt
 
   // Relations
-  services  Service[] @relation("ServiceLanguage")
-  blogs     Blog[]    @relation("BlogLanguage")
-  faqs      FAQ[]     @relation("FAQLanguage")
-  reviews   Review[]  @relation("ReviewLanguage")
+  services      Service[]      @relation("ServiceLanguage")
+  blogs         Blog[]         @relation("BlogLanguage")
+  detailedBlogs DetailedBlog[] @relation("DetailedBlogLanguage")
+  faqs          FAQ[]          @relation("FAQLanguage")
+  reviews       Review[]       @relation("ReviewLanguage")
 
   @@map("languages")
 }
@@ -83,9 +84,34 @@ model Blog {
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 
+  // Relations
+  detailedBlogs         DetailedBlog[] @relation("BlogDetails")
+
   // Unique constraint: same slug can have multiple languages
   @@unique([slug, languageId], name: "slug_languageId")
   @@map("blogs")
+}
+
+model DetailedBlog {
+  id          String   @id @default(cuid())
+  blogId      String   // Foreign key to Blog table
+  blog        Blog     @relation("BlogDetails", fields: [blogId], references: [id], onDelete: Cascade)
+  languageId  String   // Foreign key to Language table
+  language    Language @relation("DetailedBlogLanguage", fields: [languageId], references: [id])
+
+  // Content fields - multiple title+description sections for each blog
+  title       String   @db.Text
+  description String   @db.Text
+  imageUrl    String?  // Optional image for this section
+
+  // Meta
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Unique constraint: each detailed blog section must be unique per blog, language, and order
+  @@unique([blogId, languageId, order], name: "blog_language_order")
+  @@map("detailed_blogs")
 }
 
 model Statistic {

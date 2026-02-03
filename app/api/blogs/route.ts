@@ -75,6 +75,14 @@ export async function GET(request: NextRequest) {
       orderBy: { publishedAt: 'desc' },
       include: {
         language: true,
+        detailedBlogs: {
+          where: {
+            languageId: language.id,
+          },
+          orderBy: {
+            order: 'asc',
+          },
+        },
       },
     });
 
@@ -92,7 +100,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST create new blog with image upload
+// POST create new blog with image upload and detailed sections
 export async function POST(request: NextRequest) {
   try {
     // Verify authentication
@@ -105,19 +113,19 @@ export async function POST(request: NextRequest) {
     }
 
     const formData = await request.formData();
-    const title = formData.get('title') as string;
-    const excerpt = formData.get('excerpt') as string;
-    const content = formData.get('content') as string;
+    const name = formData.get('name') as string;
+    const shortDescription = formData.get('shortDescription') as string;
     const author = formData.get('author') as string;
     const slug = formData.get('slug') as string;
     const imageFile = formData.get('image') as File;
     const isActive = formData.get('isActive') === 'true';
     const publishedAt = formData.get('publishedAt') as string;
+    const detailedSectionsJson = formData.get('detailedSections') as string;
 
     // Validation
-    if (!title || !excerpt || !content) {
+    if (!name || !shortDescription || !author) {
       return NextResponse.json(
-        { success: false, message: 'Title, excerpt and content are required' },
+        { success: false, message: 'Name, short description, and author are required' },
         { status: 400 }
       );
     }
@@ -125,7 +133,7 @@ export async function POST(request: NextRequest) {
     let imageUrl: string | null = null;
 
     // Upload image to S3 if provided
-    if (imageFile) {
+    if (imageFile && imageFile.size > 0) {
       try {
         const buffer = await imageFile.arrayBuffer();
         imageUrl = await uploadToS3(
@@ -142,24 +150,23 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const baseSlug = slug || generateSlug(title);
+    if (!imageUrl) {
+      return NextResponse.json(
+        { success: false, message: 'Blog image is required' },
+        { status: 400 }
+      );
+    }
+
+    const baseSlug = slug || generateSlug(name);
     const generatedSlug = await generateUniqueSlug(baseSlug);
 
-    // Prepare English content
+    // Prepare English content for main blog
     const englishContent = {
-      title,
-      shortDescription: excerpt,
-      fullDescription: content,
-      servicesProvided: '',
-      targetInsects: '',
-      methodsTitle: '',
-      methodsDescription: '',
-      advancedTechnologies: '',
-      safeUseDescription: '',
-      serviceGuarantee: '',
+      name,
+      shortDescription,
     };
 
-    // Auto-translate to all languages
+    // Auto-translate main blog to all languages
     const translations = await translateContent(
       englishContent,
       LANGUAGE_CODES
@@ -174,43 +181,25 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Create or update blog records for all languages
+    // Create blog records for all languages
     const createdBlogs = await Promise.allSettled(
       languages.map((lang) => {
         const trans = translations[lang.code as keyof typeof translations];
-
-        // Use provided translation or fall back to English
         const finalTrans = trans || translations['en'];
 
         if (!finalTrans) {
           throw new Error(`No translation found for language ${lang.code}`);
         }
 
-        return prisma.blog.upsert({
-          where: {
-            slug_languageId: {
-              slug: generatedSlug,
-              languageId: lang.id,
-            },
-          },
-          update: {
-            title: finalTrans.title,
-            excerpt: finalTrans.shortDescription,
-            content: finalTrans.fullDescription,
-            imageUrl: imageUrl,
-            author: author || null,
-            isActive: isActive,
-            publishedAt: publishedAt ? new Date(publishedAt) : new Date(),
-          },
-          create: {
+        return prisma.blog.create({
+          data: {
             slug: generatedSlug,
             languageId: lang.id,
-            title: finalTrans.title,
-            excerpt: finalTrans.shortDescription,
-            content: finalTrans.fullDescription,
-            imageUrl: imageUrl,
-            author: author || null,
-            isActive: isActive,
+            name: finalTrans.name,
+            shortDescription: finalTrans.shortDescription,
+            author,
+            imageUrl,
+            isActive,
             publishedAt: publishedAt ? new Date(publishedAt) : new Date(),
           },
           include: {
@@ -220,10 +209,72 @@ export async function POST(request: NextRequest) {
       })
     );
 
-    // Extract successful results
     const successfulBlogs = createdBlogs
       .filter((result) => result.status === 'fulfilled')
       .map((result) => (result as PromiseFulfilledResult<any>).value);
+
+    // Parse and create detailed sections if provided
+    if (detailedSectionsJson) {
+      try {
+        const detailedSections = JSON.parse(detailedSectionsJson);
+
+        for (let i = 0; i < detailedSections.length; i++) {
+          const section = detailedSections[i];
+
+          // Upload section image if provided
+          let sectionImageUrl: string | null = null;
+          const sectionImageFile = formData.get(`sectionImage_${i}`) as File;
+
+          if (sectionImageFile && sectionImageFile.size > 0) {
+            try {
+              const buffer = await sectionImageFile.arrayBuffer();
+              sectionImageUrl = await uploadToS3(
+                Buffer.from(buffer),
+                sectionImageFile.name,
+                sectionImageFile.type
+              );
+            } catch (error) {
+              console.error(`Error uploading section ${i} image:`, error);
+            }
+          }
+
+          // Translate each section
+          const sectionContent = {
+            title: section.title,
+            description: section.description,
+          };
+
+          const sectionTranslations = await translateContent(
+            sectionContent,
+            LANGUAGE_CODES
+          );
+
+          // Create detailed blog entries for all languages
+          await Promise.allSettled(
+            languages.map((lang) => {
+              const blog = successfulBlogs.find((b) => b.languageId === lang.id);
+              if (!blog) return Promise.resolve();
+
+              const trans = sectionTranslations[lang.code as keyof typeof sectionTranslations];
+              const finalTrans = trans || sectionTranslations['en'];
+
+              return prisma.detailedBlog.create({
+                data: {
+                  blogId: blog.id,
+                  languageId: lang.id,
+                  title: finalTrans.title,
+                  description: finalTrans.description,
+                  imageUrl: sectionImageUrl,
+                  order: section.order,
+                },
+              });
+            })
+          );
+        }
+      } catch (error) {
+        console.error('Error creating detailed sections:', error);
+      }
+    }
 
     return NextResponse.json({
       success: true,

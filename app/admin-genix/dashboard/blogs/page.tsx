@@ -2,25 +2,34 @@
 
 import { useState, useEffect } from 'react';
 import { useAdminLanguage } from '@/contexts/AdminLanguageContext';
+import { useRouter } from 'next/navigation';
+
+interface DetailedBlog {
+  id: string;
+  title: string;
+  description: string;
+  imageUrl?: string | null;
+  order: number;
+}
 
 interface Blog {
   id: string;
-  title: string;
-  excerpt: string;
-  content: string;
-  author: string | null;
-  imageUrl: string | null;
+  name: string;
+  shortDescription: string;
+  author: string;
+  imageUrl: string;
   slug: string;
   isActive: boolean;
   publishedAt: string | null;
   order: number;
+  detailedBlogs?: DetailedBlog[];
 }
 
-function BlogItem({ blog, onEdit, onDelete, onView, t }: {
+function BlogItem({ blog, onDelete, onView, onEdit, t }: {
   blog: Blog;
-  onEdit: (blog: Blog) => void;
   onDelete: (id: string) => void;
   onView: (blog: Blog) => void;
+  onEdit: (slug: string) => void;
   t: (key: string) => string;
 }) {
   return (
@@ -29,7 +38,7 @@ function BlogItem({ blog, onEdit, onDelete, onView, t }: {
         {blog.imageUrl && (
           <img
             src={blog.imageUrl}
-            alt={blog.title}
+            alt={blog.name}
             className="w-20 h-20 rounded-lg object-cover"
           />
         )}
@@ -37,9 +46,10 @@ function BlogItem({ blog, onEdit, onDelete, onView, t }: {
         <div className="flex-1">
           <div className="flex justify-between items-start mb-2">
             <div>
-              <h3 className="text-lg font-bold text-gray-900">{blog.title}</h3>
-              {blog.author && (
-                <p className="text-sm text-gray-600">By {blog.author}</p>
+              <h3 className="text-lg font-bold text-gray-900">{blog.name}</h3>
+              <p className="text-sm text-gray-600">By {blog.author}</p>
+              {blog.detailedBlogs && blog.detailedBlogs.length > 0 && (
+                <p className="text-xs text-purple-600 mt-1">{blog.detailedBlogs.length} detailed sections</p>
               )}
             </div>
             <span
@@ -50,7 +60,7 @@ function BlogItem({ blog, onEdit, onDelete, onView, t }: {
               {blog.isActive ? t('status.active') : t('status.inactive')}
             </span>
           </div>
-          <p className="text-sm text-gray-600 mb-4 line-clamp-2">{blog.excerpt}</p>
+          <p className="text-sm text-gray-600 mb-4 line-clamp-2">{blog.shortDescription}</p>
           <div className="flex space-x-2">
             <button
               onClick={() => onView(blog)}
@@ -59,7 +69,7 @@ function BlogItem({ blog, onEdit, onDelete, onView, t }: {
               {t('button.view')}
             </button>
             <button
-              onClick={() => onEdit(blog)}
+              onClick={() => onEdit(blog.slug)}
               className="flex-1 px-3 py-2 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition"
             >
               {t('button.edit')}
@@ -78,27 +88,12 @@ function BlogItem({ blog, onEdit, onDelete, onView, t }: {
 }
 
 export default function BlogsPage() {
+  const router = useRouter();
   const { t } = useAdminLanguage();
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
   const [viewingBlog, setViewingBlog] = useState<Blog | null>(null);
-  const [editingBlog, setEditingBlog] = useState<Blog | null>(null);
-  const [formLoading, setFormLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
-  const [formData, setFormData] = useState({
-    title: '',
-    excerpt: '',
-    content: '',
-    author: '',
-    slug: '',
-    isActive: true,
-    publishedAt: new Date().toISOString().split('T')[0],
-  });
 
   useEffect(() => {
     fetchBlogs();
@@ -118,110 +113,6 @@ export default function BlogsPage() {
     }
   };
 
-  const openModal = (blog?: Blog) => {
-    if (blog) {
-      setEditingBlog(blog);
-      setFormData({
-        title: blog.title,
-        excerpt: blog.excerpt,
-        content: blog.content,
-        author: blog.author || '',
-        slug: blog.slug,
-        isActive: blog.isActive,
-        publishedAt: blog.publishedAt?.split('T')[0] || new Date().toISOString().split('T')[0],
-      });
-      setImagePreview(blog.imageUrl);
-    } else {
-      setEditingBlog(null);
-      setFormData({
-        title: '',
-        excerpt: '',
-        content: '',
-        author: '',
-        slug: '',
-        isActive: true,
-        publishedAt: new Date().toISOString().split('T')[0],
-      });
-      setImagePreview(null);
-    }
-    setSelectedFile(null);
-    setShowModal(true);
-    setError('');
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-    setEditingBlog(null);
-    setImagePreview(null);
-    setSelectedFile(null);
-    setError('');
-  };
-
-  const generateSlug = (title: string): string => {
-    return title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setSelectedFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormLoading(true);
-    setError('');
-
-    if (!formData.title || !formData.excerpt || !formData.content) {
-      setError('Title, excerpt and content are required');
-      setFormLoading(false);
-      return;
-    }
-
-    try {
-      const data = new FormData();
-      data.append('title', formData.title);
-      data.append('excerpt', formData.excerpt);
-      data.append('content', formData.content);
-      data.append('author', formData.author);
-      data.append('slug', formData.slug || '');
-      data.append('isActive', formData.isActive.toString());
-      data.append('publishedAt', formData.publishedAt);
-      if (selectedFile) {
-        data.append('image', selectedFile);
-      }
-
-      const url = editingBlog ? `/api/blogs/${encodeURIComponent(editingBlog.slug)}` : '/api/blogs';
-      const method = editingBlog ? 'PUT' : 'POST';
-
-      const response = await fetch(url, {
-        method,
-        body: data,
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || 'Operation failed');
-      }
-
-      await fetchBlogs();
-      closeModal();
-    } catch (err: any) {
-      setError(err.message || 'An error occurred');
-    } finally {
-      setFormLoading(false);
-    }
-  };
 
   const handleDelete = async (slug: string) => {
     if (!confirm('Are you sure you want to delete this blog?')) return;
@@ -257,7 +148,7 @@ export default function BlogsPage() {
           <p className="mt-2 text-gray-600">{t('blogs.subtitle')}</p>
         </div>
         <button
-          onClick={() => openModal()}
+          onClick={() => router.push('/admin-genix/dashboard/blogs/new')}
           className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
         >
           {t('blogs.addBlog')}
@@ -275,7 +166,7 @@ export default function BlogsPage() {
               setViewingBlog(blog);
               setShowViewModal(true);
             }}
-            onEdit={openModal}
+            onEdit={(slug) => router.push(`/admin-genix/dashboard/blogs/edit/${slug}`)}
             onDelete={handleDelete}
           />
         ))}
@@ -287,146 +178,12 @@ export default function BlogsPage() {
         </div>
       )}
 
-      {/* Add/Edit Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white rounded-xl max-w-2xl w-full my-8">
-            <div className="p-6 border-b border-gray-200">
-              <h3 className="text-xl font-bold text-gray-900">
-                {editingBlog ? t('modal.editBlog') : t('modal.addBlog')}
-              </h3>
-            </div>
-
-            <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('blogs.image')}</label>
-                <div className="flex gap-4">
-                  {imagePreview && (
-                    <img
-                      src={imagePreview}
-                      alt="Preview"
-                      className="w-24 h-24 rounded-lg object-cover"
-                    />
-                  )}
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('form.title')} *</label>
-                <input
-                  type="text"
-                  required
-                  value={formData.title}
-                  onChange={(e) => {
-                    const newTitle = e.target.value;
-                    setFormData({
-                      ...formData,
-                      title: newTitle,
-                      slug: generateSlug(newTitle),
-                    });
-                  }}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
-                  placeholder={t('placeholder.enterTitle')}
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('blogs.excerpt')} *</label>
-                <textarea
-                  required
-                  rows={3}
-                  value={formData.excerpt}
-                  onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
-                  placeholder={t('placeholder.enterDescription')}
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('blogs.content')} *</label>
-                <textarea
-                  required
-                  rows={6}
-                  value={formData.content}
-                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
-                  placeholder={t('placeholder.enterDescription')}
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('blogs.author')}</label>
-                <input
-                  type="text"
-                  value={formData.author}
-                  onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
-                  placeholder={t('placeholder.enterDescription')}
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('blogs.publishedDate')}</label>
-                <input
-                  type="date"
-                  value={formData.publishedAt}
-                  onChange={(e) => setFormData({ ...formData, publishedAt: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
-                />
-              </div>
-
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="isActive"
-                  checked={formData.isActive}
-                  onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                  className="rounded"
-                />
-                <label htmlFor="isActive" className="ml-2 text-sm font-medium text-gray-700">
-                  {t('form.isActive')}
-                </label>
-              </div>
-
-              {error && (
-                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-                  {error}
-                </div>
-              )}
-
-              <div className="flex space-x-3 pt-4 border-t">
-                <button
-                  type="button"
-                  onClick={closeModal}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
-                >
-                  {t('button.cancel')}
-                </button>
-                <button
-                  type="submit"
-                  disabled={formLoading}
-                  className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition disabled:opacity-50"
-                >
-                  {formLoading ? t('modal.saving') : editingBlog ? t('button.update') : t('button.create')}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
       {/* View Modal */}
       {showViewModal && viewingBlog && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
-              <h2 className="text-2xl font-bold text-gray-900">{viewingBlog.title}</h2>
+              <h2 className="text-2xl font-bold text-gray-900">{viewingBlog.name}</h2>
               <button
                 onClick={() => setShowViewModal(false)}
                 className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
@@ -435,45 +192,51 @@ export default function BlogsPage() {
               </button>
             </div>
 
-            <div className="p-6 space-y-4">
+            <div className="p-6 space-y-6">
               {viewingBlog.imageUrl && (
                 <img
                   src={viewingBlog.imageUrl}
-                  alt={viewingBlog.title}
+                  alt={viewingBlog.name}
                   className="w-full h-64 object-cover rounded-xl"
                 />
               )}
 
-              {viewingBlog.author && (
-                <p className="text-sm text-gray-600">By {viewingBlog.author}</p>
-              )}
-
-              {viewingBlog.publishedAt && (
-                <p className="text-sm text-gray-600">
-                  Published: {new Date(viewingBlog.publishedAt).toLocaleDateString()}
-                </p>
-              )}
-
-              <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                <h3 className="font-bold text-gray-900 mb-2">Excerpt</h3>
-                <p className="text-gray-700">{viewingBlog.excerpt}</p>
+              <div className="flex justify-between items-center text-sm text-gray-600">
+                <p>By {viewingBlog.author}</p>
+                {viewingBlog.publishedAt && (
+                  <p>Published: {new Date(viewingBlog.publishedAt).toLocaleDateString()}</p>
+                )}
               </div>
 
-              <div className="border-l-4 border-purple-500 pl-4">
-                <h3 className="font-bold text-gray-900 mb-2">Content</h3>
-                <p className="text-gray-700 whitespace-pre-wrap">{viewingBlog.content}</p>
+              <div className="bg-purple-50 rounded-xl p-4 border border-purple-200">
+                <h3 className="font-bold text-purple-900 mb-2">Short Description</h3>
+                <p className="text-gray-700">{viewingBlog.shortDescription}</p>
               </div>
+
+              {viewingBlog.detailedBlogs && viewingBlog.detailedBlogs.length > 0 && (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-bold text-gray-900 border-b pb-2">
+                    Detailed Sections ({viewingBlog.detailedBlogs.length})
+                  </h3>
+                  {viewingBlog.detailedBlogs.map((section, index) => (
+                    <div key={section.id} className="border-l-4 border-purple-500 pl-4 py-2">
+                      {section.imageUrl && (
+                        <img
+                          src={section.imageUrl}
+                          alt={section.title}
+                          className="w-full h-48 object-cover rounded-lg mb-3"
+                        />
+                      )}
+                      <h4 className="font-bold text-gray-900 mb-2">
+                        {index + 1}. {section.title}
+                      </h4>
+                      <p className="text-gray-700 whitespace-pre-wrap">{section.description}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               <div className="flex gap-3 pt-4 border-t">
-                <button
-                  onClick={() => {
-                    setShowViewModal(false);
-                    openModal(viewingBlog);
-                  }}
-                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                >
-                  {t('button.edit')}
-                </button>
                 <button
                   onClick={() => setShowViewModal(false)}
                   className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"

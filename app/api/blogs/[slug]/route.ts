@@ -49,6 +49,14 @@ export async function GET(
       },
       include: {
         language: true,
+        detailedBlogs: {
+          where: {
+            languageId: language.id,
+          },
+          orderBy: {
+            order: 'asc',
+          },
+        },
       },
     });
 
@@ -89,13 +97,13 @@ export async function PUT(
     }
 
     const formData = await request.formData();
-    const title = formData.get('title') as string;
-    const excerpt = formData.get('excerpt') as string;
-    const content = formData.get('content') as string;
+    const name = formData.get('name') as string;
+    const shortDescription = formData.get('shortDescription') as string;
     const author = formData.get('author') as string;
     const imageFile = formData.get('image') as File;
     const isActive = formData.get('isActive') === 'true';
     const publishedAt = formData.get('publishedAt') as string;
+    const detailedSectionsJson = formData.get('detailedSections') as string;
 
     // Find all blogs with this slug (all language versions)
     const existingBlogs = await prisma.blog.findMany({
@@ -134,9 +142,8 @@ export async function PUT(
       const updatedBlog = await prisma.blog.update({
         where: { id: blog.id },
         data: {
-          title: title || blog.title,
-          excerpt: excerpt || blog.excerpt,
-          content: content || blog.content,
+          name: name || blog.name,
+          shortDescription: shortDescription || blog.shortDescription,
           author: author || blog.author,
           imageUrl: imageUrl !== undefined ? imageUrl : blog.imageUrl,
           isActive: isActive !== undefined ? isActive : blog.isActive,
@@ -147,6 +154,89 @@ export async function PUT(
         },
       });
       updatedBlogs.push(updatedBlog);
+    }
+
+    // Update detailed sections if provided
+    if (detailedSectionsJson) {
+      try {
+        const detailedSections = JSON.parse(detailedSectionsJson);
+
+        // Delete existing detailed sections for this blog
+        await prisma.detailedBlog.deleteMany({
+          where: {
+            blogId: {
+              in: existingBlogs.map((b) => b.id),
+            },
+          },
+        });
+
+        // Get all languages
+        const { LANGUAGE_CODES } = await import('@/lib/languages');
+        const { translateContent } = await import('@/lib/translate');
+        const languages = await prisma.language.findMany({
+          where: {
+            code: {
+              in: LANGUAGE_CODES,
+            },
+          },
+        });
+
+        // Create new detailed sections
+        for (let i = 0; i < detailedSections.length; i++) {
+          const section = detailedSections[i];
+
+          // Upload section image if provided
+          let sectionImageUrl: string | null = null;
+          const sectionImageFile = formData.get(`sectionImage_${i}`) as File;
+
+          if (sectionImageFile && sectionImageFile.size > 0) {
+            try {
+              const { uploadToS3 } = await import('@/lib/s3');
+              const buffer = await sectionImageFile.arrayBuffer();
+              sectionImageUrl = await uploadToS3(
+                Buffer.from(buffer),
+                sectionImageFile.name,
+                sectionImageFile.type
+              );
+            } catch (error) {
+              console.error(`Error uploading section ${i} image:`, error);
+            }
+          }
+
+          const sectionContent = {
+            title: section.title,
+            description: section.description,
+          };
+
+          const sectionTranslations = await translateContent(
+            sectionContent,
+            LANGUAGE_CODES
+          );
+
+          await Promise.allSettled(
+            languages.map((lang) => {
+              const blog = existingBlogs.find((b) => b.languageId === lang.id);
+              if (!blog) return Promise.resolve();
+
+              const trans = sectionTranslations[lang.code as keyof typeof sectionTranslations];
+              const finalTrans = trans || sectionTranslations['en'];
+
+              return prisma.detailedBlog.create({
+                data: {
+                  blogId: blog.id,
+                  languageId: lang.id,
+                  title: finalTrans.title,
+                  description: finalTrans.description,
+                  imageUrl: sectionImageUrl,
+                  order: section.order,
+                },
+              });
+            })
+          );
+        }
+      } catch (error) {
+        console.error('Error updating detailed sections:', error);
+      }
     }
 
     return NextResponse.json({
