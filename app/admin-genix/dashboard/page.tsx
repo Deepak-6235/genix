@@ -50,7 +50,6 @@ export default function DashboardPage() {
     try {
       setLoading(true);
 
-      // Single API call for all dashboard data
       const response = await fetch('/api/dashboard');
       const data = await response.json();
 
@@ -68,19 +67,69 @@ export default function DashboardPage() {
   };
 
   const statCards = [
-    { name: 'Services', value: stats.services, icon: '🔧', color: 'bg-blue-500', path: '/admin-genix/dashboard/services' },
-    { name: 'Blog Posts', value: stats.blogs, icon: '📝', color: 'bg-green-500', path: '/admin-genix/dashboard/blogs' },
-    { name: 'Reviews', value: stats.reviews, icon: '⭐', color: 'bg-yellow-500', path: '/admin-genix/dashboard/reviews' },
-    { name: 'FAQs', value: stats.faqs, icon: '❓', color: 'bg-purple-500', path: '/admin-genix/dashboard/faqs' },
-    { name: 'Statistics', value: stats.statistics, icon: '📈', color: 'bg-red-500', path: '/admin-genix/dashboard/statistics' },
+    {
+      name: 'Services',
+      value: stats.services,
+      icon: (
+        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+      ),
+      gradient: 'from-blue-500 to-cyan-500',
+      path: '/admin-genix/dashboard/services'
+    },
+    {
+      name: 'Blog Posts',
+      value: stats.blogs,
+      icon: (
+        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+        </svg>
+      ),
+      gradient: 'from-green-500 to-emerald-500',
+      path: '/admin-genix/dashboard/blogs'
+    },
+    {
+      name: 'Reviews',
+      value: stats.reviews,
+      icon: (
+        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+        </svg>
+      ),
+      gradient: 'from-amber-500 to-orange-500',
+      path: '/admin-genix/dashboard/reviews'
+    },
+    {
+      name: 'FAQs',
+      value: stats.faqs,
+      icon: (
+        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      gradient: 'from-purple-500 to-pink-500',
+      path: '/admin-genix/dashboard/faqs'
+    },
+    {
+      name: 'Statistics',
+      value: stats.statistics,
+      icon: (
+        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+      ),
+      gradient: 'from-red-500 to-rose-500',
+      path: '/admin-genix/dashboard/statistics'
+    },
   ];
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-96">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
-          <p className="mt-4 text-gray-600">Loading dashboard...</p>
+          <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-indigo-200 border-t-indigo-600"></div>
+          <p className="mt-4 text-gray-700 font-medium">Loading dashboard...</p>
         </div>
       </div>
     );
@@ -88,10 +137,19 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div>
-        <h2 className="text-3xl font-bold text-gray-900">Dashboard Overview</h2>
-        <p className="mt-2 text-gray-600">Welcome to your admin panel - manage your website content</p>
+      {/* Welcome Header */}
+      <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl shadow-2xl p-8 text-white">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-4xl font-bold mb-2">Welcome Back!</h2>
+            <p className="text-indigo-100 text-lg">Here's what's happening with your content today</p>
+          </div>
+          <div className="hidden md:block">
+            <svg className="w-32 h-32 opacity-20" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+            </svg>
+          </div>
+        </div>
       </div>
 
       {/* Stats Grid */}
@@ -100,15 +158,20 @@ export default function DashboardPage() {
           <Link
             key={stat.name}
             href={stat.path}
-            className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition cursor-pointer"
+            className="group relative bg-white rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-2xl transition-all duration-300 overflow-hidden"
           >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">{stat.name}</p>
-                <p className="mt-2 text-4xl font-bold text-gray-900">{stat.value}</p>
-              </div>
-              <div className={`${stat.color} w-12 h-12 rounded-lg flex items-center justify-center text-2xl`}>
+            <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
+            <div className="relative">
+              <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${stat.gradient} text-white shadow-lg mb-4`}>
                 {stat.icon}
+              </div>
+              <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide">{stat.name}</p>
+              <p className="mt-2 text-4xl font-bold text-gray-900">{stat.value}</p>
+              <div className="mt-4 flex items-center text-sm text-gray-500 group-hover:text-indigo-600 transition-colors">
+                <span>View all</span>
+                <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
               </div>
             </div>
           </Link>
@@ -116,43 +179,70 @@ export default function DashboardPage() {
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h3 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h3>
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl">
+            <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 className="text-2xl font-bold text-gray-900">Quick Actions</h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
           <Link
             href="/admin-genix/dashboard/services"
-            className="flex items-center space-x-3 px-4 py-3 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition font-medium"
+            className="group flex flex-col items-center gap-3 px-6 py-4 bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-100 rounded-xl hover:from-blue-100 hover:to-cyan-100 transition-all duration-200 shadow-sm hover:shadow-md"
           >
-            <span className="text-xl">🔧</span>
-            <span>Add Service</span>
+            <div className="p-3 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl text-white shadow-lg">
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+            </div>
+            <span className="font-semibold text-blue-700">Add Service</span>
           </Link>
           <Link
             href="/admin-genix/dashboard/blogs"
-            className="flex items-center space-x-3 px-4 py-3 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition font-medium"
+            className="group flex flex-col items-center gap-3 px-6 py-4 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-100 rounded-xl hover:from-green-100 hover:to-emerald-100 transition-all duration-200 shadow-sm hover:shadow-md"
           >
-            <span className="text-xl">📝</span>
-            <span>Add Blog</span>
+            <div className="p-3 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl text-white shadow-lg">
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+            </div>
+            <span className="font-semibold text-green-700">Add Blog</span>
           </Link>
           <Link
             href="/admin-genix/dashboard/reviews"
-            className="flex items-center space-x-3 px-4 py-3 bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200 transition font-medium"
+            className="group flex flex-col items-center gap-3 px-6 py-4 bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 rounded-xl hover:from-amber-100 hover:to-orange-100 transition-all duration-200 shadow-sm hover:shadow-md"
           >
-            <span className="text-xl">⭐</span>
-            <span>Add Review</span>
+            <div className="p-3 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl text-white shadow-lg">
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+            </div>
+            <span className="font-semibold text-amber-700">Add Review</span>
           </Link>
           <Link
             href="/admin-genix/dashboard/faqs"
-            className="flex items-center space-x-3 px-4 py-3 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition font-medium"
+            className="group flex flex-col items-center gap-3 px-6 py-4 bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-100 rounded-xl hover:from-purple-100 hover:to-pink-100 transition-all duration-200 shadow-sm hover:shadow-md"
           >
-            <span className="text-xl">❓</span>
-            <span>Add FAQ</span>
+            <div className="p-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl text-white shadow-lg">
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+            </div>
+            <span className="font-semibold text-purple-700">Add FAQ</span>
           </Link>
           <Link
             href="/admin-genix/dashboard/about-us"
-            className="flex items-center space-x-3 px-4 py-3 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition font-medium"
+            className="group flex flex-col items-center gap-3 px-6 py-4 bg-gradient-to-br from-red-50 to-rose-50 border border-red-100 rounded-xl hover:from-red-100 hover:to-rose-100 transition-all duration-200 shadow-sm hover:shadow-md"
           >
-            <span className="text-xl">📋</span>
-            <span>Edit About Us</span>
+            <div className="p-3 bg-gradient-to-br from-red-500 to-rose-500 rounded-xl text-white shadow-lg">
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+            </div>
+            <span className="font-semibold text-red-700">Edit About</span>
           </Link>
         </div>
       </div>
@@ -160,21 +250,31 @@ export default function DashboardPage() {
       {/* Recent Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Services */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-bold text-gray-900">Recent Services</h3>
-            <Link href="/admin-genix/dashboard/services" className="text-blue-600 hover:text-blue-700 text-sm font-medium">
-              View All →
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-bold text-gray-900">Recent Services</h3>
+            </div>
+            <Link href="/admin-genix/dashboard/services" className="text-blue-600 hover:text-blue-700 text-sm font-semibold flex items-center gap-1">
+              View All
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
             </Link>
           </div>
           <div className="space-y-3">
             {recentServices.length > 0 ? (
               recentServices.map((service) => (
-                <div key={service.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div key={service.id} className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-100 hover:shadow-md transition-shadow">
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-900 line-clamp-1">{service.title}</p>
-                    <span className={`inline-block mt-1 px-2 py-1 text-xs rounded-full font-medium ${
-                      service.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                    <p className="text-sm font-semibold text-gray-900 line-clamp-1">{service.title}</p>
+                    <span className={`inline-block mt-2 px-3 py-1 text-xs rounded-full font-semibold ${
+                      service.isActive ? 'bg-green-500 text-white' : 'bg-gray-400 text-white'
                     }`}>
                       {service.isActive ? 'Active' : 'Inactive'}
                     </span>
@@ -182,27 +282,42 @@ export default function DashboardPage() {
                 </div>
               ))
             ) : (
-              <p className="text-gray-500 text-sm text-center py-4">No services yet</p>
+              <div className="text-center py-12 text-gray-400">
+                <svg className="w-16 h-16 mx-auto mb-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                </svg>
+                <p className="text-sm">No services yet</p>
+              </div>
             )}
           </div>
         </div>
 
         {/* Recent Blogs */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-bold text-gray-900">Recent Blogs</h3>
-            <Link href="/admin-genix/dashboard/blogs" className="text-blue-600 hover:text-blue-700 text-sm font-medium">
-              View All →
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-bold text-gray-900">Recent Blogs</h3>
+            </div>
+            <Link href="/admin-genix/dashboard/blogs" className="text-green-600 hover:text-green-700 text-sm font-semibold flex items-center gap-1">
+              View All
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
             </Link>
           </div>
           <div className="space-y-3">
             {recentBlogs.length > 0 ? (
               recentBlogs.map((blog) => (
-                <div key={blog.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div key={blog.id} className="flex items-center justify-between p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-100 hover:shadow-md transition-shadow">
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-900 line-clamp-1">{blog.title}</p>
-                    <span className={`inline-block mt-1 px-2 py-1 text-xs rounded-full font-medium ${
-                      blog.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                    <p className="text-sm font-semibold text-gray-900 line-clamp-1">{blog.title}</p>
+                    <span className={`inline-block mt-2 px-3 py-1 text-xs rounded-full font-semibold ${
+                      blog.isActive ? 'bg-green-500 text-white' : 'bg-gray-400 text-white'
                     }`}>
                       {blog.isActive ? 'Active' : 'Inactive'}
                     </span>
@@ -210,27 +325,42 @@ export default function DashboardPage() {
                 </div>
               ))
             ) : (
-              <p className="text-gray-500 text-sm text-center py-4">No blogs yet</p>
+              <div className="text-center py-12 text-gray-400">
+                <svg className="w-16 h-16 mx-auto mb-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                </svg>
+                <p className="text-sm">No blogs yet</p>
+              </div>
             )}
           </div>
         </div>
 
         {/* Recent Reviews */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-bold text-gray-900">Recent Reviews</h3>
-            <Link href="/admin-genix/dashboard/reviews" className="text-blue-600 hover:text-blue-700 text-sm font-medium">
-              View All →
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-bold text-gray-900">Recent Reviews</h3>
+            </div>
+            <Link href="/admin-genix/dashboard/reviews" className="text-amber-600 hover:text-amber-700 text-sm font-semibold flex items-center gap-1">
+              View All
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
             </Link>
           </div>
           <div className="space-y-3">
             {recentReviews.length > 0 ? (
               recentReviews.map((review) => (
-                <div key={review.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div key={review.id} className="flex items-center justify-between p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border border-amber-100 hover:shadow-md transition-shadow">
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-900">By {review.name}</p>
-                    <span className={`inline-block mt-1 px-2 py-1 text-xs rounded-full font-medium ${
-                      review.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                    <p className="text-sm font-semibold text-gray-900">By {review.name}</p>
+                    <span className={`inline-block mt-2 px-3 py-1 text-xs rounded-full font-semibold ${
+                      review.isActive ? 'bg-green-500 text-white' : 'bg-gray-400 text-white'
                     }`}>
                       {review.isActive ? 'Active' : 'Inactive'}
                     </span>
@@ -238,35 +368,13 @@ export default function DashboardPage() {
                 </div>
               ))
             ) : (
-              <p className="text-gray-500 text-sm text-center py-4">No reviews yet</p>
+              <div className="text-center py-12 text-gray-400">
+                <svg className="w-16 h-16 mx-auto mb-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                </svg>
+                <p className="text-sm">No reviews yet</p>
+              </div>
             )}
-          </div>
-        </div>
-      </div>
-
-      {/* Content Status */}
-      <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl shadow-sm border border-gray-200 p-6">
-        <h3 className="text-lg font-bold text-gray-900 mb-4">Content Status Summary</h3>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          <div className="text-center">
-            <p className="text-3xl font-bold text-blue-600">{stats.services}</p>
-            <p className="text-sm text-gray-600 mt-1">Services</p>
-          </div>
-          <div className="text-center">
-            <p className="text-3xl font-bold text-green-600">{stats.blogs}</p>
-            <p className="text-sm text-gray-600 mt-1">Blog Posts</p>
-          </div>
-          <div className="text-center">
-            <p className="text-3xl font-bold text-yellow-600">{stats.reviews}</p>
-            <p className="text-sm text-gray-600 mt-1">Reviews</p>
-          </div>
-          <div className="text-center">
-            <p className="text-3xl font-bold text-purple-600">{stats.faqs}</p>
-            <p className="text-sm text-gray-600 mt-1">FAQs</p>
-          </div>
-          <div className="text-center">
-            <p className="text-3xl font-bold text-red-600">{stats.statistics}</p>
-            <p className="text-sm text-gray-600 mt-1">Statistics</p>
           </div>
         </div>
       </div>
