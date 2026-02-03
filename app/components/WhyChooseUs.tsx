@@ -56,9 +56,9 @@ export default function WhyChooseUs() {
     };
 
     return (
-        <section className="py-20 sm:py-32 md:py-40 bg-gradient-to-b from-white to-slate-50">
+        <section className="py-10 sm:py-16 md:py-20 bg-gradient-to-b from-white to-slate-50">
             <div className="container mx-auto px-4 sm:px-6">
-                <div className="text-center mb-12 sm:mb-16 md:mb-24">
+                <div className="text-center mb-6 sm:mb-8 md:mb-12">
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
                         {t.title}
                     </h2>
@@ -71,7 +71,7 @@ export default function WhyChooseUs() {
                     {features.map((feature, index) => (
                         <div
                             key={index}
-                            className="bg-white rounded-2xl p-6 sm:p-8 md:p-10 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-slate-100 flex flex-col h-full"
+                            className="bg-white rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-slate-100 flex flex-col h-full"
                         >
                             <div className={`w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br ${colorClasses[feature.color]} rounded-xl flex items-center justify-center text-white mb-4 sm:mb-6 shadow-lg flex-shrink-0`}>
                                 {feature.icon}

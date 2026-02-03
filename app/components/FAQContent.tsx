@@ -163,7 +163,7 @@ export default function FAQContent() {
       {/* ============================================
           HERO SECTION WITH BREADCRUMB
           ============================================ */}
-      <section className="py-8 sm:py-16 md:py-20 lg:py-24">
+      <section className="py-6 sm:py-10 md:py-12 lg:py-14">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             {/* Breadcrumb Navigation */}
@@ -515,7 +515,7 @@ export default function FAQContent() {
                     <div className="pt-4 mt-2">
                       <button
                         type="submit"
-                        className="w-full sm:w-auto bg-blue-600 text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                        className="w-full sm:w-auto bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white px-10 py-4 rounded-2xl font-bold text-lg hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
                       >
                         {t.form.submit}
                       </button>

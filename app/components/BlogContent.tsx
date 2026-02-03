@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useBlogContentTranslations } from "@/hooks/useTranslations";
 import { useLanguage } from "@/contexts/LanguageContext";
+import Statistics from "./Statistics";
 
 /**
  * Blog Content Component
@@ -37,7 +38,7 @@ export default function BlogContent() {
       {/* ============================================
           HERO SECTION WITH BREADCRUMB
           ============================================ */}
-      <section className="py-6 sm:py-12 md:py-16 lg:py-20">
+      <section className="py-4 sm:py-8 md:py-10 lg:py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             {/* Breadcrumb Navigation */}
@@ -64,6 +65,11 @@ export default function BlogContent() {
           </div>
         </div>
       </section>
+
+      {/* ============================================
+          STATISTICS SECTION
+          ============================================ */}
+      <Statistics variant="light" className="py-8 sm:py-12 md:py-16" />
 
       {/* ============================================
           BLOG GRID SECTION
@@ -134,7 +140,7 @@ export default function BlogContent() {
             <div className="flex justify-center items-center gap-2 sm:gap-3">
               {/* Previous Button */}
               <button
-                className="px-4 py-2 sm:px-5 sm:py-2.5 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white rounded-2xl font-semibold hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled
                 aria-label={dir === 'rtl' ? 'Previous Page' : 'Previous Page'}
               >
@@ -144,20 +150,20 @@ export default function BlogContent() {
               </button>
 
               {/* Page Numbers */}
-              <button className="px-4 py-2 sm:px-5 sm:py-2.5 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+              <button className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white rounded-2xl font-semibold hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg">
                 1
               </button>
-              <button className="px-4 py-2 sm:px-5 sm:py-2.5 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors">
+              <button className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white rounded-2xl font-semibold hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg">
                 2
               </button>
               <span className="px-2 text-slate-500">…</span>
-              <button className="px-4 py-2 sm:px-5 sm:py-2.5 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors">
+              <button className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white rounded-2xl font-semibold hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg">
                 6
               </button>
 
               {/* Next Button */}
               <button 
-                className="px-4 py-2 sm:px-5 sm:py-2.5 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors"
+                className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white rounded-2xl font-semibold hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg"
                 aria-label={dir === 'rtl' ? 'Next Page' : 'Next Page'}
               >
                 <svg className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">

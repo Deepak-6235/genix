@@ -113,9 +113,9 @@ const getServiceImageId = (id: number): string => {
 };
 
   return (
-    <section id="services" className="py-20 sm:py-32 md:py-40 bg-white">
+    <section id="services" className="py-10 sm:py-16 md:py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12 sm:mb-16 md:mb-24">
+        <div className="text-center mb-6 sm:mb-8 md:mb-12">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
             {t.title}
           </h2>
@@ -142,7 +142,7 @@ const getServiceImageId = (id: number): string => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
               
-              <div className="p-6 sm:p-8 md:p-10">
+              <div className="p-4 sm:p-6 md:p-8">
 
               {/* Title */}
               <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2 sm:mb-3">

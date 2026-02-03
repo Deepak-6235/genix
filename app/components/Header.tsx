@@ -24,7 +24,7 @@ export default function Header() {
   ];
 
   const navItems = [
-    { label: t.navItems.home, href: "#home" },
+    { label: t.navItems.home, href: "/" },
     { label: t.navItems.about, href: "/about-us" },
     { label: t.navItems.services, href: "/services", hasDropdown: true },
     { label: t.navItems.faq, href: "/faq" },
@@ -34,7 +34,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-slate-100">
-      <nav className="container mx-auto px-4 sm:px-6 py-3 sm:py-4" suppressHydrationWarning>
+      <nav className="container mx-auto px-4 sm:px-6 py-2 sm:py-3" suppressHydrationWarning>
         <div className="flex items-center justify-between">
           {/* Logo */}
           <a href="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity">

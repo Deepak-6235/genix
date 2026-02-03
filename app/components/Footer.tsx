@@ -27,9 +27,9 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-slate-900 text-white py-6 sm:py-8 md:py-10 lg:py-12">
+    <footer className="bg-slate-900 text-white py-4 sm:py-6 md:py-8">
       <div className="container mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6 mb-4 sm:mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6 mb-3 sm:mb-4">
           {/* Brand Section */}
           <div>
             <h3 className="text-xl sm:text-2xl font-bold !text-blue-300 mb-1.5 sm:mb-2">
@@ -111,7 +111,7 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-slate-700 pt-3 sm:pt-4 text-center">
+        <div className="border-t border-slate-700 pt-2 sm:pt-3 text-center">
           <p className="text-slate-400 text-[10px] sm:text-xs">© {new Date().getFullYear()} {t.companyName}. {t.copyright}</p>
         </div>
       </div>

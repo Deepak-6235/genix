@@ -94,7 +94,7 @@ export default function ContactContent() {
       {/* ============================================
           HERO SECTION WITH BREADCRUMB
           ============================================ */}
-      <section className="py-10 sm:py-28 md:py-32 lg:py-36 bg-gradient-to-b from-slate-50 to-white">
+      <section className="py-8 sm:py-14 md:py-16 lg:py-16 bg-gradient-to-b from-slate-50 to-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             {/* Breadcrumb Navigation */}
@@ -128,7 +128,7 @@ export default function ContactContent() {
       {/* ============================================
           CONTACT INFORMATION CARDS
           ============================================ */}
-      <section className="py-10 sm:py-16 md:py-20">
+      <section className="py-6 sm:py-10 md:py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-12 sm:mb-16">
@@ -390,7 +390,7 @@ export default function ContactContent() {
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 sm:py-4 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl text-base sm:text-lg"
+                  className="w-full bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 text-white font-bold py-3 sm:py-4 px-6 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl text-base sm:text-lg"
                 >
                   {t.form.sendMessage}
                 </button>
@@ -409,7 +409,7 @@ export default function ContactContent() {
                 href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 sm:gap-3 bg-emerald-600 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg hover:bg-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl w-full sm:w-auto justify-center"
+                className="inline-flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl w-full sm:w-auto justify-center"
               >
                 <svg
                   className="w-6 h-6"

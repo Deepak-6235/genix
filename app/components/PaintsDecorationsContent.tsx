@@ -15,7 +15,7 @@ export default function PaintsDecorationsContent() {
       {/* ============================================
           SERVICE NAME, DESCRIPTION AND IMAGE (SIDE BY SIDE)
           ============================================ */}
-      <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-white">
+      <section className="py-6 sm:py-8 md:py-10 lg:py-12 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             {/* Breadcrumb Navigation */}
@@ -75,7 +75,7 @@ export default function PaintsDecorationsContent() {
       {/* ============================================
           TITLE, SUBTITLE AND DESCRIPTION SECTION
           ============================================ */}
-      <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-white">
+      <section className="py-8 sm:py-10 md:py-12 lg:py-14 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             {/* Title Section */}

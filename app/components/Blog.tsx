@@ -68,9 +68,9 @@ const blogPosts = [
 
 export default function Blog() {
   return (
-    <section id="blog" className="py-20 sm:py-32 md:py-40 bg-white">
+    <section id="blog" className="py-10 sm:py-16 md:py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12 sm:mb-16 md:mb-24">
+        <div className="text-center mb-6 sm:mb-8 md:mb-12">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
             مقالات منزلية تهمك
           </h2>
@@ -97,7 +97,7 @@ export default function Blog() {
               </div>
 
               {/* Content */}
-              <div className="p-6 sm:p-8">
+              <div className="p-4 sm:p-6">
                 <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
                   <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 sm:px-3 py-1 rounded-full">
                     {post.category}
@@ -127,10 +127,10 @@ export default function Blog() {
           ))}
         </div>
 
-        <div className="text-center mt-12 sm:mt-16 px-4">
+        <div className="text-center mt-6 sm:mt-8 px-4">
           <a
             href="#"
-            className="inline-flex items-center gap-2 bg-slate-100 text-slate-700 px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:bg-slate-200 transition-colors"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-2xl font-bold text-sm sm:text-base hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
           >
             مشاهدة المزيد
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
