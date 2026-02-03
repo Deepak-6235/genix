@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useServicesContentTranslations } from "@/hooks/useTranslations";
+import { useServicesContentTranslations, useDisinfectionContentTranslations } from "@/hooks/useTranslations";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function DisinfectionContent() {
   const t = useServicesContentTranslations();
+  const content = useDisinfectionContentTranslations();
   const { dir } = useLanguage();
   const service = t.services.disinfection;
   return (
