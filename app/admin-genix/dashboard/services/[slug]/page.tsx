@@ -174,7 +174,7 @@ export default function ServiceDetailPage() {
         fullDescription: formData.fullDescription,
       };
 
-      setError('Translating content to all languages...');
+      setError(t('message.translating'));
       const targetLanguages: LanguageCode[] = ['ar', 'pt', 'zh', 'ja'];
       const translations = await translateContent(englishContent, targetLanguages);
 
@@ -257,7 +257,7 @@ export default function ServiceDetailPage() {
   if (!service) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">Service not found</p>
+        <p className="text-gray-500">{t('services.serviceNotFound')}</p>
       </div>
     );
   }
@@ -291,7 +291,7 @@ export default function ServiceDetailPage() {
             {/* Language Selector - Only show in view mode */}
             {!isEditMode && service.translations && Object.keys(service.translations).length > 1 && (
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-600 hidden sm:inline">{t('services.viewLanguage')}:</span>
+                <span className="text-sm text-gray-600 hidden sm:inline">{t('services.viewLanguage')}</span>
                 <div className="flex flex-wrap gap-2">
                   {Object.keys(service.translations).map((lang) => (
                     <button
@@ -313,7 +313,7 @@ export default function ServiceDetailPage() {
             {/* Edit Mode Notice */}
             {isEditMode && (
               <div className="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg text-sm font-medium">
-                Editing in English - Will auto-translate to all languages
+                {t('services.autoTranslateNote')}
               </div>
             )}
           </div>
@@ -344,7 +344,7 @@ export default function ServiceDetailPage() {
             {isEditMode && (
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Change Service Image
+                  {t('services.changeImage')}
                 </label>
                 <input
                   type="file"
@@ -366,7 +366,7 @@ export default function ServiceDetailPage() {
                     onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
                     className="h-4 w-4 text-purple-600 border-gray-300 rounded mr-2"
                   />
-                  <span className="text-sm font-medium text-gray-700">Active</span>
+                  <span className="text-sm font-medium text-gray-700">{t('status.active')}</span>
                 </label>
               ) : (
                 <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${
@@ -394,7 +394,7 @@ export default function ServiceDetailPage() {
             {/* Service Name */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
-                Service Name
+                {t('services.serviceName')}
                 {isEditMode && (
                   <span className="ml-2 text-xs text-gray-400">
                     {formData.name.length}/{CHAR_LIMITS.name}
@@ -420,7 +420,7 @@ export default function ServiceDetailPage() {
             {/* Title */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
-                Title
+                {t('form.title')}
                 {isEditMode && (
                   <span className="ml-2 text-xs text-gray-400">
                     {formData.title.length}/{CHAR_LIMITS.title}
@@ -446,7 +446,7 @@ export default function ServiceDetailPage() {
             {/* Subtitle */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
-                Subtitle
+                {t('services.subtitle')}
                 {isEditMode && (
                   <span className="ml-2 text-xs text-gray-400">
                     {formData.subtitle.length}/{CHAR_LIMITS.subtitle}
@@ -472,7 +472,7 @@ export default function ServiceDetailPage() {
             {/* Short Description */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
-                Short Description
+                {t('form.shortDescription')}
                 {isEditMode && (
                   <span className="ml-2 text-xs text-gray-400">
                     {formData.shortDescription.length}/{CHAR_LIMITS.shortDescription}
@@ -498,7 +498,7 @@ export default function ServiceDetailPage() {
             {/* Full Description */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
-                Full Description
+                {t('form.fullDescription')}
                 {isEditMode && (
                   <span className="ml-2 text-xs text-gray-400">
                     {formData.fullDescription.length}/{CHAR_LIMITS.fullDescription}
@@ -519,7 +519,7 @@ export default function ServiceDetailPage() {
                   {currentData.fullDescription}
                 </p>
               ) : (
-                <p className="text-sm text-gray-400 italic">No full description provided</p>
+                <p className="text-sm text-gray-400 italic">{t('services.noFullDescription')}</p>
               )}
             </div>
 
@@ -532,14 +532,14 @@ export default function ServiceDetailPage() {
                     disabled={saving}
                     className="w-full sm:w-auto px-8 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium disabled:opacity-50"
                   >
-                    Cancel
+                    {t('button.cancel')}
                   </button>
                   <button
                     onClick={handleSave}
                     disabled={saving}
                     className="w-full sm:w-auto px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium disabled:opacity-50"
                   >
-                    {saving ? 'Saving...' : 'Save Changes'}
+                    {saving ? t('message.savingChanges') : t('button.save')}
                   </button>
                 </>
               ) : (
@@ -548,13 +548,13 @@ export default function ServiceDetailPage() {
                     href={`/admin-genix/dashboard/services`}
                     className="w-full sm:w-auto px-8 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium text-center"
                   >
-                    {t('button.back') || 'Back to Services'}
+                    {t('services.backToServices')}
                   </Link>
                   <button
                     onClick={() => setIsEditMode(true)}
                     className="w-full sm:w-auto px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium"
                   >
-                    {t('button.edit') || 'Edit Service'}
+                    {t('services.editService')}
                   </button>
                 </>
               )}

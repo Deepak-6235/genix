@@ -55,7 +55,7 @@ export default function AboutUsPage() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(email)) {
-      return 'Please enter a valid email address';
+      return t('validation.invalidEmail');
     }
     return '';
   };
@@ -93,7 +93,7 @@ export default function AboutUsPage() {
         const emailValidationError = validateEmail(formData.email);
         if (emailValidationError) {
           setEmailError(emailValidationError);
-          setError('Please fix validation errors before saving');
+          setError(t('message.error'));
           setSaving(false);
           return;
         }
@@ -112,7 +112,7 @@ export default function AboutUsPage() {
         setIsEditing(false);
         setEmailError('');
         setError('');
-        alert('About Us information saved successfully');
+        alert(t('message.saved'));
       } else {
         setError(data.message || 'Failed to save');
       }

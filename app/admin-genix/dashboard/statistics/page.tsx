@@ -42,10 +42,10 @@ export default function StatisticsPage() {
 
   const validateValue = (value: number): string => {
     if (value < 0) {
-      return 'Value cannot be negative';
+      return t('statistics.valueError');
     }
     if (value.toString().startsWith('0') && value !== 0) {
-      return 'Value cannot start with 0';
+      return t('validation.noLeadingZero');
     }
     return '';
   };

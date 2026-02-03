@@ -85,14 +85,14 @@ export default function NewBlogPage() {
 
     // Validation
     if (!formData.name || !formData.shortDescription || !formData.author) {
-      setError('Name, short description, and author are required');
+      setError(t('message.required'));
       setSaving(false);
       setCurrentTab('main');
       return;
     }
 
     if (!selectedFile) {
-      setError('Blog image is required');
+      setError(t('message.imageRequired'));
       setSaving(false);
       setCurrentTab('main');
       return;
@@ -158,13 +158,13 @@ export default function NewBlogPage() {
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
-                Back
+                {t('button.back')}
               </button>
-              <h1 className="text-2xl font-bold text-gray-900">Add New Blog</h1>
+              <h1 className="text-2xl font-bold text-gray-900">{t('blogs.addNewBlog')}</h1>
             </div>
 
             <div className="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg text-sm font-medium">
-              Creating in English - Will auto-translate to all languages
+              {t('reviews.creatingInEnglish')}
             </div>
           </div>
         </div>
@@ -182,7 +182,7 @@ export default function NewBlogPage() {
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
-              Main Blog Info
+              {t('blogs.mainBlogInfo')}
             </button>
             <button
               onClick={() => setCurrentTab('details')}
@@ -192,7 +192,7 @@ export default function NewBlogPage() {
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
-              Detailed Sections ({detailedSections.length})
+              {t('blogs.detailedSections')} ({detailedSections.length})
             </button>
           </div>
         </div>
@@ -213,7 +213,7 @@ export default function NewBlogPage() {
               <>
                 {/* Status */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">Status</h3>
+                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">{t('form.status')}</h3>
                   <label className="inline-flex items-center cursor-pointer">
                     <input
                       type="checkbox"
@@ -221,14 +221,14 @@ export default function NewBlogPage() {
                       onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
                       className="h-4 w-4 text-purple-600 border-gray-300 rounded mr-2"
                     />
-                    <span className="text-sm font-medium text-gray-700">Active</span>
+                    <span className="text-sm font-medium text-gray-700">{t('status.active')}</span>
                   </label>
                 </div>
 
                 {/* Blog Image */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                   <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">
-                    Blog Image * (Required)
+                    {t('blogs.blogImageRequired')}
                   </h3>
                   <div className="flex gap-4 items-center">
                     {imagePreview && (
@@ -254,7 +254,7 @@ export default function NewBlogPage() {
                 {/* Blog Name */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                   <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
-                    Blog Name / Title *
+                    {t('blogs.blogNameTitle')} *
                     <span className="ml-2 text-xs text-gray-400">{formData.name.length}/200</span>
                   </h3>
                   <input
@@ -271,7 +271,7 @@ export default function NewBlogPage() {
                 {/* Short Description */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                   <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
-                    Short Description / Excerpt *
+                    {t('blogs.shortDescriptionExcerpt')} *
                     <span className="ml-2 text-xs text-gray-400">{formData.shortDescription.length}/500</span>
                   </h3>
                   <textarea
@@ -288,7 +288,7 @@ export default function NewBlogPage() {
                 {/* Author */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                   <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
-                    Author *
+                    {t('blogs.authorField')} *
                     <span className="ml-2 text-xs text-gray-400">{formData.author.length}/100</span>
                   </h3>
                   <input
@@ -304,7 +304,7 @@ export default function NewBlogPage() {
 
                 {/* Published Date */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">Published Date</h3>
+                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">{t('blogs.publishedDateLabel')}</h3>
                   <input
                     type="date"
                     value={formData.publishedAt}
@@ -318,7 +318,7 @@ export default function NewBlogPage() {
                     onClick={() => setCurrentTab('details')}
                     className="px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium"
                   >
-                    Next: Add Detailed Sections →
+                    {t('blogs.nextAddSections')} →
                   </button>
                 </div>
               </>
@@ -329,8 +329,7 @@ export default function NewBlogPage() {
               <>
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <p className="text-sm text-blue-800">
-                    <strong>Add detailed content sections</strong> to your blog. Each section will have a title and description.
-                    You can add as many sections as you need.
+                    <strong>{t('blogs.addDetailedSections')}</strong> {t('blogs.addDetailedSectionsNote')}
                   </p>
                 </div>
 
@@ -339,12 +338,12 @@ export default function NewBlogPage() {
                   {detailedSections.map((section, index) => (
                     <div key={index} className="bg-white rounded-xl shadow-sm border-2 border-purple-200 p-6">
                       <div className="flex justify-between items-center mb-4">
-                        <h4 className="font-bold text-gray-900">Section {index + 1}</h4>
+                        <h4 className="font-bold text-gray-900">{t('blogs.section.number')} {index + 1}</h4>
                         <button
                           onClick={() => removeDetailedSection(index)}
                           className="text-red-600 hover:text-red-800 font-medium text-sm"
                         >
-                          Remove
+                          {t('blogs.remove')}
                         </button>
                       </div>
 
@@ -352,7 +351,7 @@ export default function NewBlogPage() {
                         {/* Section Image (Optional) */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Section Image (Optional)
+                            {t('blogs.section.imageOptional')}
                           </label>
                           <div className="flex gap-4 items-center">
                             {section.imagePreview && (
@@ -382,7 +381,7 @@ export default function NewBlogPage() {
                         {/* Section Title */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Section Title *
+                            {t('blogs.section.titleLabel')} *
                             <span className="ml-2 text-xs text-gray-400">{section.title.length}/200</span>
                           </label>
                           <input
@@ -399,7 +398,7 @@ export default function NewBlogPage() {
                         {/* Section Description */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Section Description *
+                            {t('blogs.section.descriptionLabel')} *
                             <span className="ml-2 text-xs text-gray-400">{section.description.length}/2000</span>
                           </label>
                           <textarea
@@ -422,7 +421,7 @@ export default function NewBlogPage() {
                   onClick={addDetailedSection}
                   className="w-full px-6 py-4 border-2 border-dashed border-purple-400 text-purple-600 rounded-lg hover:bg-purple-50 transition font-medium"
                 >
-                  + Add Another Section
+                  + {t('blogs.addAnotherSection')}
                 </button>
 
                 {/* Action Buttons */}
@@ -431,21 +430,21 @@ export default function NewBlogPage() {
                     onClick={() => setCurrentTab('main')}
                     className="w-full sm:w-auto px-8 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium"
                   >
-                    ← Back to Main Info
+                    ← {t('blogs.backToMainInfo')}
                   </button>
                   <div className="flex gap-4 w-full sm:w-auto">
                     <button
                       onClick={() => router.back()}
                       className="flex-1 sm:flex-none px-8 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium"
                     >
-                      Cancel
+                      {t('button.cancel')}
                     </button>
                     <button
                       onClick={handleSubmit}
                       disabled={saving}
                       className="flex-1 sm:flex-none px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium disabled:opacity-50"
                     >
-                      {saving ? 'Creating Blog...' : 'Create Blog'}
+                      {saving ? t('blogs.creatingBlog') : t('blogs.createBlog')}
                     </button>
                   </div>
                 </div>

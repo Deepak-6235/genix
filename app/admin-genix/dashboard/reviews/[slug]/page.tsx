@@ -116,7 +116,7 @@ export default function ReviewDetailPage() {
         text: formData.text,
       };
 
-      setError('Translating content to all languages...');
+      setError(t('message.translating'));
       const targetLanguages: LanguageCode[] = ['ar', 'pt', 'zh', 'ja'];
       const translations = await translateContent(englishContent, targetLanguages);
 
@@ -194,7 +194,7 @@ export default function ReviewDetailPage() {
   if (!review) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">Review not found</p>
+        <p className="text-gray-500">{t('reviews.reviewNotFound')}</p>
       </div>
     );
   }
@@ -227,7 +227,7 @@ export default function ReviewDetailPage() {
             {/* Language Selector - Only show in view mode */}
             {!isEditMode && review.translations && Object.keys(review.translations).length > 1 && (
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-600 hidden sm:inline">View Language:</span>
+                <span className="text-sm text-gray-600 hidden sm:inline">{t('reviews.viewLanguage')}:</span>
                 <div className="flex flex-wrap gap-2">
                   {Object.keys(review.translations).map((lang) => (
                     <button
@@ -249,7 +249,7 @@ export default function ReviewDetailPage() {
             {/* Edit Mode Notice */}
             {isEditMode && (
               <div className="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg text-sm font-medium">
-                Editing in English - Will auto-translate to all languages
+                {t('services.autoTranslateNote')}
               </div>
             )}
           </div>
@@ -269,7 +269,7 @@ export default function ReviewDetailPage() {
 
             {/* Active Status */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">Status</h3>
+              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">{t('form.status')}</h3>
               {isEditMode ? (
                 <label className="inline-flex items-center cursor-pointer">
                   <input
@@ -278,20 +278,20 @@ export default function ReviewDetailPage() {
                     onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
                     className="h-4 w-4 text-purple-600 border-gray-300 rounded mr-2"
                   />
-                  <span className="text-sm font-medium text-gray-700">Active</span>
+                  <span className="text-sm font-medium text-gray-700">{t('status.active')}</span>
                 </label>
               ) : (
                 <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${
                   review.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
                 }`}>
-                  {review.isActive ? 'Active' : 'Inactive'}
+                  {review.isActive ? t('status.active') : t('status.inactive')}
                 </span>
               )}
             </div>
 
             {/* Rating */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">Rating</h3>
+              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">{t('reviews.rating')}</h3>
               {isEditMode ? (
                 <div className="flex items-center gap-2">
                   {[1, 2, 3, 4, 5].map((star) => (
@@ -308,7 +308,7 @@ export default function ReviewDetailPage() {
                       </svg>
                     </button>
                   ))}
-                  <span className="ml-2 text-sm text-gray-600">({formData.rating} stars)</span>
+                  <span className="ml-2 text-sm text-gray-600">({formData.rating} {t('reviews.stars')})</span>
                 </div>
               ) : (
                 <div className="flex items-center gap-1">
@@ -328,7 +328,7 @@ export default function ReviewDetailPage() {
             {/* Customer Name */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
-                Customer Name
+                {t('reviews.customerName')}
                 {isEditMode && (
                   <span className="ml-2 text-xs text-gray-400">
                     {formData.name.length}/{CHAR_LIMITS.name}
@@ -354,7 +354,7 @@ export default function ReviewDetailPage() {
             {/* Position */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
-                Position
+                {t('reviews.position')}
                 {isEditMode && (
                   <span className="ml-2 text-xs text-gray-400">
                     {formData.position.length}/{CHAR_LIMITS.position}
@@ -380,7 +380,7 @@ export default function ReviewDetailPage() {
             {/* Company */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
-                Company
+                {t('reviews.company')}
                 {isEditMode && (
                   <span className="ml-2 text-xs text-gray-400">
                     {formData.company.length}/{CHAR_LIMITS.company}
@@ -406,7 +406,7 @@ export default function ReviewDetailPage() {
             {/* Review Text */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
-                Review Text
+                {t('reviews.reviewText')}
                 {isEditMode && (
                   <span className="ml-2 text-xs text-gray-400">
                     {formData.text.length}/{CHAR_LIMITS.text}
@@ -438,14 +438,14 @@ export default function ReviewDetailPage() {
                     disabled={saving}
                     className="w-full sm:w-auto px-8 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium disabled:opacity-50"
                   >
-                    Cancel
+                    {t('button.cancel')}
                   </button>
                   <button
                     onClick={handleSave}
                     disabled={saving}
                     className="w-full sm:w-auto px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium disabled:opacity-50"
                   >
-                    {saving ? 'Saving...' : 'Save Changes'}
+                    {saving ? t('message.savingChanges') : t('button.save')}
                   </button>
                 </>
               ) : (
@@ -454,13 +454,13 @@ export default function ReviewDetailPage() {
                     href={`/admin-genix/dashboard/reviews`}
                     className="w-full sm:w-auto px-8 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium text-center"
                   >
-                    {t('button.back') || 'Back to Reviews'}
+                    {t('reviews.backToReviews')}
                   </Link>
                   <button
                     onClick={() => setIsEditMode(true)}
                     className="w-full sm:w-auto px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium"
                   >
-                    {t('button.edit') || 'Edit Review'}
+                    {t('reviews.editReview')}
                   </button>
                 </>
               )}

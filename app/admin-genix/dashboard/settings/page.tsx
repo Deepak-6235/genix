@@ -78,7 +78,7 @@ export default function SettingsPage() {
     setSuccess('');
 
     if (!formData.languageId || !formData.question || !formData.answer) {
-      setError('Please fill in all required fields');
+      setError(t('message.required'));
       return;
     }
 
@@ -98,7 +98,7 @@ export default function SettingsPage() {
       const data = await response.json();
 
       if (data.success) {
-        setSuccess(editingFaq ? 'FAQ updated successfully' : 'FAQ created successfully');
+        setSuccess(editingFaq ? t('message.updated') : t('message.created'));
         fetchFaqs();
         resetForm();
         setTimeout(() => setSuccess(''), 3000);
@@ -124,7 +124,7 @@ export default function SettingsPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this FAQ?')) {
+    if (!confirm(t('message.deleteConfirm'))) {
       return;
     }
 
@@ -136,7 +136,7 @@ export default function SettingsPage() {
       const data = await response.json();
 
       if (data.success) {
-        setSuccess('FAQ deleted successfully');
+        setSuccess(t('message.deleted'));
         fetchFaqs();
         setTimeout(() => setSuccess(''), 3000);
       } else {

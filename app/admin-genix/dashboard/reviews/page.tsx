@@ -25,11 +25,12 @@ interface Review {
   translations?: Record<string, ReviewTranslation>;
 }
 
-function ReviewCard({ review, onEdit, onDelete, currentLang }: {
+function ReviewCard({ review, onEdit, onDelete, currentLang, t }: {
   review: Review;
   onEdit: (slug: string) => void;
   onDelete: (slug: string) => void;
   currentLang: LanguageCode;
+  t: (key: string) => string;
 }) {
   const displayData = review.translations?.[currentLang] || {
     name: review.name,
@@ -46,7 +47,7 @@ function ReviewCard({ review, onEdit, onDelete, currentLang }: {
         <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
           review.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
         }`}>
-          {review.isActive ? 'Active' : 'Inactive'}
+          {review.isActive ? t('status.active') : t('status.inactive')}
         </span>
       </div>
 
@@ -171,14 +172,14 @@ export default function ReviewsPage() {
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">{t('reviews.title') || 'Reviews'}</h2>
-          <p className="mt-1 text-sm text-gray-600">Manage customer reviews and testimonials</p>
+          <h2 className="text-2xl font-bold text-gray-900">{t('reviews.title')}</h2>
+          <p className="mt-1 text-sm text-gray-600">{t('reviews.subtitle')}</p>
         </div>
         <button
           onClick={() => router.push('/admin-genix/dashboard/reviews/new')}
           className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium"
         >
-          + Add Review
+          + {t('reviews.addNew')}
         </button>
       </div>
 
@@ -189,6 +190,7 @@ export default function ReviewsPage() {
             key={review.id}
             review={review}
             currentLang={adminLanguage as LanguageCode}
+            t={t}
             onEdit={(slug) => router.push(`/admin-genix/dashboard/reviews/${slug}?edit=true`)}
             onDelete={handleDelete}
           />
@@ -197,7 +199,7 @@ export default function ReviewsPage() {
 
       {reviews.length === 0 && (
         <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
-          <p className="text-gray-500">No reviews found</p>
+          <p className="text-gray-500">{t('reviews.noReviews')}</p>
         </div>
       )}
     </div>

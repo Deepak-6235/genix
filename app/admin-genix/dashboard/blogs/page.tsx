@@ -25,58 +25,81 @@ interface Blog {
   detailedBlogs?: DetailedBlog[];
 }
 
-function BlogItem({ blog, onDelete, onView, onEdit, t }: {
+function BlogCard({ blog, onDelete, onView, onEdit, t }: {
   blog: Blog;
-  onDelete: (id: string) => void;
-  onView: (blog: Blog) => void;
+  onDelete: (slug: string) => void;
+  onView: (slug: string) => void;
   onEdit: (slug: string) => void;
   t: (key: string) => string;
 }) {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition">
-      <div className="flex items-start gap-4">
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-200">
+      <div className="flex gap-6">
+        {/* Blog Image */}
         {blog.imageUrl && (
-          <img
-            src={blog.imageUrl}
-            alt={blog.name}
-            className="w-20 h-20 rounded-lg object-cover"
-          />
+          <div className="flex-shrink-0">
+            <img
+              src={blog.imageUrl}
+              alt={blog.name}
+              className="w-20 h-20 rounded-xl object-cover"
+            />
+          </div>
         )}
 
-        <div className="flex-1">
-          <div className="flex justify-between items-start mb-2">
-            <div>
-              <h3 className="text-lg font-bold text-gray-900">{blog.name}</h3>
-              <p className="text-sm text-gray-600">By {blog.author}</p>
-              {blog.detailedBlogs && blog.detailedBlogs.length > 0 && (
-                <p className="text-xs text-purple-600 mt-1">{blog.detailedBlogs.length} detailed sections</p>
-              )}
+        {/* Blog Content */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-4 mb-3">
+            <div className="flex-1 min-w-0">
+              <h3 className="text-xl font-bold text-gray-900 mb-1 truncate">
+                {blog.name}
+              </h3>
+              <div className="flex items-center gap-3 text-sm text-gray-600">
+                <span>{t('blogs.author')} {blog.author}</span>
+                {blog.detailedBlogs && blog.detailedBlogs.length > 0 && (
+                  <>
+                    <span>•</span>
+                    <span className="text-purple-600 font-medium">
+                      {blog.detailedBlogs.length} {t('blogs.sections')}
+                    </span>
+                  </>
+                )}
+              </div>
             </div>
+
+            {/* Status Badge */}
             <span
-              className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                blog.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold flex-shrink-0 ${
+                blog.isActive
+                  ? 'bg-green-100 text-green-700'
+                  : 'bg-gray-100 text-gray-600'
               }`}
             >
               {blog.isActive ? t('status.active') : t('status.inactive')}
             </span>
           </div>
-          <p className="text-sm text-gray-600 mb-4 line-clamp-2">{blog.shortDescription}</p>
-          <div className="flex space-x-2">
+
+          {/* Short Description */}
+          <p className="text-sm text-gray-600 mb-4 line-clamp-2 leading-relaxed">
+            {blog.shortDescription}
+          </p>
+
+          {/* Action Buttons */}
+          <div className="grid grid-cols-3 gap-3">
             <button
-              onClick={() => onView(blog)}
-              className="flex-1 px-3 py-2 text-sm bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition"
+              onClick={() => onView(blog.slug)}
+              className="px-4 py-2.5 text-sm font-medium bg-green-50 text-green-700 rounded-xl hover:bg-green-100 transition-colors"
             >
               {t('button.view')}
             </button>
             <button
               onClick={() => onEdit(blog.slug)}
-              className="flex-1 px-3 py-2 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition"
+              className="px-4 py-2.5 text-sm font-medium bg-blue-50 text-blue-700 rounded-xl hover:bg-blue-100 transition-colors"
             >
               {t('button.edit')}
             </button>
             <button
               onClick={() => onDelete(blog.slug)}
-              className="flex-1 px-3 py-2 text-sm bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition"
+              className="px-4 py-2.5 text-sm font-medium bg-red-50 text-red-700 rounded-xl hover:bg-red-100 transition-colors"
             >
               {t('button.delete')}
             </button>
@@ -92,8 +115,6 @@ export default function BlogsPage() {
   const { t, adminLanguage } = useAdminLanguage();
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showViewModal, setShowViewModal] = useState(false);
-  const [viewingBlog, setViewingBlog] = useState<Blog | null>(null);
 
   const fetchBlogs = async () => {
     try {
@@ -115,9 +136,8 @@ export default function BlogsPage() {
     fetchBlogs();
   }, [adminLanguage]);
 
-
   const handleDelete = async (slug: string) => {
-    if (!confirm('Are you sure you want to delete this blog?')) return;
+    if (!confirm(t('message.deleteConfirm'))) return;
 
     try {
       const response = await fetch(`/api/blogs/${encodeURIComponent(slug)}`, {
@@ -144,110 +164,45 @@ export default function BlogsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      {/* Page Header */}
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{t('blogs.title')}</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{t('blogs.title')}</h1>
           <p className="mt-1 text-sm text-gray-600">{t('blogs.subtitle')}</p>
         </div>
         <button
           onClick={() => router.push('/admin-genix/dashboard/blogs/new')}
-          className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
+          className="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all duration-200 font-semibold shadow-md hover:shadow-lg flex items-center gap-2"
         >
-          {t('blogs.addBlog')}
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
+          {t('blogs.addNew')}
         </button>
       </div>
 
       {/* Blogs List */}
       <div className="space-y-4">
         {blogs.map((blog) => (
-          <BlogItem
+          <BlogCard
             key={blog.id}
             blog={blog}
             t={t}
-            onView={(blog) => {
-              setViewingBlog(blog);
-              setShowViewModal(true);
-            }}
-            onEdit={(slug) => router.push(`/admin-genix/dashboard/blogs/edit/${slug}`)}
+            onView={(slug) => router.push(`/admin-genix/dashboard/blogs/view/${slug}`)}
+            onEdit={(slug) => router.push(`/admin-genix/dashboard/blogs/view/${slug}?edit=true`)}
             onDelete={handleDelete}
           />
         ))}
       </div>
 
+      {/* Empty State */}
       {blogs.length === 0 && (
-        <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
-          <p className="text-gray-500">{t('blogs.noBlogs')}</p>
-        </div>
-      )}
-
-      {/* View Modal */}
-      {showViewModal && viewingBlog && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
-              <h2 className="text-2xl font-bold text-gray-900">{viewingBlog.name}</h2>
-              <button
-                onClick={() => setShowViewModal(false)}
-                className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
-              >
-                ×
-              </button>
-            </div>
-
-            <div className="p-6 space-y-6">
-              {viewingBlog.imageUrl && (
-                <img
-                  src={viewingBlog.imageUrl}
-                  alt={viewingBlog.name}
-                  className="w-full h-64 object-cover rounded-xl"
-                />
-              )}
-
-              <div className="flex justify-between items-center text-sm text-gray-600">
-                <p>By {viewingBlog.author}</p>
-                {viewingBlog.publishedAt && (
-                  <p>Published: {new Date(viewingBlog.publishedAt).toLocaleDateString()}</p>
-                )}
-              </div>
-
-              <div className="bg-purple-50 rounded-xl p-4 border border-purple-200">
-                <h3 className="font-bold text-purple-900 mb-2">Short Description</h3>
-                <p className="text-gray-700">{viewingBlog.shortDescription}</p>
-              </div>
-
-              {viewingBlog.detailedBlogs && viewingBlog.detailedBlogs.length > 0 && (
-                <div className="space-y-4">
-                  <h3 className="text-lg font-bold text-gray-900 border-b pb-2">
-                    Detailed Sections ({viewingBlog.detailedBlogs.length})
-                  </h3>
-                  {viewingBlog.detailedBlogs.map((section, index) => (
-                    <div key={section.id} className="border-l-4 border-purple-500 pl-4 py-2">
-                      {section.imageUrl && (
-                        <img
-                          src={section.imageUrl}
-                          alt={section.title}
-                          className="w-full h-48 object-cover rounded-lg mb-3"
-                        />
-                      )}
-                      <h4 className="font-bold text-gray-900 mb-2">
-                        {index + 1}. {section.title}
-                      </h4>
-                      <p className="text-gray-700 whitespace-pre-wrap">{section.description}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              <div className="flex gap-3 pt-4 border-t">
-                <button
-                  onClick={() => setShowViewModal(false)}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
-                >
-                  {t('button.close')}
-                </button>
-              </div>
-            </div>
-          </div>
+        <div className="text-center py-16 bg-white rounded-2xl border-2 border-dashed border-gray-300">
+          <svg className="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+          </svg>
+          <p className="text-lg font-medium text-gray-900 mb-1">{t('blogs.noBlogs')}</p>
+          <p className="text-sm text-gray-500">Get started by creating your first blog post</p>
         </div>
       )}
     </div>

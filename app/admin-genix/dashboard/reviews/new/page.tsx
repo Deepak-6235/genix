@@ -43,7 +43,7 @@ export default function NewReviewPage() {
 
     // Validation
     if (!formData.name || !formData.position || !formData.company || !formData.text) {
-      setError('All fields are required');
+      setError(t('message.required'));
       setSaving(false);
       return;
     }
@@ -57,7 +57,7 @@ export default function NewReviewPage() {
         text: formData.text,
       };
 
-      setError('Translating content to all languages...');
+      setError(t('message.translating'));
       const targetLanguages: LanguageCode[] = ['ar', 'pt', 'zh', 'ja'];
       const translations = await translateContent(englishContent, targetLanguages);
 
@@ -113,7 +113,7 @@ export default function NewReviewPage() {
 
             {/* Edit Mode Notice */}
             <div className="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg text-sm font-medium">
-              Creating in English - Will auto-translate to all languages
+              {t('reviews.creatingInEnglish')}
             </div>
           </div>
         </div>
@@ -124,8 +124,8 @@ export default function NewReviewPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto space-y-8">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Add New Review</h1>
-              <p className="mt-2 text-gray-600">Create a new customer review and testimonial</p>
+              <h1 className="text-3xl font-bold text-gray-900">{t('reviews.newReview')}</h1>
+              <p className="mt-2 text-gray-600">{t('reviews.newReviewSubtitle')}</p>
             </div>
 
             {error && (
@@ -140,7 +140,7 @@ export default function NewReviewPage() {
 
             {/* Active Status */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">Status</h3>
+              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">{t('form.status')}</h3>
               <label className="inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
@@ -148,13 +148,13 @@ export default function NewReviewPage() {
                   onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
                   className="h-4 w-4 text-purple-600 border-gray-300 rounded mr-2"
                 />
-                <span className="text-sm font-medium text-gray-700">Active</span>
+                <span className="text-sm font-medium text-gray-700">{t('status.active')}</span>
               </label>
             </div>
 
             {/* Rating */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">Rating *</h3>
+              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">{t('reviews.rating')} *</h3>
               <div className="flex items-center gap-2">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -171,14 +171,14 @@ export default function NewReviewPage() {
                     </svg>
                   </button>
                 ))}
-                <span className="ml-2 text-sm text-gray-600">({formData.rating} stars)</span>
+                <span className="ml-2 text-sm text-gray-600">({formData.rating} {t('reviews.stars')})</span>
               </div>
             </div>
 
             {/* Customer Name */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
-                Customer Name *
+                {t('reviews.customerName')} *
                 <span className="ml-2 text-xs text-gray-400">
                   {formData.name.length}/{CHAR_LIMITS.name}
                 </span>
@@ -197,7 +197,7 @@ export default function NewReviewPage() {
             {/* Position */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
-                Position *
+                {t('reviews.position')} *
                 <span className="ml-2 text-xs text-gray-400">
                   {formData.position.length}/{CHAR_LIMITS.position}
                 </span>
@@ -216,7 +216,7 @@ export default function NewReviewPage() {
             {/* Company */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
-                Company *
+                {t('reviews.company')} *
                 <span className="ml-2 text-xs text-gray-400">
                   {formData.company.length}/{CHAR_LIMITS.company}
                 </span>
@@ -235,7 +235,7 @@ export default function NewReviewPage() {
             {/* Review Text */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
-                Review Text *
+                {t('reviews.reviewText')} *
                 <span className="ml-2 text-xs text-gray-400">
                   {formData.text.length}/{CHAR_LIMITS.text}
                 </span>

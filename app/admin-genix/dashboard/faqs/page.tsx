@@ -211,7 +211,7 @@ export default function FAQsPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this FAQ?')) return;
+    if (!confirm(t('message.deleteConfirm'))) return;
 
     try {
       const response = await fetch(`/api/faqs/${id}`, {
@@ -247,7 +247,7 @@ export default function FAQsPage() {
           onClick={() => openModal()}
           className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
         >
-          {t('faqs.addFaq')}
+          {t('faqs.addNew')}
         </button>
       </div>
 
