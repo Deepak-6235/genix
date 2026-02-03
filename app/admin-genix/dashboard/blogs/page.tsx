@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useAdminLanguage } from '@/contexts/AdminLanguageContext';
 
 interface Blog {
   id: string;
@@ -15,11 +16,12 @@ interface Blog {
   order: number;
 }
 
-function BlogItem({ blog, onEdit, onDelete, onView }: {
+function BlogItem({ blog, onEdit, onDelete, onView, t }: {
   blog: Blog;
   onEdit: (blog: Blog) => void;
   onDelete: (id: string) => void;
   onView: (blog: Blog) => void;
+  t: (key: string) => string;
 }) {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition">
@@ -45,7 +47,7 @@ function BlogItem({ blog, onEdit, onDelete, onView }: {
                 blog.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
               }`}
             >
-              {blog.isActive ? 'Active' : 'Inactive'}
+              {blog.isActive ? t('status.active') : t('status.inactive')}
             </span>
           </div>
           <p className="text-sm text-gray-600 mb-4 line-clamp-2">{blog.excerpt}</p>
@@ -54,19 +56,19 @@ function BlogItem({ blog, onEdit, onDelete, onView }: {
               onClick={() => onView(blog)}
               className="flex-1 px-3 py-2 text-sm bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition"
             >
-              View
+              {t('button.view')}
             </button>
             <button
               onClick={() => onEdit(blog)}
               className="flex-1 px-3 py-2 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition"
             >
-              Edit
+              {t('button.edit')}
             </button>
             <button
               onClick={() => onDelete(blog.slug)}
               className="flex-1 px-3 py-2 text-sm bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition"
             >
-              Delete
+              {t('button.delete')}
             </button>
           </div>
         </div>
@@ -76,6 +78,7 @@ function BlogItem({ blog, onEdit, onDelete, onView }: {
 }
 
 export default function BlogsPage() {
+  const { t } = useAdminLanguage();
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -241,7 +244,7 @@ export default function BlogsPage() {
     return (
       <div className="text-center py-12">
         <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
-        <p className="mt-4 text-gray-600">Loading blogs...</p>
+        <p className="mt-4 text-gray-600">{t('loading.please')}</p>
       </div>
     );
   }
@@ -250,14 +253,14 @@ export default function BlogsPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Blogs</h1>
-          <p className="mt-2 text-gray-600">Manage your blog posts</p>
+          <h1 className="text-3xl font-bold text-gray-900">{t('blogs.title')}</h1>
+          <p className="mt-2 text-gray-600">{t('blogs.subtitle')}</p>
         </div>
         <button
           onClick={() => openModal()}
           className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
         >
-          Add New Blog
+          {t('blogs.addBlog')}
         </button>
       </div>
 
@@ -267,6 +270,7 @@ export default function BlogsPage() {
           <BlogItem
             key={blog.id}
             blog={blog}
+            t={t}
             onView={(blog) => {
               setViewingBlog(blog);
               setShowViewModal(true);
@@ -279,7 +283,7 @@ export default function BlogsPage() {
 
       {blogs.length === 0 && (
         <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
-          <p className="text-gray-500">No blogs found. Add your first blog!</p>
+          <p className="text-gray-500">{t('blogs.noBlogs')}</p>
         </div>
       )}
 
@@ -289,13 +293,13 @@ export default function BlogsPage() {
           <div className="bg-white rounded-xl max-w-2xl w-full my-8">
             <div className="p-6 border-b border-gray-200">
               <h3 className="text-xl font-bold text-gray-900">
-                {editingBlog ? 'Edit Blog' : 'Add New Blog'}
+                {editingBlog ? t('modal.editBlog') : t('modal.addBlog')}
               </h3>
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Image</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('blogs.image')}</label>
                 <div className="flex gap-4">
                   {imagePreview && (
                     <img
@@ -314,7 +318,7 @@ export default function BlogsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Title *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('form.title')} *</label>
                 <input
                   type="text"
                   required
@@ -328,47 +332,47 @@ export default function BlogsPage() {
                     });
                   }}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
-                  placeholder="Blog title"
+                  placeholder={t('placeholder.enterTitle')}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Excerpt *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('blogs.excerpt')} *</label>
                 <textarea
                   required
                   rows={3}
                   value={formData.excerpt}
                   onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
-                  placeholder="Brief excerpt"
+                  placeholder={t('placeholder.enterDescription')}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Content *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('blogs.content')} *</label>
                 <textarea
                   required
                   rows={6}
                   value={formData.content}
                   onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
-                  placeholder="Full blog content"
+                  placeholder={t('placeholder.enterDescription')}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Author</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('blogs.author')}</label>
                 <input
                   type="text"
                   value={formData.author}
                   onChange={(e) => setFormData({ ...formData, author: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900"
-                  placeholder="Author name"
+                  placeholder={t('placeholder.enterDescription')}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Published Date</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('blogs.publishedDate')}</label>
                 <input
                   type="date"
                   value={formData.publishedAt}
@@ -386,7 +390,7 @@ export default function BlogsPage() {
                   className="rounded"
                 />
                 <label htmlFor="isActive" className="ml-2 text-sm font-medium text-gray-700">
-                  Active (Show on website)
+                  {t('form.isActive')}
                 </label>
               </div>
 
@@ -402,14 +406,14 @@ export default function BlogsPage() {
                   onClick={closeModal}
                   className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
                 >
-                  Cancel
+                  {t('button.cancel')}
                 </button>
                 <button
                   type="submit"
                   disabled={formLoading}
                   className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition disabled:opacity-50"
                 >
-                  {formLoading ? 'Saving...' : editingBlog ? 'Update Blog' : 'Create Blog'}
+                  {formLoading ? t('modal.saving') : editingBlog ? t('button.update') : t('button.create')}
                 </button>
               </div>
             </form>
@@ -468,13 +472,13 @@ export default function BlogsPage() {
                   }}
                   className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
                 >
-                  Edit Blog
+                  {t('button.edit')}
                 </button>
                 <button
                   onClick={() => setShowViewModal(false)}
                   className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
                 >
-                  Close
+                  {t('button.close')}
                 </button>
               </div>
             </div>

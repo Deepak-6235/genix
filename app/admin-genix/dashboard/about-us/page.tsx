@@ -129,7 +129,7 @@ export default function AboutUsPage() {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+          <p className="mt-4 text-gray-600">{t('loading.please')}</p>
         </div>
       </div>
     );
@@ -138,13 +138,13 @@ export default function AboutUsPage() {
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-900">About Us</h1>
+        <h1 className="text-4xl font-bold text-gray-900">{t('aboutUs.title')}</h1>
         {!isEditing && (
           <button
             onClick={handleEdit}
             className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
           >
-            Edit
+            {t('button.edit')}
           </button>
         )}
       </div>
@@ -155,37 +155,37 @@ export default function AboutUsPage() {
           <div className="space-y-6">
             {/* Email */}
             <div className="border-b pb-4">
-              <p className="text-sm text-gray-600 mb-1">📧 Email</p>
+              <p className="text-sm text-gray-600 mb-1">📧 {t('aboutUs.email')}</p>
               <p className="text-lg font-medium text-gray-900">{formData.email || '-'}</p>
             </div>
 
             {/* Phone Number 1 */}
             <div className="border-b pb-4">
-              <p className="text-sm text-gray-600 mb-1">📱 Phone Number 1</p>
+              <p className="text-sm text-gray-600 mb-1">📱 {t('aboutUs.phoneNumber1')}</p>
               <p className="text-lg font-medium text-gray-900">{formData.phoneNumber1 || '-'}</p>
             </div>
 
             {/* Phone Number 2 */}
             <div className="border-b pb-4">
-              <p className="text-sm text-gray-600 mb-1">📱 Phone Number 2</p>
+              <p className="text-sm text-gray-600 mb-1">📱 {t('aboutUs.phoneNumber2')}</p>
               <p className="text-lg font-medium text-gray-900">{formData.phoneNumber2 || '-'}</p>
             </div>
 
             {/* Working Hours */}
             <div className="border-b pb-4">
-              <p className="text-sm text-gray-600 mb-1">⏰ Working Hours</p>
+              <p className="text-sm text-gray-600 mb-1">⏰ {t('aboutUs.workingHours')}</p>
               <p className="text-lg font-medium text-gray-900">{formData.workingHours || '-'}</p>
             </div>
 
             {/* Address */}
             <div className="border-b pb-4">
-              <p className="text-sm text-gray-600 mb-1">📍 Address</p>
+              <p className="text-sm text-gray-600 mb-1">📍 {t('aboutUs.address')}</p>
               <p className="text-lg font-medium text-gray-900">{formData.address || '-'}</p>
             </div>
 
             {/* City */}
             <div>
-              <p className="text-sm text-gray-600 mb-1">🏙️ City</p>
+              <p className="text-sm text-gray-600 mb-1">🏙️ {t('aboutUs.city')}</p>
               <p className="text-lg font-medium text-gray-900">{formData.city || '-'}</p>
             </div>
           </div>
@@ -200,12 +200,12 @@ export default function AboutUsPage() {
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">📧 Email</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">📧 {t('aboutUs.email')}</label>
               <input
                 type="email"
                 value={formData.email || ''}
                 onChange={(e) => handleChange('email', e.target.value)}
-                placeholder="example@email.com"
+                placeholder={t('placeholder.enterEmail')}
                 className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent ${
                   emailError ? 'border-red-500 bg-red-50' : 'border-gray-300'
                 }`}
@@ -217,60 +217,60 @@ export default function AboutUsPage() {
 
             {/* Phone Number 1 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">📱 Phone Number 1</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">📱 {t('aboutUs.phoneNumber1')}</label>
               <input
                 type="tel"
                 value={formData.phoneNumber1 || ''}
                 onChange={(e) => handleChange('phoneNumber1', e.target.value)}
-                placeholder="0562000000"
+                placeholder={t('placeholder.enterPhone')}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               />
             </div>
 
             {/* Phone Number 2 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">📱 Phone Number 2</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">📱 {t('aboutUs.phoneNumber2')}</label>
               <input
                 type="tel"
                 value={formData.phoneNumber2 || ''}
                 onChange={(e) => handleChange('phoneNumber2', e.target.value)}
-                placeholder="0562000000"
+                placeholder={t('placeholder.enterPhone')}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               />
             </div>
 
             {/* Working Hours */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">⏰ Working Hours</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">⏰ {t('aboutUs.workingHours')}</label>
               <input
                 type="text"
                 value={formData.workingHours || ''}
                 onChange={(e) => handleChange('workingHours', e.target.value)}
-                placeholder="24/7 or 9:00 AM - 5:00 PM"
+                placeholder={t('placeholder.enterDescription')}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               />
             </div>
 
             {/* Address */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">📍 Address</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">📍 {t('aboutUs.address')}</label>
               <input
                 type="text"
                 value={formData.address || ''}
                 onChange={(e) => handleChange('address', e.target.value)}
-                placeholder="Street address"
+                placeholder={t('placeholder.enterDescription')}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               />
             </div>
 
             {/* City */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">🏙️ City</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">🏙️ {t('aboutUs.city')}</label>
               <input
                 type="text"
                 value={formData.city || ''}
                 onChange={(e) => handleChange('city', e.target.value)}
-                placeholder="Riyadh"
+                placeholder={t('placeholder.enterDescription')}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               />
             </div>
@@ -282,13 +282,13 @@ export default function AboutUsPage() {
                 disabled={saving}
                 className="flex-1 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {saving ? 'Saving...' : 'Save Changes'}
+                {saving ? t('modal.saving') : t('button.save')}
               </button>
               <button
                 onClick={handleCancel}
                 className="flex-1 px-6 py-3 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition font-medium"
               >
-                Cancel
+                {t('button.cancel')}
               </button>
             </div>
           </div>

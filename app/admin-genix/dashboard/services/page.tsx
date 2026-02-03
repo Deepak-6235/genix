@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { LANGUAGES, type LanguageCode } from '@/lib/languages';
 import { translateContent } from '@/lib/translate';
+import { useAdminLanguage } from '@/contexts/AdminLanguageContext';
 
 interface ServiceTranslation {
   title: string;
@@ -35,11 +36,12 @@ interface Service {
   translations?: Record<string, ServiceTranslation>;
 }
 
-function ServiceItem({ service, onEdit, onDelete, onView }: {
+function ServiceItem({ service, onEdit, onDelete, onView, t }: {
   service: Service;
   onEdit: (service: Service) => void;
   onDelete: (id: string) => void;
   onView: (service: Service) => void;
+  t: (key: string) => string;
 }) {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition">
@@ -54,7 +56,7 @@ function ServiceItem({ service, onEdit, onDelete, onView }: {
                 service.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
               }`}
             >
-              {service.isActive ? 'Active' : 'Inactive'}
+              {service.isActive ? t('status.active') : t('status.inactive')}
             </span>
           </div>
           <p className="text-sm text-gray-600 mb-4 line-clamp-3">{service.shortDescription}</p>
@@ -63,19 +65,19 @@ function ServiceItem({ service, onEdit, onDelete, onView }: {
               onClick={() => onView(service)}
               className="flex-1 px-3 py-2 text-sm bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition"
             >
-              View Details
+              {t('button.view')}
             </button>
             <button
               onClick={() => onEdit(service)}
               className="flex-1 px-3 py-2 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition"
             >
-              Edit
+              {t('button.edit')}
             </button>
             <button
               onClick={() => onDelete(service.slug)}
               className="flex-1 px-3 py-2 text-sm bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition"
             >
-              Delete
+              {t('button.delete')}
             </button>
           </div>
         </div>
@@ -85,6 +87,7 @@ function ServiceItem({ service, onEdit, onDelete, onView }: {
 }
 
 export default function ServicesPage() {
+  const { t } = useAdminLanguage();
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -352,14 +355,14 @@ export default function ServicesPage() {
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-bold text-gray-900">Services</h2>
-          <p className="mt-2 text-gray-600">Manage your services</p>
+          <h2 className="text-3xl font-bold text-gray-900">{t('services.title')}</h2>
+          <p className="mt-2 text-gray-600">{t('services.subtitle')}</p>
         </div>
         <button
           onClick={() => openModal()}
           className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium"
         >
-          + Add Service
+          + {t('services.addService')}
         </button>
       </div>
 
@@ -369,6 +372,7 @@ export default function ServicesPage() {
           <ServiceItem
             key={service.id}
             service={service}
+            t={t}
             onView={(service) => {
               setViewingService(service);
               setViewLanguage('en');
@@ -382,7 +386,7 @@ export default function ServicesPage() {
 
       {services.length === 0 && (
         <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
-          <p className="text-gray-500">No services found. Add your first service!</p>
+          <p className="text-gray-500">{t('services.noServices')}</p>
         </div>
       )}
 
@@ -392,9 +396,9 @@ export default function ServicesPage() {
           <div className="bg-white rounded-xl max-w-4xl w-full my-8">
             <div className="p-6 border-b border-gray-200">
               <h3 className="text-xl font-bold text-gray-900">
-                {editingService ? 'Edit Service' : 'Add New Service'}
+                {editingService ? t('modal.editService') : t('modal.addService')}
               </h3>
-              <p className="text-sm text-gray-600 mt-2">Fill in English content only. Auto-translation to languages on save.</p>
+              <p className="text-sm text-gray-600 mt-2">{t('services.fillEnglishContent')}</p>
             </div>
 
             {/* Main Tabs */}
@@ -408,7 +412,7 @@ export default function ServicesPage() {
                       : 'border-transparent text-gray-500 hover:text-gray-700'
                   }`}
                 >
-                  Basic Info
+                  {t('services.basicInfo')}
                 </button>
                 <button
                   onClick={() => setActiveTab('detailed')}
@@ -418,7 +422,7 @@ export default function ServicesPage() {
                       : 'border-transparent text-gray-500 hover:text-gray-700'
                   }`}
                 >
-                  Detailed Content
+                  {t('services.detailedContent')}
                 </button>
                 <button
                   onClick={() => setActiveTab('methods')}
@@ -428,7 +432,7 @@ export default function ServicesPage() {
                       : 'border-transparent text-gray-500 hover:text-gray-700'
                   }`}
                 >
-                  Methods & Guarantee
+                  {t('services.methodsGuarantee')}
                 </button>
               </nav>
             </div>
@@ -445,17 +449,17 @@ export default function ServicesPage() {
                         onChange={(e) => updateFormData('isActive', e.target.checked)}
                         className="h-4 w-4 text-purple-600 border-gray-300 rounded"
                       />
-                      <span className="ml-2 text-sm text-gray-700">Active (Show on website)</span>
+                      <span className="ml-2 text-sm text-gray-700">{t('form.isActive')}</span>
                     </label>
                   </div>
 
                   <div className="space-y-4 pt-4 border-t border-gray-200">
                     <div className="bg-blue-50 p-3 rounded-lg mb-4">
-                      <p className="text-xs text-blue-700 font-medium">All fields below are in English. They will be automatically translated to Arabic, Portuguese, Chinese, and Japanese when you save.</p>
+                      <p className="text-xs text-blue-700 font-medium">{t('services.autoTranslateNote')}</p>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Title (English) *
+                        {t('form.title')} *
                         <span className={`ml-2 text-xs ${formData.title.length > CHAR_LIMITS.title ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
                           {formData.title.length}/{CHAR_LIMITS.title}
                         </span>
@@ -477,7 +481,7 @@ export default function ServicesPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Short Description (English) *
+                        {t('form.shortDescription')} *
                         <span className={`ml-2 text-xs ${formData.shortDescription.length > CHAR_LIMITS.shortDescription ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
                           {formData.shortDescription.length}/{CHAR_LIMITS.shortDescription}
                         </span>
@@ -505,11 +509,11 @@ export default function ServicesPage() {
               {activeTab === 'detailed' && (
                 <div className="space-y-4">
                   <div className="bg-blue-50 p-3 rounded-lg mb-4">
-                    <p className="text-xs text-blue-700 font-medium">All fields below are in English. They will be automatically translated to Arabic, Portuguese, Chinese, and Japanese when you save.</p>
+                    <p className="text-xs text-blue-700 font-medium">{t('services.autoTranslateNote')}</p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Full Description (English)
+                      {t('form.fullDescription')}
                       <span className={`ml-2 text-xs ${formData.fullDescription.length > CHAR_LIMITS.fullDescription ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
                         {formData.fullDescription.length}/{CHAR_LIMITS.fullDescription}
                       </span>
@@ -530,7 +534,7 @@ export default function ServicesPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Services Provided (English)
+                      {t('services.servicesProvided')}
                       <span className={`ml-2 text-xs ${formData.servicesProvided.length > CHAR_LIMITS.servicesProvided ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
                         {formData.servicesProvided.length}/{CHAR_LIMITS.servicesProvided}
                       </span>
@@ -551,7 +555,7 @@ export default function ServicesPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Target Insects (English)
+                      {t('services.targetInsects')}
                       <span className={`ml-2 text-xs ${formData.targetInsects.length > CHAR_LIMITS.targetInsects ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
                         {formData.targetInsects.length}/{CHAR_LIMITS.targetInsects}
                       </span>
@@ -577,11 +581,11 @@ export default function ServicesPage() {
               {activeTab === 'methods' && (
                 <div className="space-y-4">
                   <div className="bg-blue-50 p-3 rounded-lg mb-4">
-                    <p className="text-xs text-blue-700 font-medium">All fields below are in English. They will be automatically translated to Arabic, Portuguese, Chinese, and Japanese when you save.</p>
+                    <p className="text-xs text-blue-700 font-medium">{t('services.autoTranslateNote')}</p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Methods Title (English)
+                      {t('services.methodsTitle')}
                       <span className={`ml-2 text-xs ${formData.methodsTitle.length > CHAR_LIMITS.methodsTitle ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
                         {formData.methodsTitle.length}/{CHAR_LIMITS.methodsTitle}
                       </span>
@@ -602,7 +606,7 @@ export default function ServicesPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Methods Description (English)
+                      {t('services.methodsDescription')}
                       <span className={`ml-2 text-xs ${formData.methodsDescription.length > CHAR_LIMITS.methodsDescription ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
                         {formData.methodsDescription.length}/{CHAR_LIMITS.methodsDescription}
                       </span>
@@ -623,7 +627,7 @@ export default function ServicesPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Advanced Technologies (English)
+                      {t('services.advancedTechnologies')}
                       <span className={`ml-2 text-xs ${formData.advancedTechnologies.length > CHAR_LIMITS.advancedTechnologies ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
                         {formData.advancedTechnologies.length}/{CHAR_LIMITS.advancedTechnologies}
                       </span>
@@ -644,7 +648,7 @@ export default function ServicesPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Safe Use Description (English)
+                      {t('services.safeUseDescription')}
                       <span className={`ml-2 text-xs ${formData.safeUseDescription.length > CHAR_LIMITS.safeUseDescription ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
                         {formData.safeUseDescription.length}/{CHAR_LIMITS.safeUseDescription}
                       </span>
@@ -665,7 +669,7 @@ export default function ServicesPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Service Guarantee (English)
+                      {t('services.serviceGuarantee')}
                       <span className={`ml-2 text-xs ${formData.serviceGuarantee.length > CHAR_LIMITS.serviceGuarantee ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
                         {formData.serviceGuarantee.length}/{CHAR_LIMITS.serviceGuarantee}
                       </span>
@@ -699,14 +703,14 @@ export default function ServicesPage() {
                   onClick={closeModal}
                   className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
                 >
-                  Cancel
+                  {t('button.cancel')}
                 </button>
                 <button
                   type="submit"
                   disabled={formLoading}
                   className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition disabled:opacity-50"
                 >
-                  {formLoading ? 'Saving...' : editingService ? 'Update Service' : 'Create Service'}
+                  {formLoading ? t('modal.saving') : editingService ? t('button.update') : t('button.create')}
                 </button>
               </div>
             </form>
@@ -720,7 +724,7 @@ export default function ServicesPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b px-6 py-4">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold text-gray-900">Service Details</h2>
+                <h2 className="text-2xl font-bold text-gray-900">{t('services.serviceDetails')}</h2>
                 <button
                   onClick={() => setShowViewModal(false)}
                   className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
@@ -733,7 +737,7 @@ export default function ServicesPage() {
               {viewingService.translations && Object.keys(viewingService.translations).length > 1 && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    View Language: <span className="text-purple-600">{LANGUAGES[viewLanguage].nativeName}</span>
+                    {t('services.viewLanguage')}: <span className="text-purple-600">{LANGUAGES[viewLanguage].nativeName}</span>
                   </label>
                   <div className="flex flex-wrap gap-2">
                     {Object.keys(viewingService.translations).map((lang) => (
@@ -769,7 +773,7 @@ export default function ServicesPage() {
                           viewingService.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
                         }`}
                       >
-                        {viewingService.isActive ? 'Active' : 'Inactive'}
+                        {viewingService.isActive ? t('status.active') : t('status.inactive')}
                       </span>
                     </div>
                     <p className="text-sm text-gray-600 mb-2">
@@ -866,13 +870,13 @@ export default function ServicesPage() {
                   }}
                   className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
                 >
-                  Edit Service
+                  {t('button.edit')}
                 </button>
                 <button
                   onClick={() => setShowViewModal(false)}
                   className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
                 >
-                  Close
+                  {t('button.close')}
                 </button>
               </div>
             </div>

@@ -103,7 +103,7 @@ export default function StatisticsPage() {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+          <p className="mt-4 text-gray-600">{t('loading.please')}</p>
         </div>
       </div>
     );
@@ -111,17 +111,17 @@ export default function StatisticsPage() {
 
   return (
     <div>
-      <h1 className="text-4xl font-bold text-gray-900 mb-8">Statistics</h1>
+      <h1 className="text-4xl font-bold text-gray-900 mb-8">{t('statistics.title')}</h1>
 
       {/* Statistics Table */}
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <table className="w-full">
           <thead className="bg-gray-50 border-b">
             <tr>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Icon</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Label</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Count</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Action</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">{t('statistics.icon')}</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">{t('statistics.label')}</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">{t('statistics.count')}</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">{t('statistics.action')}</th>
             </tr>
           </thead>
           <tbody className="divide-y">
@@ -163,13 +163,13 @@ export default function StatisticsPage() {
                         disabled={saving || !!valueError}
                         className="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        {saving ? 'Saving...' : 'Save'}
+                        {saving ? t('modal.saving') : t('button.save')}
                       </button>
                       <button
                         onClick={handleCancel}
                         className="px-3 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition text-sm"
                       >
-                        Cancel
+                        {t('button.cancel')}
                       </button>
                     </div>
                   ) : (
@@ -177,7 +177,7 @@ export default function StatisticsPage() {
                       onClick={() => handleEdit(stat)}
                       className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm"
                     >
-                      Edit
+                      {t('button.edit')}
                     </button>
                   )}
                 </td>

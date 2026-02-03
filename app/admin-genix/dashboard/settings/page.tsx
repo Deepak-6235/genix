@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useAdminLanguage } from '@/contexts/AdminLanguageContext';
 
 interface Language {
   id: string;
@@ -19,6 +20,7 @@ interface FAQ {
 }
 
 export default function SettingsPage() {
+  const { t } = useAdminLanguage();
   const [faqs, setFaqs] = useState<FAQ[]>([]);
   const [languages, setLanguages] = useState<Language[]>([]);
   const [loading, setLoading] = useState(true);
@@ -165,7 +167,7 @@ export default function SettingsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-3xl font-bold text-gray-900">Settings</h2>
+        <h2 className="text-3xl font-bold text-gray-900">{t('settings.title')}</h2>
       </div>
 
       {/* Success/Error Messages */}
@@ -185,16 +187,16 @@ export default function SettingsPage() {
 
       {/* Account Information */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 max-w-2xl">
-        <h3 className="text-xl font-bold text-gray-900 mb-4">Account Information</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-4">{t('settings.accountInfo')}</h3>
         <div className="space-y-3">
           <div className="flex justify-between items-center py-2 border-b">
-            <span className="text-sm font-medium text-gray-600">Role</span>
-            <span className="text-sm text-gray-900 font-semibold">Admin</span>
+            <span className="text-sm font-medium text-gray-600">{t('settings.role')}</span>
+            <span className="text-sm text-gray-900 font-semibold">{t('settings.admin')}</span>
           </div>
           <div className="flex justify-between items-center py-2 border-b">
-            <span className="text-sm font-medium text-gray-600">Status</span>
+            <span className="text-sm font-medium text-gray-600">{t('settings.status')}</span>
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-              Active
+              {t('status.active')}
             </span>
           </div>
         </div>

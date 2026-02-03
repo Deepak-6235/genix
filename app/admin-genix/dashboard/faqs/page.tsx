@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useAdminLanguage } from '@/contexts/AdminLanguageContext';
 
 interface FAQ {
   id: string;
@@ -10,10 +11,11 @@ interface FAQ {
   order: number;
 }
 
-function FAQItem({ faq, onEdit, onDelete }: {
+function FAQItem({ faq, onEdit, onDelete, t }: {
   faq: FAQ;
   onEdit: (faq: FAQ) => void;
   onDelete: (id: string) => void;
+  t: (key: string) => string;
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -31,7 +33,7 @@ function FAQItem({ faq, onEdit, onDelete }: {
                   faq.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
                 }`}
               >
-                {faq.isActive ? 'Active' : 'Inactive'}
+                {faq.isActive ? t('status.active') : t('status.inactive')}
               </span>
               <button
                 onClick={() => setIsExpanded(!isExpanded)}
@@ -58,13 +60,13 @@ function FAQItem({ faq, onEdit, onDelete }: {
               onClick={() => onEdit(faq)}
               className="flex-1 px-3 py-2 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition"
             >
-              Edit
+              {t('button.edit')}
             </button>
             <button
               onClick={() => onDelete(faq.id)}
               className="flex-1 px-3 py-2 text-sm bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition"
             >
-              Delete
+              {t('button.delete')}
             </button>
           </div>
         </div>
@@ -74,6 +76,7 @@ function FAQItem({ faq, onEdit, onDelete }: {
 }
 
 export default function FAQsPage() {
+  const { t } = useAdminLanguage();
   const [faqs, setFaqs] = useState<FAQ[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -228,7 +231,7 @@ export default function FAQsPage() {
     return (
       <div className="text-center py-12">
         <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
-        <p className="mt-4 text-gray-600">Loading FAQs...</p>
+        <p className="mt-4 text-gray-600">{t('loading.please')}</p>
       </div>
     );
   }
@@ -237,14 +240,14 @@ export default function FAQsPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">FAQs</h1>
-          <p className="mt-2 text-gray-600">Manage your frequently asked questions</p>
+          <h1 className="text-3xl font-bold text-gray-900">{t('faqs.title')}</h1>
+          <p className="mt-2 text-gray-600">{t('faqs.subtitle')}</p>
         </div>
         <button
           onClick={() => openModal()}
           className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
         >
-          Add New FAQ
+          {t('faqs.addFaq')}
         </button>
       </div>
 
@@ -254,6 +257,7 @@ export default function FAQsPage() {
           <FAQItem
             key={faq.id}
             faq={faq}
+            t={t}
             onEdit={openModal}
             onDelete={handleDelete}
           />
@@ -262,7 +266,7 @@ export default function FAQsPage() {
 
       {faqs.length === 0 && (
         <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
-          <p className="text-gray-500">No FAQs found. Add your first FAQ!</p>
+          <p className="text-gray-500">{t('faqs.noFaqs')}</p>
         </div>
       )}
 
@@ -272,14 +276,14 @@ export default function FAQsPage() {
           <div className="bg-white rounded-xl max-w-2xl w-full">
             <div className="p-6 border-b border-gray-200">
               <h3 className="text-xl font-bold text-gray-900">
-                {editingFaq ? 'Edit FAQ' : 'Add New FAQ'}
+                {editingFaq ? t('modal.editFaq') : t('modal.addFaq')}
               </h3>
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Question *
+                  {t('faqs.question')} *
                   <span className={`ml-2 text-xs ${formData.question.length > CHAR_LIMITS.question ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
                     {formData.question.length}/{CHAR_LIMITS.question}
                   </span>
@@ -305,7 +309,7 @@ export default function FAQsPage() {
                   className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
                     fieldErrors.question ? 'border-red-500 bg-red-50' : 'border-gray-300'
                   }`}
-                  placeholder="Enter the question"
+                  placeholder={t('placeholder.enterDescription')}
                 />
                 {fieldErrors.question && (
                   <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.question}</p>
@@ -314,7 +318,7 @@ export default function FAQsPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Answer *
+                  {t('faqs.answer')} *
                   <span className={`ml-2 text-xs ${formData.answer.length > CHAR_LIMITS.answer ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
                     {formData.answer.length}/{CHAR_LIMITS.answer}
                   </span>
@@ -340,7 +344,7 @@ export default function FAQsPage() {
                   className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
                     fieldErrors.answer ? 'border-red-500 bg-red-50' : 'border-gray-300'
                   }`}
-                  placeholder="Enter the answer"
+                  placeholder={t('placeholder.enterDescription')}
                 />
                 {fieldErrors.answer && (
                   <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.answer}</p>
@@ -356,7 +360,7 @@ export default function FAQsPage() {
                   className="rounded"
                 />
                 <label htmlFor="isActive" className="ml-2 text-sm font-medium text-gray-700">
-                  Active (Show on website)
+                  {t('form.isActive')}
                 </label>
               </div>
 
@@ -372,14 +376,14 @@ export default function FAQsPage() {
                   onClick={closeModal}
                   className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
                 >
-                  Cancel
+                  {t('button.cancel')}
                 </button>
                 <button
                   type="submit"
                   disabled={formLoading}
                   className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition disabled:opacity-50"
                 >
-                  {formLoading ? 'Saving...' : editingFaq ? 'Update FAQ' : 'Create FAQ'}
+                  {formLoading ? t('modal.saving') : editingFaq ? t('button.update') : t('button.create')}
                 </button>
               </div>
             </form>

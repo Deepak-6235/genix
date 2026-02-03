@@ -148,7 +148,7 @@ export default function ReviewsPage() {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+          <p className="mt-4 text-gray-600">{t('loading.please')}</p>
         </div>
       </div>
     );
@@ -157,12 +157,12 @@ export default function ReviewsPage() {
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-900">Reviews</h1>
+        <h1 className="text-4xl font-bold text-gray-900">{t('reviews.title')}</h1>
         <button
           onClick={handleAddNew}
           className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium"
         >
-          Add Review
+          {t('reviews.addReview')}
         </button>
       </div>
 
@@ -179,7 +179,7 @@ export default function ReviewsPage() {
                   review.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
                 }`}
               >
-                {review.isActive ? 'Active' : 'Inactive'}
+                {review.isActive ? t('status.active') : t('status.inactive')}
               </span>
             </div>
             <p className="text-gray-700 mb-4 line-clamp-3">{review.text}</p>
@@ -188,13 +188,13 @@ export default function ReviewsPage() {
                 onClick={() => handleEdit(review)}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm"
               >
-                Edit
+                {t('button.edit')}
               </button>
               <button
                 onClick={() => handleDelete(review.id)}
                 className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm"
               >
-                Delete
+                {t('button.delete')}
               </button>
             </div>
           </div>
@@ -203,7 +203,7 @@ export default function ReviewsPage() {
 
       {reviews.length === 0 && (
         <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
-          <p className="text-gray-500">No reviews found. Add your first review!</p>
+          <p className="text-gray-500">{t('reviews.noReviews')}</p>
         </div>
       )}
 
@@ -212,24 +212,24 @@ export default function ReviewsPage() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg p-8 w-96 max-h-screen overflow-y-auto">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              {editingId ? 'Edit Review' : 'Add New Review'}
+              {editingId ? t('modal.editReview') : t('modal.addReview')}
             </h2>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Reviewer Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('reviews.reviewerName')}</label>
                 <input
                   type="text"
                   value={formData.name || ''}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Salem"
+                  placeholder={t('placeholder.enterDescription')}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Review Text
+                  {t('reviews.reviewText')}
                   <span className={`ml-2 text-xs ${(formData.text?.length ?? 0) > CHAR_LIMITS.text ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
                     {formData.text?.length ?? 0}/{CHAR_LIMITS.text}
                   </span>
@@ -246,7 +246,7 @@ export default function ReviewsPage() {
                       setFieldErrors({});
                     }
                   }}
-                  placeholder="I thank you very much for the level of service in clearing the furniture..."
+                  placeholder={t('placeholder.enterDescription')}
                   rows={6}
                   className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent ${
                     fieldErrors.text ? 'border-red-500 bg-red-50' : 'border-gray-300'
@@ -265,7 +265,7 @@ export default function ReviewsPage() {
                     onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
                     className="h-4 w-4 text-purple-600 border-gray-300 rounded"
                   />
-                  <span className="ml-2 text-sm text-gray-700">Active (Show on website)</span>
+                  <span className="ml-2 text-sm text-gray-700">{t('form.isActive')}</span>
                 </label>
               </div>
 
@@ -285,14 +285,14 @@ export default function ReviewsPage() {
                 }}
                 className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium"
               >
-                Cancel
+                {t('button.cancel')}
               </button>
               <button
                 onClick={handleSave}
                 disabled={saving}
                 className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {saving ? 'Saving...' : 'Save'}
+                {saving ? t('modal.saving') : t('button.save')}
               </button>
             </div>
           </div>
