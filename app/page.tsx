@@ -11,7 +11,10 @@ import Blog from "./components/Blog";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 
-export default function Home() {
+export default function HomePage() {
+  const { language, dir } = useLanguage();
+  const { services, loading } = useServices();
+
   return (
     <div className="min-h-screen bg-white">
       <TopBar />
