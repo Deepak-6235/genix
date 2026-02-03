@@ -33,77 +33,86 @@ function BlogCard({ blog, onDelete, onView, onEdit, t }: {
   t: (key: string) => string;
 }) {
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-200">
-      <div className="flex gap-6">
-        {/* Blog Image */}
-        {blog.imageUrl && (
-          <div className="flex-shrink-0">
-            <img
-              src={blog.imageUrl}
-              alt={blog.name}
-              className="w-20 h-20 rounded-xl object-cover"
-            />
+    <div
+      onClick={() => onView(blog.slug)}
+      className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-200 cursor-pointer group"
+    >
+      {/* Blog Image with Status Badge */}
+      <div className="relative h-48 bg-gradient-to-br from-purple-100 to-blue-100">
+        {blog.imageUrl ? (
+          <img
+            src={blog.imageUrl}
+            alt={blog.name}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <svg className="w-16 h-16 text-purple-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+            </svg>
           </div>
         )}
 
-        {/* Blog Content */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-4 mb-3">
-            <div className="flex-1 min-w-0">
-              <h3 className="text-xl font-bold text-gray-900 mb-1 truncate">
-                {blog.name}
-              </h3>
-              <div className="flex items-center gap-3 text-sm text-gray-600">
-                <span>{t('blogs.author')} {blog.author}</span>
-                {blog.detailedBlogs && blog.detailedBlogs.length > 0 && (
-                  <>
-                    <span>•</span>
-                    <span className="text-purple-600 font-medium">
-                      {blog.detailedBlogs.length} {t('blogs.sections')}
-                    </span>
-                  </>
-                )}
-              </div>
-            </div>
+        {/* Status Badge */}
+        <span
+          className={`absolute top-3 right-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
+            blog.isActive
+              ? 'bg-green-100 text-green-700'
+              : 'bg-gray-100 text-gray-600'
+          }`}
+        >
+          {blog.isActive ? t('status.active') : t('status.inactive')}
+        </span>
+      </div>
 
-            {/* Status Badge */}
-            <span
-              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold flex-shrink-0 ${
-                blog.isActive
-                  ? 'bg-green-100 text-green-700'
-                  : 'bg-gray-100 text-gray-600'
-              }`}
-            >
-              {blog.isActive ? t('status.active') : t('status.inactive')}
-            </span>
-          </div>
+      {/* Blog Content */}
+      <div className="p-6">
+        <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-purple-600 transition-colors">
+          {blog.name}
+        </h3>
 
-          {/* Short Description */}
-          <p className="text-sm text-gray-600 mb-4 line-clamp-2 leading-relaxed">
-            {blog.shortDescription}
-          </p>
+        <div className="flex items-center gap-3 text-sm text-gray-600 mb-3">
+          <span>{t('blogs.author')} {blog.author}</span>
+          {blog.detailedBlogs && blog.detailedBlogs.length > 0 && (
+            <>
+              <span>•</span>
+              <span className="text-purple-600 font-medium">
+                {blog.detailedBlogs.length} {t('blogs.sections')}
+              </span>
+            </>
+          )}
+        </div>
 
-          {/* Action Buttons */}
-          <div className="grid grid-cols-3 gap-3">
-            <button
-              onClick={() => onView(blog.slug)}
-              className="px-4 py-2.5 text-sm font-medium bg-green-50 text-green-700 rounded-xl hover:bg-green-100 transition-colors"
-            >
-              {t('button.view')}
-            </button>
-            <button
-              onClick={() => onEdit(blog.slug)}
-              className="px-4 py-2.5 text-sm font-medium bg-blue-50 text-blue-700 rounded-xl hover:bg-blue-100 transition-colors"
-            >
-              {t('button.edit')}
-            </button>
-            <button
-              onClick={() => onDelete(blog.slug)}
-              className="px-4 py-2.5 text-sm font-medium bg-red-50 text-red-700 rounded-xl hover:bg-red-100 transition-colors"
-            >
-              {t('button.delete')}
-            </button>
-          </div>
+        <p className="text-sm text-gray-600 mb-4 line-clamp-3 leading-relaxed">
+          {blog.shortDescription}
+        </p>
+
+        {/* Action Icons */}
+        <div className="flex items-center justify-end gap-2 pt-4 border-t border-gray-100">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(blog.slug);
+            }}
+            className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+            title={t('button.edit')}
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(blog.slug);
+            }}
+            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+            title={t('button.delete')}
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          </button>
         </div>
       </div>
     </div>
@@ -181,8 +190,8 @@ export default function BlogsPage() {
         </button>
       </div>
 
-      {/* Blogs List */}
-      <div className="space-y-4">
+      {/* Blogs Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {blogs.map((blog) => (
           <BlogCard
             key={blog.id}
