@@ -29,65 +29,51 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Fetch all data in parallel
-    const [services, blogs, reviews, faqs, statistics, aboutUs] = await Promise.all([
-      // Fetch services count and recent services
+    // Get English language first (single query)
+    const enLanguage = await prisma.language.findFirst({ where: { code: 'en' } });
+    const enLangId = enLanguage?.id;
+
+    // Fetch ALL data in parallel with single Promise.all
+    const [
+      recentServices,
+      recentBlogs,
+      recentReviews,
+      serviceCount,
+      blogCount,
+      reviewCount,
+      faqCount,
+      statisticCount,
+    ] = await Promise.all([
+      // Recent services (3)
       prisma.service.findMany({
-        where: { languageId: (await prisma.language.findFirst({ where: { code: 'en' } }))?.id },
+        where: { languageId: enLangId },
         select: { id: true, title: true, isActive: true },
         orderBy: { createdAt: 'desc' },
         take: 3,
       }),
 
-      // Fetch blogs count and recent blogs
+      // Recent blogs (3)
       prisma.blog.findMany({
-        where: { languageId: (await prisma.language.findFirst({ where: { code: 'en' } }))?.id },
+        where: { languageId: enLangId },
         select: { id: true, title: true, isActive: true },
         orderBy: { createdAt: 'desc' },
         take: 3,
       }),
 
-      // Fetch reviews count and recent reviews
+      // Recent reviews (3)
       prisma.review.findMany({
         select: { id: true, name: true, isActive: true },
         orderBy: { createdAt: 'desc' },
         take: 3,
       }),
 
-      // Fetch FAQs count
-      prisma.faq.findMany({
-        where: { languageId: (await prisma.language.findFirst({ where: { code: 'en' } }))?.id },
-        select: { id: true },
-      }),
-
-      // Fetch statistics count
-      prisma.statistic.findMany({
-        select: { id: true },
-      }),
-
-      // Fetch about us data
-      prisma.aboutUs.findFirst({
-        select: { email: true, phoneNumber1: true, phoneNumber2: true, workingHours: true, address: true, city: true },
-      }),
+      // Counts
+      prisma.service.count({ where: { languageId: enLangId } }),
+      prisma.blog.count({ where: { languageId: enLangId } }),
+      prisma.review.count(),
+      prisma.fAQ.count({ where: { languageId: enLangId } }),
+      prisma.statistic.count(),
     ]);
-
-    // Get language for proper counting
-    const enLanguage = await prisma.language.findFirst({ where: { code: 'en' } });
-
-    // Count all items
-    const serviceCount = await prisma.service.count({
-      where: { languageId: enLanguage?.id },
-    });
-
-    const blogCount = await prisma.blog.count({
-      where: { languageId: enLanguage?.id },
-    });
-
-    const reviewCount = await prisma.review.count();
-    const faqCount = await prisma.faq.count({
-      where: { languageId: enLanguage?.id },
-    });
-    const statisticCount = await prisma.statistic.count();
 
     return NextResponse.json({
       success: true,
@@ -99,11 +85,10 @@ export async function GET(request: NextRequest) {
         statistics: statisticCount,
       },
       recentContent: {
-        services: services || [],
-        blogs: blogs || [],
-        reviews: reviews || [],
+        services: recentServices || [],
+        blogs: recentBlogs || [],
+        reviews: recentReviews || [],
       },
-      aboutUs: aboutUs || null,
     });
   } catch (error) {
     console.error('Dashboard API error:', error);
