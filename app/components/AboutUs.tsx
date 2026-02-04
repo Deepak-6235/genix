@@ -18,7 +18,7 @@ export default function AboutUs() {
           </div>
 
           {/* Single Blue Gradient Card with All Information */}
-          <div className="bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 rounded-2xl p-6 sm:p-8 md:p-10 lg:p-12 text-white shadow-xl">
+          <div className="bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 rounded-2xl p-6 sm:p-8 md:p-10 lg:p-12 text-white shadow-xl">
             {/* Features Section */}
             <div className="mb-6 sm:mb-8 md:mb-10">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">

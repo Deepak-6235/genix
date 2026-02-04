@@ -89,7 +89,7 @@ export default function BlogContent() {
             <nav className="mb-3 sm:mb-4" aria-label="Breadcrumb">
               <ol className={`flex items-center gap-2 text-sm sm:text-base text-slate-600 justify-center ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}>
                 <li>
-                  <Link href="/" className="hover:text-blue-600 transition-colors">
+                  <Link href="/" className="hover:text-primary-600 transition-colors">
                     {t.breadcrumbHome}
                   </Link>
                 </li>
@@ -164,7 +164,7 @@ export default function BlogContent() {
                       </div>
 
                       {/* Title */}
-                      <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 mb-3 sm:mb-4 group-hover:text-blue-600 transition-colors leading-tight">
+                      <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 mb-3 sm:mb-4 group-hover:text-primary-600 transition-colors leading-tight">
                         {post.name}
                       </h2>
 
@@ -176,7 +176,7 @@ export default function BlogContent() {
                       {/* Read More Link */}
                       <Link
                         href={`/blog/${post.slug}`}
-                        className={`inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors group/link text-sm sm:text-base ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
+                        className={`inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-semibold transition-colors group/link text-sm sm:text-base ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
                       >
                         <span>{t.readMore}</span>
                         <svg className={`w-4 h-4 transition-transform ${dir === 'rtl' ? 'group-hover/link:-translate-x-1 rotate-180' : 'group-hover/link:translate-x-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -198,7 +198,7 @@ export default function BlogContent() {
                 <button
                   onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                   disabled={!pagination.hasPreviousPage}
-                  className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white rounded-2xl font-semibold hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white rounded-2xl font-semibold hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                   aria-label="Previous Page"
                 >
                   <svg className={`w-5 h-5 ${dir === 'rtl' ? '' : 'rotate-180'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -236,8 +236,8 @@ export default function BlogContent() {
                       onClick={() => setCurrentPage(pageNum)}
                       className={`px-4 py-2 sm:px-5 sm:py-2.5 rounded-2xl font-semibold transition-all duration-300 shadow-lg ${
                         currentPage === pageNum
-                          ? 'bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white'
-                          : 'bg-white text-slate-700 border-2 border-slate-200 hover:border-blue-400'
+                          ? 'bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white'
+                          : 'bg-white text-slate-700 border-2 border-slate-200 hover:border-primary-400'
                       }`}
                     >
                       {pageNum}
@@ -249,7 +249,7 @@ export default function BlogContent() {
                 <button
                   onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                   disabled={!pagination.hasNextPage}
-                  className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white rounded-2xl font-semibold hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white rounded-2xl font-semibold hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                   aria-label="Next Page"
                 >
                   <svg className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -139,7 +139,7 @@ export default function FAQContent() {
             <nav className="mb-3 sm:mb-4" aria-label="Breadcrumb">
               <ol className="flex items-center gap-2 text-sm sm:text-base text-slate-600 justify-center">
                 <li>
-                  <Link href="/" className="hover:text-blue-600 transition-colors">
+                  <Link href="/" className="hover:text-primary-600 transition-colors">
                     {t.breadcrumbHome}
                   </Link>
                 </li>
@@ -213,8 +213,8 @@ export default function FAQContent() {
                         >
                           {/* FAQ Icon - Changes color when open */}
                           <div className={`flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${isOpen
-                            ? "bg-blue-600 text-white"
-                            : "bg-slate-100 text-slate-600 group-hover:bg-blue-100 group-hover:text-blue-600"
+                            ? "bg-primary-600 text-white"
+                            : "bg-slate-100 text-slate-600 group-hover:bg-primary-100 group-hover:text-primary-600"
                             }`}>
                             {getDefaultIcon()}
                           </div>
@@ -227,7 +227,7 @@ export default function FAQContent() {
                           </div>
 
                           {/* Chevron Icon - Rotates when FAQ is open */}
-                          <div className={`flex-shrink-0 pt-1.5 transition-all duration-300 ${isOpen ? "text-blue-600" : "text-slate-400"
+                          <div className={`flex-shrink-0 pt-1.5 transition-all duration-300 ${isOpen ? "text-primary-600" : "text-slate-400"
                             }`}>
                             <svg
                               className={`w-6 h-6 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
@@ -248,7 +248,7 @@ export default function FAQContent() {
                         >
                           <div className="px-6 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6 ms-16 md:ms-20">
                             {/* Answer text with start border accent */}
-                            <div className="ps-4 md:ps-5 border-s-4 border-blue-200">
+                            <div className="ps-4 md:ps-5 border-s-4 border-primary-200">
                               <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
                                 {faq.answer}
                               </p>
@@ -280,8 +280,8 @@ export default function FAQContent() {
                         >
                           {/* FAQ Icon - Changes color when open */}
                           <div className={`flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${isOpen
-                            ? "bg-blue-600 text-white"
-                            : "bg-slate-100 text-slate-600 group-hover:bg-blue-100 group-hover:text-blue-600"
+                            ? "bg-primary-600 text-white"
+                            : "bg-slate-100 text-slate-600 group-hover:bg-primary-100 group-hover:text-primary-600"
                             }`}>
                             {getDefaultIcon()}
                           </div>
@@ -294,7 +294,7 @@ export default function FAQContent() {
                           </div>
 
                           {/* Chevron Icon - Rotates when FAQ is open */}
-                          <div className={`flex-shrink-0 pt-1.5 transition-all duration-300 ${isOpen ? "text-blue-600" : "text-slate-400"
+                          <div className={`flex-shrink-0 pt-1.5 transition-all duration-300 ${isOpen ? "text-primary-600" : "text-slate-400"
                             }`}>
                             <svg
                               className={`w-6 h-6 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
@@ -315,7 +315,7 @@ export default function FAQContent() {
                         >
                           <div className="px-6 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6 ms-16 md:ms-20">
                             {/* Answer text with start border accent */}
-                            <div className="ps-4 md:ps-5 border-s-4 border-blue-200">
+                            <div className="ps-4 md:ps-5 border-s-4 border-primary-200">
                               <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
                                 {faq.answer}
                               </p>
@@ -354,7 +354,7 @@ export default function FAQContent() {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder={t.form.namePlaceholder}
-                      className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white hover:border-blue-300 text-sm text-start"
+                      className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all bg-white hover:border-primary-300 text-sm text-start"
                       required
                     />
                   </div>
@@ -370,7 +370,7 @@ export default function FAQContent() {
                         name="service"
                         value={formData.service}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white hover:border-blue-300 cursor-pointer text-sm text-start"
+                        className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all bg-white hover:border-primary-300 cursor-pointer text-sm text-start"
                         required
                       >
                         <option value="">{t.form.chooseServices}</option>
@@ -395,7 +395,7 @@ export default function FAQContent() {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder={t.form.mailAddressPlaceholder}
-                        className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white hover:border-blue-300 text-sm text-start"
+                        className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all bg-white hover:border-primary-300 text-sm text-start"
                         required
                       />
                     </div>
@@ -412,7 +412,7 @@ export default function FAQContent() {
                       onChange={handleChange}
                       placeholder={t.form.questionPlaceholder}
                       rows={4}
-                      className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none transition-all bg-white hover:border-blue-300 text-sm text-start"
+                      className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none resize-none transition-all bg-white hover:border-primary-300 text-sm text-start"
                       required
                     />
                   </div>
@@ -421,7 +421,7 @@ export default function FAQContent() {
                   <div className="pt-2">
                     <button
                       type="submit"
-                      className="w-full bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white px-8 py-3 rounded-2xl font-bold text-base hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                      className="w-full bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white px-8 py-3 rounded-2xl font-bold text-base hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
                       {t.form.submit}
                     </button>

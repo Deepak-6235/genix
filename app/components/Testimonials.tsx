@@ -89,7 +89,7 @@ export default function Testimonials() {
                                     {[...Array(review.rating)].map((_, i) => (
                                         <svg
                                             key={i}
-                                            className="w-5 h-5 text-yellow-400"
+                                            className="w-5 h-5 text-warning-400"
                                             fill="currentColor"
                                             viewBox="0 0 20 20"
                                         >
@@ -105,7 +105,7 @@ export default function Testimonials() {
 
                                 {/* Author Info */}
                                 <div className="flex items-center gap-4 pt-6 border-t border-slate-200">
-                                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-2xl">
+                                    <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-2xl">
                                         👤
                                     </div>
                                     <div>

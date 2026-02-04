@@ -48,7 +48,7 @@ export default function ServiceDetail({ serviceSlug }: { serviceSlug: string }) 
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
           <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>
@@ -61,7 +61,7 @@ export default function ServiceDetail({ serviceSlug }: { serviceSlug: string }) 
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-slate-900 mb-4">Service Not Found</h1>
-          <Link href="/services" className="text-blue-600 hover:text-blue-700">
+          <Link href="/services" className="text-primary-600 hover:text-primary-700">
             Back to Services
           </Link>
         </div>
@@ -81,7 +81,7 @@ export default function ServiceDetail({ serviceSlug }: { serviceSlug: string }) 
             <nav className="mb-6 sm:mb-8" aria-label="Breadcrumb">
               <ol className={`flex items-center gap-2 text-sm sm:text-base text-slate-600 justify-center ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}>
                 <li>
-                  <Link href="/" className="hover:text-blue-600 transition-colors">
+                  <Link href="/" className="hover:text-primary-600 transition-colors">
                     {t.breadcrumbHome}
                   </Link>
                 </li>
@@ -91,7 +91,7 @@ export default function ServiceDetail({ serviceSlug }: { serviceSlug: string }) 
                   </svg>
                 </li>
                 <li>
-                  <Link href="/services" className="hover:text-blue-600 transition-colors">
+                  <Link href="/services" className="hover:text-primary-600 transition-colors">
                     {t.breadcrumbServices}
                   </Link>
                 </li>
@@ -177,7 +177,7 @@ export default function ServiceDetail({ serviceSlug }: { serviceSlug: string }) 
       {/* ============================================
           CTA SECTION
           ============================================ */}
-      <section className="py-8 sm:py-10 md:py-12 lg:py-14 bg-gradient-to-r from-blue-600 to-cyan-500">
+      <section className="py-8 sm:py-10 md:py-12 lg:py-14 bg-gradient-to-r from-primary-600 to-secondary-500">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center text-white">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">
@@ -188,7 +188,7 @@ export default function ServiceDetail({ serviceSlug }: { serviceSlug: string }) 
             </p>
             <Link
               href="/contact"
-              className="inline-block bg-white text-blue-600 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="inline-block bg-white text-primary-600 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               <span suppressHydrationWarning>{t.cta.button}</span>
             </Link>

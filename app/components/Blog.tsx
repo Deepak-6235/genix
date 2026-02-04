@@ -141,13 +141,13 @@ export default function Blog() {
                 {/* Content */}
                 <div className="p-4 sm:p-6">
                   <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
-                    <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 sm:px-3 py-1 rounded-full">
+                    <span className="text-xs font-semibold text-primary-600 bg-primary-50 px-2 sm:px-3 py-1 rounded-full">
                       {blog.author}
                     </span>
                     <span className="text-xs sm:text-sm text-slate-500">{formatDate(blog.publishedAt)}</span>
                   </div>
 
-                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2 sm:mb-3 group-hover:text-blue-600 transition-colors">
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2 sm:mb-3 group-hover:text-primary-600 transition-colors">
                     {blog.name}
                   </h3>
 
@@ -157,7 +157,7 @@ export default function Blog() {
 
                   <Link
                     href={`/blog/${blog.slug}`}
-                    className={`inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
+                    className={`inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-semibold transition-colors ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
                   >
                     <span>{t.readMore}</span>
                     <svg className={`w-4 h-4 transition-transform ${dir === 'rtl' ? 'group-hover:-translate-x-1 rotate-180' : 'group-hover:translate-x-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -173,7 +173,7 @@ export default function Blog() {
         <div className="text-center mt-6 sm:mt-8 px-4">
           <Link
             href="/blog"
-            className={`inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-2xl font-bold text-sm sm:text-base hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
+            className={`inline-flex items-center gap-2 bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-2xl font-bold text-sm sm:text-base hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
           >
             <span>{t.viewMore}</span>
             <svg className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">

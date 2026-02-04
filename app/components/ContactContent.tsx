@@ -203,7 +203,7 @@ export default function ContactContent() {
             <nav className="mb-3 sm:mb-4" aria-label="Breadcrumb">
               <ol className="flex items-center gap-2 text-sm sm:text-base text-slate-600 justify-center">
                 <li>
-                  <Link href="/" className="hover:text-blue-600 transition-colors">
+                  <Link href="/" className="hover:text-primary-600 transition-colors">
                     {t.breadcrumbHome}
                   </Link>
                 </li>
@@ -239,7 +239,7 @@ export default function ContactContent() {
               {/* Phone Card */}
               <div className="bg-white rounded-xl p-6 sm:p-8 shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-100 rounded-lg flex items-center justify-center text-emerald-600">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-success-100 rounded-lg flex items-center justify-center text-success-600">
                     <svg
                       className="w-5 h-5 sm:w-6 sm:h-6"
                       fill="none"
@@ -268,7 +268,7 @@ export default function ContactContent() {
                     {aboutUs?.phoneNumber1 && (
                       <a
                         href={`tel:+966${aboutUs.phoneNumber1.replace(/^0/, '')}`}
-                        className="block text-blue-600 hover:text-blue-700 font-semibold text-base sm:text-lg transition-colors"
+                        className="block text-primary-600 hover:text-primary-700 font-semibold text-base sm:text-lg transition-colors"
                       >
                         {aboutUs.phoneNumber1}
                       </a>
@@ -276,7 +276,7 @@ export default function ContactContent() {
                     {aboutUs?.phoneNumber2 && (
                       <a
                         href={`tel:+966${aboutUs.phoneNumber2.replace(/^0/, '')}`}
-                        className="block text-blue-600 hover:text-blue-700 font-semibold text-base sm:text-lg transition-colors"
+                        className="block text-primary-600 hover:text-primary-700 font-semibold text-base sm:text-lg transition-colors"
                       >
                         {aboutUs.phoneNumber2}
                       </a>
@@ -288,7 +288,7 @@ export default function ContactContent() {
               {/* Email Card */}
               <div className="bg-white rounded-xl p-6 sm:p-8 shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary-100 rounded-lg flex items-center justify-center text-primary-600">
                     <svg
                       className="w-5 h-5 sm:w-6 sm:h-6"
                       fill="none"
@@ -312,7 +312,7 @@ export default function ContactContent() {
                 ) : (
                   <a
                     href={`mailto:${aboutUs?.email || 'roknalnakheel@gmail.com'}`}
-                    className="text-blue-600 hover:text-blue-700 font-semibold text-sm sm:text-base md:text-lg transition-colors break-all"
+                    className="text-primary-600 hover:text-primary-700 font-semibold text-sm sm:text-base md:text-lg transition-colors break-all"
                   >
                     {aboutUs?.email || 'roknalnakheel@gmail.com'}
                   </a>
@@ -322,7 +322,7 @@ export default function ContactContent() {
               {/* Location Card */}
               <div className="bg-white rounded-xl p-6 sm:p-8 shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent-purple-100 rounded-lg flex items-center justify-center text-accent-purple-600">
                     <svg
                       className="w-5 h-5 sm:w-6 sm:h-6"
                       fill="none"
@@ -359,7 +359,7 @@ export default function ContactContent() {
               {/* Hours Card */}
               <div className="bg-white rounded-xl p-6 sm:p-8 shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent-orange-100 rounded-lg flex items-center justify-center text-accent-orange-600">
                     <svg
                       className="w-5 h-5 sm:w-6 sm:h-6"
                       fill="none"
@@ -409,7 +409,7 @@ export default function ContactContent() {
                     value={formData.name}
                     onChange={handleChange}
                     className={`w-full px-4 py-3 rounded-lg border ${errors.name ? "border-red-500" : "border-slate-300"
-                      } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900`}
+                      } focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-slate-900`}
                     placeholder={t.form.namePlaceholder}
                   />
                   {errors.name && (
@@ -432,7 +432,7 @@ export default function ContactContent() {
                     value={formData.email}
                     onChange={handleChange}
                     className={`w-full px-4 py-3 rounded-lg border ${errors.email ? "border-red-500" : "border-slate-300"
-                      } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900`}
+                      } focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-slate-900`}
                     placeholder={t.form.emailPlaceholder}
                   />
                   {errors.email && (
@@ -454,7 +454,7 @@ export default function ContactContent() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900"
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-slate-900"
                     placeholder={t.form.phonePlaceholder}
                   />
                 </div>
@@ -473,7 +473,7 @@ export default function ContactContent() {
                     value={formData.service}
                     onChange={handleChange}
                     className={`w-full px-4 py-3 rounded-lg border ${errors.service ? "border-red-500" : "border-slate-300"
-                      } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 bg-white`}
+                      } focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-slate-900 bg-white`}
                   >
                     <option value="">{servicesLoading ? 'Loading services...' : t.form.chooseServices}</option>
                     {services.map((service) => (
@@ -502,7 +502,7 @@ export default function ContactContent() {
                     onChange={handleChange}
                     rows={6}
                     className={`w-full px-4 py-3 rounded-lg border ${errors.message ? "border-red-500" : "border-slate-300"
-                      } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 resize-none`}
+                      } focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-slate-900 resize-none`}
                     placeholder={t.form.messagePlaceholder}
                   />
                   {errors.message && (
@@ -512,7 +512,7 @@ export default function ContactContent() {
 
                 {/* Success Message */}
                 {submitSuccess && (
-                  <div className="p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+                  <div className="p-4 bg-success-100 border border-success-400 text-success-700 rounded-lg">
                     <p className="font-semibold">Success! Your message has been sent.</p>
                     <p className="text-sm">We will get back to you soon.</p>
                   </div>
@@ -522,7 +522,7 @@ export default function ContactContent() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 text-white font-bold py-3 sm:py-4 px-6 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl text-base sm:text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 text-white font-bold py-3 sm:py-4 px-6 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl text-base sm:text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {submitting ? 'Sending...' : t.form.sendMessage}
                 </button>
@@ -541,7 +541,7 @@ export default function ContactContent() {
                 href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl w-full sm:w-auto justify-center"
+                className="inline-flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl w-full sm:w-auto justify-center"
               >
                 <svg
                   className="w-6 h-6"

@@ -55,7 +55,7 @@ export default function AdminLanguageSwitcher() {
                   setIsOpen(false);
                 }}
                 className={`w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-100 transition text-left ${
-                  adminLanguage === lang ? 'bg-purple-50 text-purple-700' : 'text-gray-700'
+                  adminLanguage === lang ? 'bg-accent-purple-50 text-accent-purple-700' : 'text-gray-700'
                 }`}
               >
                 <span className="text-lg">{languages[lang].flag}</span>
@@ -64,7 +64,7 @@ export default function AdminLanguageSwitcher() {
                   <div className="text-xs text-gray-500">{languages[lang].name}</div>
                 </div>
                 {adminLanguage === lang && (
-                  <svg className="w-5 h-5 text-purple-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-5 h-5 text-accent-purple-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path
                       fillRule="evenodd"
                       d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"

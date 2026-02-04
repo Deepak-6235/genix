@@ -166,7 +166,7 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
           <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>
@@ -179,7 +179,7 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-slate-900 mb-4">Blog Post Not Found</h1>
-          <Link href="/blog" className="text-blue-600 hover:text-blue-700">
+          <Link href="/blog" className="text-primary-600 hover:text-primary-700">
             Back to Blog
           </Link>
         </div>
@@ -199,7 +199,7 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
             <nav className="mb-4 sm:mb-6" aria-label="Breadcrumb">
               <ol className={`flex items-center gap-2 text-sm sm:text-base text-slate-600 ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}>
                 <li>
-                  <Link href="/" className="hover:text-blue-600 transition-colors">
+                  <Link href="/" className="hover:text-primary-600 transition-colors">
                     {t.breadcrumbHome}
                   </Link>
                 </li>
@@ -209,7 +209,7 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
                   </svg>
                 </li>
                 <li>
-                  <Link href="/blog" className="hover:text-blue-600 transition-colors">
+                  <Link href="/blog" className="hover:text-primary-600 transition-colors">
                     {t.breadcrumbBlog}
                   </Link>
                 </li>
@@ -323,7 +323,7 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
 
               {/* Success Message */}
               {submitSuccess && (
-                <div className="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+                <div className="mb-4 p-4 bg-success-100 border border-success-400 text-success-700 rounded-lg">
                   <p className="font-semibold">Comment submitted successfully!</p>
                   <p className="text-sm">Your comment is awaiting approval and will appear after review.</p>
                 </div>
@@ -339,7 +339,7 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
                     id="userName"
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-slate-900"
                     placeholder={t.namePlaceholder}
                     required
                   />
@@ -353,7 +353,7 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
                     id="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-slate-900"
                     placeholder={t.emailPlaceholder}
                     required
                   />
@@ -367,7 +367,7 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
                     id="website"
                     value={website}
                     onChange={(e) => setWebsite(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-slate-900"
                     placeholder={t.websitePlaceholder}
                   />
                 </div>
@@ -380,7 +380,7 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                     rows={5}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 resize-none"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-slate-900 resize-none"
                     placeholder={t.commentPlaceholder}
                     required
                   />
@@ -388,7 +388,7 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full sm:w-auto bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white px-6 sm:px-8 py-3 rounded-xl font-bold text-base sm:text-lg hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full sm:w-auto bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white px-6 sm:px-8 py-3 rounded-xl font-bold text-base sm:text-lg hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {submitting ? 'Submitting...' : t.submitComment}
                 </button>
@@ -399,7 +399,7 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
             <div className="space-y-4 sm:space-y-6">
               {commentsLoading ? (
                 <div className="bg-white rounded-2xl p-6 sm:p-8 text-center shadow-lg">
-                  <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
+                  <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mb-4"></div>
                   <p className="text-slate-600">Loading comments...</p>
                 </div>
               ) : comments.filter(c => c.isApproved).length === 0 ? (
@@ -418,7 +418,7 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
                     >
                       <div className="flex items-start gap-4">
                         {/* User Avatar */}
-                        <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold text-lg">
+                        <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 flex items-center justify-center text-white font-bold text-lg">
                           {comment.name.charAt(0).toUpperCase()}
                         </div>
 
@@ -433,7 +433,7 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
                                 href={comment.website}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-sm text-blue-600 hover:text-blue-700"
+                                className="text-sm text-primary-600 hover:text-primary-700"
                               >
                                 🔗 Website
                               </a>

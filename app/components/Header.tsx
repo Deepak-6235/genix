@@ -62,7 +62,7 @@ export default function Header() {
               className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain"
               priority
             />
-            <span className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent" suppressHydrationWarning>
+            <span className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 bg-clip-text text-transparent" suppressHydrationWarning>
               {t.logo}
             </span>
           </a>
@@ -83,7 +83,7 @@ export default function Header() {
                   >
                     <a
                       href={item.href}
-                      className="text-slate-700 hover:text-blue-600 font-semibold relative py-2 flex items-center gap-1 cursor-pointer"
+                      className="text-slate-700 hover:text-primary-600 font-semibold relative py-2 flex items-center gap-1 cursor-pointer"
                       suppressHydrationWarning
                     >
                       {item.label}
@@ -108,7 +108,7 @@ export default function Header() {
                             <a
                               key={service.id}
                               href={`/services/${service.slug}`}
-                              className="block px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition-colors text-sm"
+                              className="block px-4 py-3 text-slate-700 hover:bg-primary-50 hover:text-primary-600 transition-colors text-sm"
                               onClick={() => setIsServicesOpen(false)}
                               suppressHydrationWarning
                             >
@@ -122,11 +122,11 @@ export default function Header() {
                 ) : (
                   <a
                     href={item.href}
-                    className="text-slate-700 hover:text-blue-600 font-semibold relative group py-2"
+                    className="text-slate-700 hover:text-primary-600 font-semibold relative group py-2"
                     suppressHydrationWarning
                   >
                     {item.label}
-                    <span className={`absolute bottom-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300 ${dir === 'rtl' ? 'right-0' : 'left-0'}`}></span>
+                    <span className={`absolute bottom-0 w-0 h-0.5 bg-primary-600 group-hover:w-full transition-all duration-300 ${dir === 'rtl' ? 'right-0' : 'left-0'}`}></span>
                   </a>
                 )}
               </li>
@@ -178,7 +178,7 @@ export default function Header() {
                   <div>
                     <button
                       onClick={() => setIsServicesOpen(!isServicesOpen)}
-                      className={`w-full text-slate-700 hover:text-blue-600 hover:bg-slate-50 font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-between ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                      className={`w-full text-slate-700 hover:text-primary-600 hover:bg-slate-50 font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-between ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
                       suppressHydrationWarning
                     >
                       {item.label}
@@ -202,7 +202,7 @@ export default function Header() {
                           <li key={service.id}>
                             <a
                               href={`/services/${service.slug}`}
-                              className="block text-slate-600 hover:text-blue-600 hover:bg-slate-50 py-2 px-4 rounded-lg transition-colors text-sm"
+                              className="block text-slate-600 hover:text-primary-600 hover:bg-slate-50 py-2 px-4 rounded-lg transition-colors text-sm"
                               onClick={() => {
                                 setIsServicesOpen(false);
                                 setIsMenuOpen(false);
@@ -219,7 +219,7 @@ export default function Header() {
                 ) : (
                   <a
                     href={item.href}
-                    className="block text-slate-700 hover:text-blue-600 hover:bg-slate-50 font-semibold py-3 px-4 rounded-lg transition-colors"
+                    className="block text-slate-700 hover:text-primary-600 hover:bg-slate-50 font-semibold py-3 px-4 rounded-lg transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                     suppressHydrationWarning
                   >

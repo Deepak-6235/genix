@@ -107,7 +107,7 @@ export default function Services() {
                   {/* Learn More Button */}
                   <a
                     href="#contact"
-                    className={`inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors group ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
+                    className={`inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-semibold transition-colors group ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
                   >
                     <span>{t.cta}</span>
                     <svg className={`w-4 h-4 transition-transform ${dir === 'rtl' ? 'group-hover:-translate-x-1 rotate-180' : 'group-hover:translate-x-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">

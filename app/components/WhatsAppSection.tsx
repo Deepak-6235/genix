@@ -9,14 +9,14 @@ export default function WhatsAppSection() {
   const whatsappLink = `https://wa.me/966${phoneNumber}?text=${whatsappMessage}`;
 
   return (
-    <section className="py-4 sm:py-6 md:py-8 bg-gradient-to-br from-emerald-50 to-green-50">
+    <section className="py-4 sm:py-6 md:py-8 bg-gradient-to-br from-success-50 to-success-50">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="bg-white rounded-2xl p-3 sm:p-4 md:p-5 shadow-xl border border-emerald-100">
+          <div className="bg-white rounded-2xl p-3 sm:p-4 md:p-5 shadow-xl border border-success-100">
             <div className="mb-3 sm:mb-4">
-              <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-emerald-100 rounded-full mb-2 sm:mb-3">
+              <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-success-100 rounded-full mb-2 sm:mb-3">
                 <svg
-                  className="w-6 h-6 sm:w-8 sm:h-8 text-emerald-600"
+                  className="w-6 h-6 sm:w-8 sm:h-8 text-success-600"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -26,7 +26,7 @@ export default function WhatsAppSection() {
               <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 mb-1.5 sm:mb-2">
                 {t.title}
               </h2>
-              <h3 className="text-base sm:text-lg md:text-xl font-bold text-emerald-600 mb-2 sm:mb-3">
+              <h3 className="text-base sm:text-lg md:text-xl font-bold text-success-600 mb-2 sm:mb-3">
                 {t.subtitle}
               </h3>
             </div>
@@ -39,7 +39,7 @@ export default function WhatsAppSection() {
               href={whatsappLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-2xl font-bold text-xs sm:text-sm hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 w-full sm:w-auto justify-center"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-2xl font-bold text-xs sm:text-sm hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 w-full sm:w-auto justify-center"
             >
               <svg
                 className="w-7 h-7"

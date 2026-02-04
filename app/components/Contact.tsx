@@ -75,7 +75,7 @@ export default function Contact() {
               {(aboutUs?.phoneNumber1 || aboutUs?.phoneNumber2) && (
                 <div className="bg-white rounded-xl p-4 sm:p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-100 rounded-lg flex items-center justify-center text-emerald-600">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-success-100 rounded-lg flex items-center justify-center text-success-600">
                       <svg
                         className="w-5 h-5 sm:w-6 sm:h-6"
                         fill="none"
@@ -98,7 +98,7 @@ export default function Contact() {
                     {aboutUs?.phoneNumber1 && (
                       <a
                         href={`tel:+966${aboutUs.phoneNumber1}`}
-                        className="block text-blue-600 hover:text-blue-700 font-semibold text-base sm:text-lg transition-colors"
+                        className="block text-primary-600 hover:text-primary-700 font-semibold text-base sm:text-lg transition-colors"
                       >
                         {aboutUs.phoneNumber1}
                       </a>
@@ -106,7 +106,7 @@ export default function Contact() {
                     {aboutUs?.phoneNumber2 && (
                       <a
                         href={`tel:+966${aboutUs.phoneNumber2}`}
-                        className="block text-blue-600 hover:text-blue-700 font-semibold text-base sm:text-lg transition-colors"
+                        className="block text-primary-600 hover:text-primary-700 font-semibold text-base sm:text-lg transition-colors"
                       >
                         {aboutUs.phoneNumber2}
                       </a>
@@ -119,7 +119,7 @@ export default function Contact() {
               {aboutUs?.email && (
                 <div className="bg-white rounded-xl p-4 sm:p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary-100 rounded-lg flex items-center justify-center text-primary-600">
                       <svg
                         className="w-5 h-5 sm:w-6 sm:h-6"
                         fill="none"
@@ -140,7 +140,7 @@ export default function Contact() {
                   </div>
                   <a
                     href={`mailto:${aboutUs.email}`}
-                    className="text-blue-600 hover:text-blue-700 font-semibold text-sm sm:text-base md:text-lg transition-colors break-all"
+                    className="text-primary-600 hover:text-primary-700 font-semibold text-sm sm:text-base md:text-lg transition-colors break-all"
                   >
                     {aboutUs.email}
                   </a>
@@ -151,7 +151,7 @@ export default function Contact() {
               {aboutUs?.address && (
                 <div className="bg-white rounded-xl p-4 sm:p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent-purple-100 rounded-lg flex items-center justify-center text-accent-purple-600">
                       <svg
                         className="w-5 h-5 sm:w-6 sm:h-6"
                         fill="none"
@@ -186,7 +186,7 @@ export default function Contact() {
               {aboutUs?.workingHours && (
                 <div className="bg-white rounded-xl p-4 sm:p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent-orange-100 rounded-lg flex items-center justify-center text-accent-orange-600">
                       <svg
                         className="w-5 h-5 sm:w-6 sm:h-6"
                         fill="none"
@@ -229,7 +229,7 @@ export default function Contact() {
                 href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl w-full sm:w-auto justify-center"
+                className="inline-flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl w-full sm:w-auto justify-center"
               >
                 <svg
                   className="w-6 h-6"
@@ -243,7 +243,7 @@ export default function Contact() {
 
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl w-full sm:w-auto justify-center"
+                className="inline-flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl w-full sm:w-auto justify-center"
               >
                 <svg
                   className="w-6 h-6"

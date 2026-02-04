@@ -73,28 +73,28 @@ export default function Statistics({ variant = "light", className = "" }: Statis
     if (variant === "dark") {
       switch (key) {
         case 'years_experience':
-          return "text-blue-500";
+          return "text-primary-500";
         case 'satisfied_customers':
-          return "text-emerald-500";
+          return "text-success-500";
         case 'houses':
-          return "text-purple-500";
+          return "text-accent-purple-500";
         case 'work_team':
-          return "text-orange-500";
+          return "text-accent-orange-500";
         default:
-          return "text-blue-500";
+          return "text-primary-500";
       }
     } else {
       switch (key) {
         case 'years_experience':
-          return "text-blue-600";
+          return "text-primary-600";
         case 'satisfied_customers':
-          return "text-emerald-600";
+          return "text-success-600";
         case 'houses':
-          return "text-purple-600";
+          return "text-accent-purple-600";
         case 'work_team':
-          return "text-orange-600";
+          return "text-accent-orange-600";
         default:
-          return "text-blue-600";
+          return "text-primary-600";
       }
     }
   };

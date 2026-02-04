@@ -19,7 +19,7 @@ export default function ConfirmModal({
   message,
   confirmText = 'Confirm',
   cancelText = 'Cancel',
-  confirmButtonClass = 'bg-red-600 hover:bg-red-700',
+  confirmButtonClass = 'bg-error-600 hover:bg-error-700',
 }: ConfirmModalProps) {
   if (!isOpen) return null;
 
@@ -39,9 +39,9 @@ export default function ConfirmModal({
       {/* Modal */}
       <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-6 z-10">
         {/* Icon */}
-        <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full">
+        <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-error-100 rounded-full">
           <svg
-            className="w-6 h-6 text-red-600"
+            className="w-6 h-6 text-error-600"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

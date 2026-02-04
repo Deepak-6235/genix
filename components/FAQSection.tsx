@@ -76,13 +76,13 @@ export default function FAQSection({
               {/* FAQ Question Header */}
               <button
                 onClick={() => toggleAccordion(faq.id)}
-                className="w-full flex items-center justify-between p-5 text-left bg-blue-50 hover:bg-blue-100 transition-colors"
+                className="w-full flex items-center justify-between p-5 text-left bg-primary-50 hover:bg-primary-100 transition-colors"
               >
-                <h3 className="font-semibold text-blue-900 text-lg pr-4">
+                <h3 className="font-semibold text-primary-900 text-lg pr-4">
                   {faq.question}
                 </h3>
                 <svg
-                  className={`w-6 h-6 text-blue-900 flex-shrink-0 transition-transform duration-200 ${
+                  className={`w-6 h-6 text-primary-900 flex-shrink-0 transition-transform duration-200 ${
                     expandedFaqId === faq.id ? 'rotate-180' : ''
                   }`}
                   fill="none"

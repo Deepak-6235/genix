@@ -27,9 +27,9 @@ export default function Toast({
 
   const typeStyles = {
     success: {
-      bg: 'bg-green-50 border-green-200',
-      icon: 'text-green-600',
-      text: 'text-green-800',
+      bg: 'bg-success-50 border-success-200',
+      icon: 'text-success-600',
+      text: 'text-success-800',
       iconPath: (
         <path
           strokeLinecap="round"
@@ -40,9 +40,9 @@ export default function Toast({
       ),
     },
     error: {
-      bg: 'bg-red-50 border-red-200',
-      icon: 'text-red-600',
-      text: 'text-red-800',
+      bg: 'bg-error-50 border-error-200',
+      icon: 'text-error-600',
+      text: 'text-error-800',
       iconPath: (
         <path
           strokeLinecap="round"
@@ -53,9 +53,9 @@ export default function Toast({
       ),
     },
     warning: {
-      bg: 'bg-yellow-50 border-yellow-200',
-      icon: 'text-yellow-600',
-      text: 'text-yellow-800',
+      bg: 'bg-warning-50 border-warning-200',
+      icon: 'text-warning-600',
+      text: 'text-warning-800',
       iconPath: (
         <path
           strokeLinecap="round"
@@ -66,9 +66,9 @@ export default function Toast({
       ),
     },
     info: {
-      bg: 'bg-blue-50 border-blue-200',
-      icon: 'text-blue-600',
-      text: 'text-blue-800',
+      bg: 'bg-primary-50 border-primary-200',
+      icon: 'text-primary-600',
+      text: 'text-primary-800',
       iconPath: (
         <path
           strokeLinecap="round"

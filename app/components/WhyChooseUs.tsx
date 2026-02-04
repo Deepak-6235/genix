@@ -14,7 +14,7 @@ export default function WhyChooseUs() {
             ),
             title: t.features.trusted.title,
             description: t.features.trusted.description,
-            color: "blue"
+            color: "primary"
         },
         {
             icon: (
@@ -24,7 +24,7 @@ export default function WhyChooseUs() {
             ),
             title: t.features.professional.title,
             description: t.features.professional.description,
-            color: "cyan"
+            color: "secondary"
         },
         {
             icon: (
@@ -34,7 +34,7 @@ export default function WhyChooseUs() {
             ),
             title: t.features.service24.title,
             description: t.features.service24.description,
-            color: "emerald"
+            color: "success"
         },
         {
             icon: (
@@ -44,15 +44,15 @@ export default function WhyChooseUs() {
             ),
             title: t.features.punctual.title,
             description: t.features.punctual.description,
-            color: "purple"
+            color: "accent-purple"
         }
     ];
 
     const colorClasses: { [key: string]: string } = {
-        blue: "from-blue-500 to-blue-600",
-        cyan: "from-cyan-500 to-cyan-600",
-        emerald: "from-emerald-500 to-emerald-600",
-        purple: "from-purple-500 to-purple-600"
+        primary: "from-primary-500 to-primary-600",
+        secondary: "from-secondary-500 to-secondary-600",
+        success: "from-success-500 to-success-600",
+        "accent-purple": "from-accent-purple-500 to-accent-purple-600"
     };
 
     return (
@@ -71,7 +71,7 @@ export default function WhyChooseUs() {
                     {features.map((feature, index) => (
                         <div
                             key={index}
-                            className="bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 p-[2px] rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+                            className="bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 p-[2px] rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
                         >
                             <div className="bg-white rounded-2xl p-4 sm:p-6 md:p-8 h-full flex flex-col">
                                 <div className={`w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br ${colorClasses[feature.color]} rounded-xl flex items-center justify-center text-white mb-4 sm:mb-6 shadow-lg flex-shrink-0`}>
