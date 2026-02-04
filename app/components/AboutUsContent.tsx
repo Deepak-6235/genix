@@ -108,26 +108,26 @@ export default function AboutUsContent() {
         return key;
     }
   };
-  
+
   return (
     <div className="min-h-screen">
       {/* ============================================
           HERO SECTION WITH BREADCRUMB
           ============================================ */}
-      <section className="py-6 sm:py-10 md:py-12 lg:py-14 bg-gradient-to-b from-blue-50 to-white">
+      <section className="py-4 sm:py-8 md:py-10 lg:py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             {/* Breadcrumb Navigation */}
-            <nav className="mb-6 sm:mb-8" aria-label="Breadcrumb">
-              <ol className="flex items-center gap-2 text-sm sm:text-base text-slate-600">
+            <nav className="mb-3 sm:mb-4" aria-label="Breadcrumb">
+              <ol className="flex items-center gap-2 text-sm sm:text-base text-slate-600 justify-center">
                 <li>
                   <Link href="/" className="hover:text-blue-600 transition-colors">
                     {t.breadcrumbHome}
                   </Link>
                 </li>
                 <li>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  <svg className="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </li>
                 <li className="text-slate-900 font-semibold">{t.breadcrumbAbout}</li>
@@ -158,7 +158,7 @@ export default function AboutUsContent() {
       <section className="pt-12 sm:pt-16 md:pt-20 lg:pt-24 pb-12 sm:pb-16 md:pb-20 lg:pb-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            
+
             {/* Why Choose Us Section */}
             <div className="mb-16 sm:mb-20 md:mb-24">
               <div className="text-center mb-10 sm:mb-12 md:mb-16">
@@ -305,7 +305,7 @@ export default function AboutUsContent() {
                 <p className="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed mb-8 text-center">
                   {t.companyDescription}
                 </p>
-                
+
                 {/* Contact Information */}
                 {loading ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">

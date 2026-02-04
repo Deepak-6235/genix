@@ -94,20 +94,20 @@ export default function ContactContent() {
       {/* ============================================
           HERO SECTION WITH BREADCRUMB
           ============================================ */}
-      <section className="py-8 sm:py-14 md:py-16 lg:py-16 bg-gradient-to-b from-slate-50 to-white">
+      <section className="py-4 sm:py-8 md:py-10 lg:py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             {/* Breadcrumb Navigation */}
-            <nav className="mb-6 sm:mb-8" aria-label="Breadcrumb">
-              <ol className="flex items-center gap-2 text-sm sm:text-base text-slate-600">
+            <nav className="mb-3 sm:mb-4" aria-label="Breadcrumb">
+              <ol className="flex items-center gap-2 text-sm sm:text-base text-slate-600 justify-center">
                 <li>
                   <Link href="/" className="hover:text-blue-600 transition-colors">
                     {t.breadcrumbHome}
                   </Link>
                 </li>
                 <li>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  <svg className="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </li>
                 <li className="text-slate-900 font-semibold">{t.breadcrumbContact}</li>
@@ -115,12 +115,14 @@ export default function ContactContent() {
             </nav>
 
             {/* Main Page Title */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 mb-4 sm:mb-6 leading-tight">
-              {contactT.title}
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl">
-              {contactT.subtitle}
-            </p>
+            <div className="text-center">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 mb-4 sm:mb-6 leading-tight">
+                {contactT.title}
+              </h1>
+              <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto">
+                {contactT.subtitle}
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -134,7 +136,7 @@ export default function ContactContent() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-12 sm:mb-16">
               {/* Phone Card */}
               <div className="bg-white rounded-xl p-6 sm:p-8 shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100">
-                <div className="flex items-center mb-4">
+                <div className="flex items-center gap-4 mb-4">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-100 rounded-lg flex items-center justify-center text-emerald-600">
                     <svg
                       className="w-5 h-5 sm:w-6 sm:h-6"
@@ -150,7 +152,7 @@ export default function ContactContent() {
                       />
                     </svg>
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mr-3 sm:mr-4">
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900">
                     {contactT.phone}
                   </h3>
                 </div>
@@ -172,7 +174,7 @@ export default function ContactContent() {
 
               {/* Email Card */}
               <div className="bg-white rounded-xl p-6 sm:p-8 shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100">
-                <div className="flex items-center mb-4">
+                <div className="flex items-center gap-4 mb-4">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
                     <svg
                       className="w-5 h-5 sm:w-6 sm:h-6"
@@ -188,7 +190,7 @@ export default function ContactContent() {
                       />
                     </svg>
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mr-3 sm:mr-4">
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900">
                     {contactT.email}
                   </h3>
                 </div>
@@ -202,7 +204,7 @@ export default function ContactContent() {
 
               {/* Location Card */}
               <div className="bg-white rounded-xl p-6 sm:p-8 shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100">
-                <div className="flex items-center mb-4">
+                <div className="flex items-center gap-4 mb-4">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600">
                     <svg
                       className="w-5 h-5 sm:w-6 sm:h-6"
@@ -224,7 +226,7 @@ export default function ContactContent() {
                       />
                     </svg>
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mr-3 sm:mr-4">
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900">
                     {contactT.address}
                   </h3>
                 </div>
@@ -235,7 +237,7 @@ export default function ContactContent() {
 
               {/* Hours Card */}
               <div className="bg-white rounded-xl p-6 sm:p-8 shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100">
-                <div className="flex items-center mb-4">
+                <div className="flex items-center gap-4 mb-4">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600">
                     <svg
                       className="w-5 h-5 sm:w-6 sm:h-6"
@@ -251,7 +253,7 @@ export default function ContactContent() {
                       />
                     </svg>
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mr-3 sm:mr-4">
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900">
                     {contactT.hours}
                   </h3>
                 </div>
@@ -281,9 +283,8 @@ export default function ContactContent() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className={`w-full px-4 py-3 rounded-lg border ${
-                      errors.name ? "border-red-500" : "border-slate-300"
-                    } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900`}
+                    className={`w-full px-4 py-3 rounded-lg border ${errors.name ? "border-red-500" : "border-slate-300"
+                      } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900`}
                     placeholder={t.form.namePlaceholder}
                   />
                   {errors.name && (
@@ -305,9 +306,8 @@ export default function ContactContent() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className={`w-full px-4 py-3 rounded-lg border ${
-                      errors.email ? "border-red-500" : "border-slate-300"
-                    } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900`}
+                    className={`w-full px-4 py-3 rounded-lg border ${errors.email ? "border-red-500" : "border-slate-300"
+                      } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900`}
                     placeholder={t.form.emailPlaceholder}
                   />
                   {errors.email && (
@@ -347,9 +347,8 @@ export default function ContactContent() {
                     name="service"
                     value={formData.service}
                     onChange={handleChange}
-                    className={`w-full px-4 py-3 rounded-lg border ${
-                      errors.service ? "border-red-500" : "border-slate-300"
-                    } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 bg-white`}
+                    className={`w-full px-4 py-3 rounded-lg border ${errors.service ? "border-red-500" : "border-slate-300"
+                      } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 bg-white`}
                   >
                     <option value="">{t.form.chooseServices}</option>
                     {services.map((service) => (
@@ -377,9 +376,8 @@ export default function ContactContent() {
                     value={formData.message}
                     onChange={handleChange}
                     rows={6}
-                    className={`w-full px-4 py-3 rounded-lg border ${
-                      errors.message ? "border-red-500" : "border-slate-300"
-                    } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 resize-none`}
+                    className={`w-full px-4 py-3 rounded-lg border ${errors.message ? "border-red-500" : "border-slate-300"
+                      } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 resize-none`}
                     placeholder={t.form.messagePlaceholder}
                   />
                   {errors.message && (

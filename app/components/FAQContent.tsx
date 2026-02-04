@@ -132,15 +132,12 @@ export default function FAQContent() {
 
   return (
     <div className="min-h-screen">
-      {/* ============================================
-          HERO SECTION WITH BREADCRUMB
-          ============================================ */}
-      <section className="py-6 sm:py-10 md:py-12 lg:py-14">
+      <section className="py-4 sm:py-8 md:py-10 lg:py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             {/* Breadcrumb Navigation */}
-            <nav className="mb-6 sm:mb-8" aria-label="Breadcrumb">
-              <ol className="flex items-center gap-2 text-sm sm:text-base text-slate-600">
+            <nav className="mb-3 sm:mb-4" aria-label="Breadcrumb">
+              <ol className="flex items-center gap-2 text-sm sm:text-base text-slate-600 justify-center">
                 <li>
                   <Link href="/" className="hover:text-blue-600 transition-colors">
                     {t.breadcrumbHome}
@@ -156,7 +153,7 @@ export default function FAQContent() {
             </nav>
 
             {/* Main Page Title */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 mb-6 sm:mb-8 leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 mb-4 sm:mb-6 leading-tight text-center">
               {t.pageTitle}
             </h1>
           </div>
@@ -166,7 +163,7 @@ export default function FAQContent() {
       {/* ============================================
           MAIN CONTENT SECTION
           ============================================ */}
-      <section className="pt-12 sm:pt-16 md:pt-20 lg:pt-24 pb-12 sm:pb-16 md:pb-20 lg:pb-24">
+      <section className="pt-4 sm:pt-6 md:pt-8 lg:pt-10 pb-12 sm:pb-16 md:pb-20 lg:pb-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
 
