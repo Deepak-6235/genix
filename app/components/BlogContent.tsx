@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useBlogContentTranslations } from "@/hooks/useTranslations";
@@ -7,31 +8,64 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 /**
  * Blog Content Component
- * 
+ *
  * This component displays the blog page with:
  * - A hero section with breadcrumb navigation
  * - Blog posts in a responsive grid layout
  * - Pagination controls
- * 
+ *
  * Features:
  * - Responsive design for all screen sizes
  * - Modern UI with hover effects
  * - Blog post cards with images, dates, and excerpts
- * - Local image support
+ * - Dynamically fetches blogs from database
  */
+
+interface Blog {
+  id: string;
+  slug: string;
+  name: string;
+  shortDescription: string;
+  author: string;
+  imageUrl: string;
+  publishedAt: string | null;
+}
 
 export default function BlogContent() {
   const t = useBlogContentTranslations();
-  const { dir } = useLanguage();
-  
-  const blogPosts = t.posts.map((post, index) => ({
-    id: index + 1,
-    title: post.title,
-    date: post.date,
-    author: "admin",
-    image: `/images/blog-${index + 1}.jpg`,
-    excerpt: post.excerpt,
-  }));
+  const { dir, language } = useLanguage();
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch blogs from database
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/blogs?lang=${language}`);
+        const data = await response.json();
+        if (data.success) {
+          setBlogs(data.blogs);
+        }
+      } catch (error) {
+        console.error('Failed to fetch blogs:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, [language]);
+
+  // Format date helper
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return 'Not published';
+    return new Date(dateString).toLocaleDateString(language, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  };
   return (
     <div className="min-h-screen">
       {/* ============================================
@@ -71,62 +105,78 @@ export default function BlogContent() {
       <section className="pt-6 sm:pt-10 md:pt-12 pb-12 sm:pb-16 md:pb-20 lg:pb-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            {/* Blog Posts Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 mb-12 sm:mb-16">
-              {blogPosts.map((post) => (
-                <article
-                  key={post.id}
-                  className="group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
-                >
-                  {/* Blog Image */}
-                  <div className="relative h-48 sm:h-56 w-full overflow-hidden">
-                    <Image
-                      src={post.image}
-                      alt={post.title}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-300"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      unoptimized
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            {/* Loading State */}
+            {loading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 mb-12 sm:mb-16">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div key={i} className="animate-pulse bg-white border border-slate-200 rounded-2xl overflow-hidden">
+                    <div className="bg-gray-200 h-48 sm:h-56"></div>
+                    <div className="p-6 sm:p-8 space-y-4">
+                      <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                      <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+                      <div className="h-4 bg-gray-200 rounded"></div>
+                      <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                    </div>
                   </div>
-
-                  {/* Content */}
-                  <div className="p-6 sm:p-8 md:p-10">
-                    {/* Date and Author */}
-                    <div className="flex items-center gap-3 mb-4 text-sm text-slate-500">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      <span>{post.date}</span>
-                      <span>•</span>
-                      <span>{post.author}</span>
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 mb-12 sm:mb-16">
+                {blogs.map((post) => (
+                  <article
+                    key={post.id}
+                    className="group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+                  >
+                    {/* Blog Image */}
+                    <div className="relative h-48 sm:h-56 w-full overflow-hidden">
+                      <Image
+                        src={post.imageUrl || "/images/blog-1.jpg"}
+                        alt={post.name}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-300"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        unoptimized
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
 
-                    {/* Title */}
-                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 mb-3 sm:mb-4 group-hover:text-blue-600 transition-colors leading-tight">
-                      {post.title}
-                    </h2>
+                    {/* Content */}
+                    <div className="p-6 sm:p-8 md:p-10">
+                      {/* Date and Author */}
+                      <div className="flex items-center gap-3 mb-4 text-sm text-slate-500">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <span>{formatDate(post.publishedAt)}</span>
+                        <span>•</span>
+                        <span>{post.author}</span>
+                      </div>
 
-                    {/* Excerpt */}
-                    <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 sm:mb-6 line-clamp-3">
-                      {post.excerpt}
-                    </p>
+                      {/* Title */}
+                      <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 mb-3 sm:mb-4 group-hover:text-blue-600 transition-colors leading-tight">
+                        {post.name}
+                      </h2>
 
-                    {/* Read More Link */}
-                    <Link
-                      href={`/blog/${post.id}`}
-                      className={`inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors group/link text-sm sm:text-base ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
-                    >
-                      <span>{t.readMore}</span>
-                      <svg className={`w-4 h-4 transition-transform ${dir === 'rtl' ? 'group-hover/link:-translate-x-1 rotate-180' : 'group-hover/link:translate-x-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                      </svg>
-                    </Link>
-                  </div>
-                </article>
-              ))}
-            </div>
+                      {/* Excerpt */}
+                      <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 sm:mb-6 line-clamp-3">
+                        {post.shortDescription}
+                      </p>
+
+                      {/* Read More Link */}
+                      <Link
+                        href={`/blog/${post.slug}`}
+                        className={`inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors group/link text-sm sm:text-base ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
+                      >
+                        <span>{t.readMore}</span>
+                        <svg className={`w-4 h-4 transition-transform ${dir === 'rtl' ? 'group-hover/link:-translate-x-1 rotate-180' : 'group-hover/link:translate-x-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                        </svg>
+                      </Link>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
 
             {/* ============================================
                 PAGINATION
