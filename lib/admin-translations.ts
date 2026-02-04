@@ -3,6 +3,8 @@ import { LanguageCode } from './languages';
 export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
   en: {
     // Navigation & Layout
+    'nav.adminPanel': 'Admin Panel',
+    'nav.adminPanel': 'Painel de Administração',
     'nav.dashboard': 'Dashboard',
     'nav.services': 'Services',
     'nav.blogs': 'Blog',
@@ -344,6 +346,7 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
 
   ar: {
     // Navigation & Layout
+    'nav.adminPanel': 'لوحة الإدارة',
     'nav.dashboard': 'لوحة التحكم',
     'nav.services': 'الخدمات',
     'nav.blogs': 'المدونة',
@@ -685,6 +688,7 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
 
   pt: {
     // Navigation & Layout
+    'nav.adminPanel': 'Painel de Administração',
     'nav.dashboard': 'Painel de Controle',
     'nav.services': 'Serviços',
     'nav.blogs': 'Blog',
@@ -1325,6 +1329,7 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
 
   ja: {
     // Navigation & Layout
+    'nav.adminPanel': '管理パネル',
     'nav.dashboard': 'ダッシュボード',
     'nav.services': 'サービス',
     'nav.blogs': 'ブログ',
@@ -1645,6 +1650,7 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
 
   de: {
     // Navigation & Layout
+    'nav.adminPanel': 'Admin-Panel',
     'nav.dashboard': 'Armaturenbrett',
     'nav.services': 'Dienstleistungen',
     'nav.blogs': 'Blog',

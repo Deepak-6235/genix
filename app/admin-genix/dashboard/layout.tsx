@@ -15,7 +15,7 @@ function DashboardLayoutContent({
   const router = useRouter();
   const pathname = usePathname();
   const { t, dir } = useAdminLanguage();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [userEmail, setUserEmail] = useState<string>('');
   const [loggingOut, setLoggingOut] = useState(false);
@@ -168,33 +168,24 @@ function DashboardLayoutContent({
       {/* Sidebar */}
       <aside
         className={`${
-          isSidebarOpen ? 'translate-x-0' : dir === 'rtl' ? 'translate-x-full lg:translate-x-0' : '-translate-x-full lg:translate-x-0'
-        } w-64 lg:w-64 bg-white ${dir === 'rtl' ? 'border-l' : 'border-r'} border-gray-200 min-h-screen transition-all duration-300 fixed ${dir === 'rtl' ? 'right-0' : 'left-0'} top-0 z-30`}
+          isSidebarOpen ? 'translate-x-0' : dir === 'rtl' ? 'translate-x-full' : '-translate-x-full'
+        } w-64 lg:translate-x-0 bg-white ${dir === 'rtl' ? 'border-l' : 'border-r'} border-gray-200 min-h-screen transition-all duration-300 fixed ${dir === 'rtl' ? 'right-0' : 'left-0'} top-0 z-30`}
       >
         <div className="h-full flex flex-col">
           {/* Logo Section with Toggle */}
           <div className="h-16 flex items-center justify-between border-b border-gray-200 px-4">
             <div className="flex items-center gap-2">
-              {isSidebarOpen ? (
-                <>
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 flex items-center justify-center">
-                    <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                  </div>
-                  <span className="text-lg font-bold text-gray-900">Admin Panel</span>
-                </>
-              ) : (
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 flex items-center justify-center">
-                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-              )}
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <span className="text-lg font-bold text-gray-900">{t('nav.adminPanel')}</span>
             </div>
+            {/* Mobile Toggle Button */}
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="p-1.5 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+              className="lg:hidden p-1.5 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
             >
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -223,7 +214,7 @@ function DashboardLayoutContent({
                       ? 'bg-gradient-to-r from-cyan-50 to-blue-50 text-blue-600 border border-cyan-100'
                       : 'text-gray-700 hover:bg-gray-50'
                   }`}
-                  title={!isSidebarOpen ? item.name : undefined}
+                  title={item.name}
                 >
                   <span className={`${isActive ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'} transition-colors`}>
                     {item.icon}
