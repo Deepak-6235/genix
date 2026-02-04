@@ -1,11 +1,12 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useHeroTranslations } from "@/hooks/useTranslations";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 /**
  * Statistics Component
- * 
+ *
  * Displays key metrics and achievements in a modern banner format.
  * Supports two visual styles:
  * - Dark banner with icons (variant="dark")
@@ -17,57 +18,111 @@ interface StatisticsProps {
   className?: string;
 }
 
+interface StatisticData {
+  id: string;
+  key: string;
+  value: number;
+  suffix: string | null;
+  color: string | null;
+  order: number;
+}
+
 export default function Statistics({ variant = "light", className = "" }: StatisticsProps) {
   const t = useHeroTranslations();
   const { dir } = useLanguage();
+  const [statistics, setStatistics] = useState<StatisticData[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const stats = variant === "dark" 
-    ? [
-        // Dark variant - matches the UI exactly
-        {
-          number: "12+",
-          label: t.stats.years,
-          numberColor: "text-blue-500",
-        },
-        {
-          number: "1230+",
-          label: t.stats.clients,
-          numberColor: "text-emerald-500",
-        },
-        {
-          number: "1500+",
-          label: t.stats.homes,
-          numberColor: "text-purple-500",
-        },
-        {
-          number: "45+",
-          label: t.stats.technicians,
-          numberColor: "text-orange-500",
-        },
-      ]
-    : [
-        // Light variant - matches second image
-        {
-          number: "1+",
-          label: t.stats.years,
-          color: "text-blue-600",
-        },
-        {
-          number: "10k+",
-          label: t.stats.clients,
-          color: "text-emerald-600",
-        },
-        {
-          number: "1+",
-          label: t.stats.homes,
-          color: "text-purple-600",
-        },
-        {
-          number: "1+",
-          label: t.stats.technicians,
-          color: "text-orange-600",
-        },
-      ];
+  // Fetch statistics from database
+  useEffect(() => {
+    const fetchStatistics = async () => {
+      try {
+        const response = await fetch('/api/statistics');
+        const data = await response.json();
+        if (data.success) {
+          setStatistics(data.statistics);
+        }
+      } catch (error) {
+        console.error('Failed to fetch statistics:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStatistics();
+  }, []);
+
+  // Map database keys to translation labels
+  const getLabelForKey = (key: string) => {
+    switch (key) {
+      case 'years_experience':
+        return t.stats.years;
+      case 'satisfied_customers':
+        return t.stats.clients;
+      case 'houses':
+        return t.stats.homes;
+      case 'work_team':
+        return t.stats.technicians;
+      default:
+        return key;
+    }
+  };
+
+  // Map database keys to colors based on variant
+  const getColorForKey = (key: string, dbColor: string | null) => {
+    if (variant === "dark") {
+      switch (key) {
+        case 'years_experience':
+          return "text-blue-500";
+        case 'satisfied_customers':
+          return "text-emerald-500";
+        case 'houses':
+          return "text-purple-500";
+        case 'work_team':
+          return "text-orange-500";
+        default:
+          return "text-blue-500";
+      }
+    } else {
+      switch (key) {
+        case 'years_experience':
+          return "text-blue-600";
+        case 'satisfied_customers':
+          return "text-emerald-600";
+        case 'houses':
+          return "text-purple-600";
+        case 'work_team':
+          return "text-orange-600";
+        default:
+          return "text-blue-600";
+      }
+    }
+  };
+
+  // Build stats array from database data
+  const stats = statistics.map(stat => ({
+    number: `${stat.value}${stat.suffix || ''}`,
+    label: getLabelForKey(stat.key),
+    numberColor: getColorForKey(stat.key, stat.color),
+    color: getColorForKey(stat.key, stat.color),
+  }));
+
+  // Loading state
+  if (loading) {
+    return (
+      <section className={`py-12 sm:py-16 md:py-20 ${variant === "dark" ? "bg-slate-900" : "bg-white"} ${className}`}>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 max-w-5xl mx-auto">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="animate-pulse">
+                <div className={`h-20 ${variant === "dark" ? "bg-slate-800" : "bg-gray-200"} rounded-lg`}></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   if (variant === "dark") {
     return (
@@ -82,19 +137,16 @@ export default function Statistics({ variant = "light", className = "" }: Statis
               return (
                 <div
                   key={index}
-                  className="flex items-center gap-4 sm:gap-6 group"
+                  className="text-center"
                 >
-                  {/* Number and Label */}
-                  <div className="flex-1">
-                    {/* Number with Plus Sign (colored) */}
-                    <div className={`${darkStat.numberColor} text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2`}>
-                      {darkStat.number}
-                    </div>
+                  {/* Number with Plus Sign (colored) */}
+                  <div className={`${darkStat.numberColor} text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2`}>
+                    {darkStat.number}
+                  </div>
 
-                    {/* Label */}
-                    <div className="text-white text-xs sm:text-sm md:text-base font-medium">
-                      {darkStat.label}
-                    </div>
+                  {/* Label */}
+                  <div className="text-white text-xs sm:text-sm md:text-base font-medium">
+                    {darkStat.label}
                   </div>
                 </div>
               );
