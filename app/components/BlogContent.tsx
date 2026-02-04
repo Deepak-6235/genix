@@ -83,7 +83,7 @@ export default function BlogContent() {
           HERO SECTION WITH BREADCRUMB
           ============================================ */}
       <section
-        className="relative bg-cover bg-center bg-no-repeat min-h-[40vh] flex items-center py-20 overflow-hidden"
+        className="relative bg-cover bg-center bg-no-repeat min-h-[calc(100vh-5rem)] flex items-center py-20 overflow-hidden"
         style={{ backgroundImage: "url('/images/blog.jpg')" }}
       >
         {/* Overlay for better text readability */}
