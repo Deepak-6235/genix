@@ -1,29 +1,44 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useContactContentTranslations } from "@/hooks/useTranslations";
 import { useContactTranslations } from "@/hooks/useTranslations";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 /**
  * Contact Content Component
- * 
+ *
  * This component displays a contact page with:
  * - A hero section with breadcrumb navigation
  * - Contact information cards
  * - Contact form with validation
  * - WhatsApp CTA section
- * 
+ *
  * Features:
  * - Form validation with error messages
  * - Responsive design for all screen sizes
  * - Contact information display
+ * - Dynamically fetches data from AboutUs table
  */
+
+interface AboutUsData {
+  email: string | null;
+  phoneNumber1: string | null;
+  phoneNumber2: string | null;
+  workingHours: string | null;
+  address: string | null;
+}
 
 export default function ContactContent() {
   const t = useContactContentTranslations();
   const contactT = useContactTranslations();
-  const phoneNumber = "0582010834";
+  const { language } = useLanguage();
+
+  const [aboutUs, setAboutUs] = useState<AboutUsData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const phoneNumber = aboutUs?.phoneNumber1?.replace(/^0/, '') || "582010834";
   const whatsappMessage = encodeURIComponent(t.whatsappMessage);
   const whatsappLink = `https://wa.me/966${phoneNumber}?text=${whatsappMessage}`;
 
@@ -36,6 +51,26 @@ export default function ContactContent() {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Fetch About Us data
+  useEffect(() => {
+    const fetchAboutUs = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/about-us?lang=${language}`);
+        const data = await response.json();
+        if (data.success) {
+          setAboutUs(data.aboutUs);
+        }
+      } catch (error) {
+        console.error('Failed to fetch about us data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAboutUs();
+  }, [language]);
 
   const services = [
     "House Cleaning",
@@ -154,20 +189,31 @@ export default function ContactContent() {
                     {contactT.phone}
                   </h3>
                 </div>
-                <div className="space-y-2">
-                  <a
-                    href={`tel:+966${phoneNumber}`}
-                    className="block text-blue-600 hover:text-blue-700 font-semibold text-base sm:text-lg transition-colors"
-                  >
-                    {phoneNumber}
-                  </a>
-                  <a
-                    href="tel:+966562596295"
-                    className="block text-blue-600 hover:text-blue-700 font-semibold text-base sm:text-lg transition-colors"
-                  >
-                    0562596295
-                  </a>
-                </div>
+                {loading ? (
+                  <div className="space-y-2">
+                    <div className="h-6 bg-gray-200 rounded w-32 animate-pulse"></div>
+                    <div className="h-6 bg-gray-200 rounded w-32 animate-pulse"></div>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {aboutUs?.phoneNumber1 && (
+                      <a
+                        href={`tel:+966${aboutUs.phoneNumber1.replace(/^0/, '')}`}
+                        className="block text-blue-600 hover:text-blue-700 font-semibold text-base sm:text-lg transition-colors"
+                      >
+                        {aboutUs.phoneNumber1}
+                      </a>
+                    )}
+                    {aboutUs?.phoneNumber2 && (
+                      <a
+                        href={`tel:+966${aboutUs.phoneNumber2.replace(/^0/, '')}`}
+                        className="block text-blue-600 hover:text-blue-700 font-semibold text-base sm:text-lg transition-colors"
+                      >
+                        {aboutUs.phoneNumber2}
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Email Card */}
@@ -192,12 +238,16 @@ export default function ContactContent() {
                     {contactT.email}
                   </h3>
                 </div>
-                <a
-                  href="mailto:roknalnakheel@gmail.com"
-                  className="text-blue-600 hover:text-blue-700 font-semibold text-sm sm:text-base md:text-lg transition-colors break-all"
-                >
-                  roknalnakheel@gmail.com
-                </a>
+                {loading ? (
+                  <div className="h-6 bg-gray-200 rounded w-48 animate-pulse"></div>
+                ) : (
+                  <a
+                    href={`mailto:${aboutUs?.email || 'roknalnakheel@gmail.com'}`}
+                    className="text-blue-600 hover:text-blue-700 font-semibold text-sm sm:text-base md:text-lg transition-colors break-all"
+                  >
+                    {aboutUs?.email || 'roknalnakheel@gmail.com'}
+                  </a>
+                )}
               </div>
 
               {/* Location Card */}
@@ -228,9 +278,13 @@ export default function ContactContent() {
                     {contactT.address}
                   </h3>
                 </div>
-                <p className="text-slate-700 text-base sm:text-lg font-medium">
-                  {contactT.location} {contactT.city}
-                </p>
+                {loading ? (
+                  <div className="h-6 bg-gray-200 rounded w-64 animate-pulse"></div>
+                ) : (
+                  <p className="text-slate-700 text-base sm:text-lg font-medium">
+                    {aboutUs?.address || `${contactT.location} ${contactT.city}`}
+                  </p>
+                )}
               </div>
 
               {/* Hours Card */}
@@ -255,9 +309,13 @@ export default function ContactContent() {
                     {contactT.hours}
                   </h3>
                 </div>
-                <p className="text-slate-700 text-base sm:text-lg font-bold">
-                  {contactT.hoursValue}
-                </p>
+                {loading ? (
+                  <div className="h-6 bg-gray-200 rounded w-24 animate-pulse"></div>
+                ) : (
+                  <p className="text-slate-700 text-base sm:text-lg font-bold">
+                    {aboutUs?.workingHours || contactT.hoursValue}
+                  </p>
+                )}
               </div>
             </div>
 
