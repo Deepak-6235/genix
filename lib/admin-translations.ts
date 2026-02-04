@@ -4,7 +4,6 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
   en: {
     // Navigation & Layout
     'nav.adminPanel': 'Admin Panel',
-    'nav.adminPanel': 'Painel de Administração',
     'nav.dashboard': 'Dashboard',
     'nav.services': 'Services',
     'nav.blogs': 'Blog',
