@@ -30,7 +30,7 @@ export default function LanguageSwitcher() {
         className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition"
         aria-label="Select language"
       >
-        <span className="text-xl">{languages[language].flag}</span>
+
         <span className="font-medium text-gray-700">{languages[language].nativeName}</span>
         <svg
           className={`w-4 h-4 text-gray-500 transition-transform ${isOpen ? 'rotate-180' : ''}`}
@@ -52,11 +52,9 @@ export default function LanguageSwitcher() {
                   setLanguage(lang);
                   setIsOpen(false);
                 }}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-100 transition ${
-                  language === lang ? 'bg-accent-purple-50 text-accent-purple-700' : 'text-gray-700'
-                }`}
+                className={`w-full flex items-center px-4 py-2.5 hover:bg-gray-100 transition ${language === lang ? 'bg-accent-purple-50 text-accent-purple-700' : 'text-gray-700'
+                  }`}
               >
-                <span className="text-xl">{languages[lang].flag}</span>
                 <div className="flex-1 text-left">
                   <div className="font-medium">{languages[lang].nativeName}</div>
                   <div className="text-xs text-gray-500">{languages[lang].name}</div>
