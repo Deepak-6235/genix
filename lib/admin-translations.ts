@@ -257,7 +257,7 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'services.serviceName': 'Service Name',
     'services.serviceImage': 'Service Image',
     'services.changeImage': 'Change Service Image',
-    'services.subtitle': 'Subtitle',
+    'services.subtitleField': 'Subtitle',
     'services.serviceNotFound': 'Service not found',
     'services.noFullDescription': 'No full description provided',
     'services.backToServices': 'Back to Services',
@@ -289,6 +289,12 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'statistics.action': 'Action',
     'statistics.valueError': 'Value cannot be negative',
     'statistics.noLeadingZero': 'Value cannot start with 0',
+
+    // Statistics Labels (Hardcoded)
+    'statistics.satisfied_customers': 'Satisfied customers',
+    'statistics.work_team': 'Work team',
+    'statistics.houses': 'Houses',
+    'statistics.years_experience': 'Years of experience',
 
     // About Us Page
     'aboutUs.title': 'About Us',
@@ -592,7 +598,7 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'services.serviceName': 'اسم الخدمة',
     'services.serviceImage': 'صورة الخدمة',
     'services.changeImage': 'تغيير صورة الخدمة',
-    'services.subtitle': 'العنوان الفرعي',
+    'services.subtitleField': 'العنوان الفرعي',
     'services.serviceNotFound': 'لم يتم العثور على الخدمة',
     'services.noFullDescription': 'لا يوجد وصف كامل',
     'services.backToServices': 'العودة إلى الخدمات',
@@ -624,6 +630,12 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'statistics.action': 'الإجراء',
     'statistics.valueError': 'القيمة لا يمكن أن تكون سالبة',
     'statistics.noLeadingZero': 'القيمة لا يمكن أن تبدأ بـ 0',
+
+    // Statistics Labels (Hardcoded)
+    'statistics.satisfied_customers': 'العملاء الراضون',
+    'statistics.work_team': 'فريق العمل',
+    'statistics.houses': 'المنازل',
+    'statistics.years_experience': 'سنوات الخبرة',
 
     // About Us Page
     'aboutUs.title': 'من نحن',
@@ -906,7 +918,7 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'services.serviceName': 'Nome do Serviço',
     'services.serviceImage': 'Imagem do Serviço',
     'services.changeImage': 'Alterar Imagem do Serviço',
-    'services.subtitle': 'Subtítulo',
+    'services.subtitleField': 'Subtítulo',
     'services.serviceNotFound': 'Serviço não encontrado',
     'services.noFullDescription': 'Nenhuma descrição completa fornecida',
     'services.backToServices': 'Voltar aos Serviços',
@@ -938,6 +950,12 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'statistics.action': 'Ação',
     'statistics.valueError': 'O valor não pode ser negativo',
     'statistics.noLeadingZero': 'O valor não pode começar com 0',
+
+    // Statistics Labels (Hardcoded)
+    'statistics.satisfied_customers': 'Clientes satisfeitos',
+    'statistics.work_team': 'Equipe de trabalho',
+    'statistics.houses': 'Casas',
+    'statistics.years_experience': 'Anos de experiência',
 
     // About Us Page
     'aboutUs.title': 'Sobre Nós',
@@ -1220,7 +1238,7 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'services.serviceName': '服务名称',
     'services.serviceImage': '服务图片',
     'services.changeImage': '更改服务图片',
-    'services.subtitle': '副标题',
+    'services.subtitleField': '副标题',
     'services.serviceNotFound': '未找到服务',
     'services.noFullDescription': '未提供完整描述',
     'services.backToServices': '返回服务',
@@ -1252,6 +1270,12 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'statistics.action': '操作',
     'statistics.valueError': '值不能为负数',
     'statistics.noLeadingZero': '值不能以0开头',
+
+    // Statistics Labels (Hardcoded)
+    'statistics.satisfied_customers': '满意的客户',
+    'statistics.work_team': '工作团队',
+    'statistics.houses': '房屋',
+    'statistics.years_experience': '多年经验',
 
     // About Us Page
     'aboutUs.title': '关于我们',
@@ -1534,7 +1558,7 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'services.serviceName': 'サービス名',
     'services.serviceImage': 'サービス画像',
     'services.changeImage': 'サービス画像を変更',
-    'services.subtitle': 'サブタイトル',
+    'services.subtitleField': 'サブタイトル',
     'services.serviceNotFound': 'サービスが見つかりません',
     'services.noFullDescription': '完全な説明は提供されていません',
     'services.backToServices': 'サービスに戻る',
@@ -1566,6 +1590,12 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'statistics.action': 'アクション',
     'statistics.valueError': '値は負の数にできません',
     'statistics.noLeadingZero': '値は0で始まることはできません',
+
+    // Statistics Labels (Hardcoded)
+    'statistics.satisfied_customers': '満足した顧客',
+    'statistics.work_team': '作業チーム',
+    'statistics.houses': '住宅',
+    'statistics.years_experience': '経験年数',
 
     // About Us Page
     'aboutUs.title': '私たちについて',
@@ -1848,7 +1878,7 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'services.serviceName': 'Dienstleistungsname',
     'services.serviceImage': 'Dienstleistungsbild',
     'services.changeImage': 'Dienstleistungsbild ändern',
-    'services.subtitle': 'Untertitel',
+    'services.subtitleField': 'Untertitel',
     'services.serviceNotFound': 'Dienstleistung nicht gefunden',
     'services.noFullDescription': 'Keine vollständige Beschreibung vorhanden',
     'services.backToServices': 'Zurück zu Dienstleistungen',
@@ -1880,6 +1910,12 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'statistics.action': 'Aktion',
     'statistics.valueError': 'Wert kann nicht negativ sein',
     'statistics.noLeadingZero': 'Wert kann nicht mit 0 beginnen',
+
+    // Statistics Labels (Hardcoded)
+    'statistics.satisfied_customers': 'Zufriedene Kunden',
+    'statistics.work_team': 'Arbeitsteam',
+    'statistics.houses': 'Häuser',
+    'statistics.years_experience': 'Jahre Erfahrung',
 
     // About Us Page
     'aboutUs.title': 'Über uns',
@@ -2162,7 +2198,7 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'services.serviceName': 'Nom du service',
     'services.serviceImage': 'Image du service',
     'services.changeImage': 'Modifier l\'image du service',
-    'services.subtitle': 'Sous-titre',
+    'services.subtitleField': 'Sous-titre',
     'services.serviceNotFound': 'Service non trouvé',
     'services.noFullDescription': 'Aucune description complète fournie',
     'services.backToServices': 'Retour aux services',
@@ -2194,6 +2230,12 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'statistics.action': 'Action',
     'statistics.valueError': 'La valeur ne peut pas être négative',
     'statistics.noLeadingZero': 'La valeur ne peut pas commencer par 0',
+
+    // Statistics Labels (Hardcoded)
+    'statistics.satisfied_customers': 'Clients satisfaits',
+    'statistics.work_team': 'Équipe de travail',
+    'statistics.houses': 'Maisons',
+    'statistics.years_experience': 'Années d\'expérience',
 
     // About Us Page
     'aboutUs.title': 'À propos',

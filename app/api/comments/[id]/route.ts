@@ -89,7 +89,7 @@ export async function PUT(
 
       translations.en = comment;
       Object.keys(translatedContent).forEach((lang) => {
-        translations[lang] = translatedContent[lang].text;
+        translations[lang as keyof typeof translations] = translatedContent[lang as keyof typeof translatedContent].text;
       });
     } else {
       const toEnglish = await translateContent(
@@ -109,7 +109,7 @@ export async function PUT(
       translations[languageId] = comment;
       translations.en = englishText;
       Object.keys(translatedContent).forEach((lang) => {
-        translations[lang] = translatedContent[lang].text;
+        translations[lang as keyof typeof translations] = translatedContent[lang as keyof typeof translatedContent].text;
       });
     }
 

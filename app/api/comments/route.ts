@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
 
       translations.en = comment;
       Object.keys(translatedContent).forEach((lang) => {
-        translations[lang] = translatedContent[lang].text;
+        translations[lang as keyof typeof translations] = translatedContent[lang as keyof typeof translatedContent].text;
       });
     } else {
       // Translate to English first, then to other languages
@@ -124,7 +124,7 @@ export async function POST(request: NextRequest) {
       translations[languageId] = comment; // Original
       translations.en = englishText;
       Object.keys(translatedContent).forEach((lang) => {
-        translations[lang] = translatedContent[lang].text;
+        translations[lang as keyof typeof translations] = translatedContent[lang as keyof typeof translatedContent].text;
       });
     }
 

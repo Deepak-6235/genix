@@ -25,6 +25,7 @@ model Language {
   faqs          FAQ[]          @relation("FAQLanguage")
   reviews       Review[]       @relation("ReviewLanguage")
   comments      Comment[]      @relation("CommentLanguage")
+  aboutUs       AboutUs[]      @relation("AboutUsLanguage")
 
   @@map("languages")
 }
@@ -132,15 +133,23 @@ model Statistic {
 
 model AboutUs {
   id              String   @id @default(cuid())
+  slug            String   @default("about-us")
+  languageId      String   // Foreign key to Language table
+  language        Language @relation("AboutUsLanguage", fields: [languageId], references: [id])
+
+  // Non-translatable fields (same across all languages)
   email           String?
   phoneNumber1    String?  // First phone number
   phoneNumber2    String?  // Second phone number
   workingHours    String?  // e.g., "24/7"
-  address         String?  // Full address
-  city            String?  // City name
+
+  // Translatable field
+  address         String?  // Full address (translatable)
+
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
+  @@unique([slug, languageId])
   @@map("about_us")
 }
 

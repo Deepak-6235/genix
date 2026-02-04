@@ -34,14 +34,16 @@ export async function PUT(
 
     const { id } = await params;
     const body = await request.json();
-    const { label, value, icon, order } = body;
+    const { key, value, suffix, icon, color, order } = body;
 
     const statistic = await prisma.statistic.update({
       where: { id },
       data: {
-        ...(label && { label }),
+        ...(key && { key }),
         ...(value !== undefined && { value: parseInt(value) }),
+        ...(suffix !== undefined && { suffix }),
         ...(icon && { icon }),
+        ...(color && { color }),
         ...(order !== undefined && { order }),
       },
     });

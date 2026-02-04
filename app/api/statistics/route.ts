@@ -50,20 +50,22 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { label, value, icon, order } = body;
+    const { key, value, suffix, icon, color, order } = body;
 
-    if (!label || value === undefined) {
+    if (!key || value === undefined) {
       return NextResponse.json(
-        { success: false, message: 'Label and value are required' },
+        { success: false, message: 'Key and value are required' },
         { status: 400 }
       );
     }
 
     const statistic = await prisma.statistic.create({
       data: {
-        label,
+        key,
         value: parseInt(value),
+        suffix: suffix || '',
         icon: icon || '📊',
+        color: color || 'blue',
         order: order ?? 0,
       },
     });

@@ -14,11 +14,11 @@ interface AboutUsData {
   phoneNumber2: string;
   workingHours: string;
   address: string;
-  city: string;
+  languageId: string;
 }
 
 export default function AboutUsPage() {
-  const { t } = useAdminLanguage();
+  const { t, adminLanguage } = useAdminLanguage();
   const { toast, showToast, closeToast } = useToast();
   const { confirmModal, openConfirmModal, closeConfirmModal } = useConfirmModal();
   const [aboutUs, setAboutUs] = useState<AboutUsData | null>(null);
@@ -29,15 +29,15 @@ export default function AboutUsPage() {
   const [emailError, setEmailError] = useState('');
   const [error, setError] = useState('');
 
-  // Fetch about us data
+  // Fetch about us data when admin language changes
   useEffect(() => {
     fetchAboutUs();
-  }, []);
+  }, [adminLanguage]);
 
   const fetchAboutUs = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/about-us');
+      const response = await fetch(`/api/about-us?lang=${adminLanguage}`);
       const data = await response.json();
       if (data.success) {
         setAboutUs(data.aboutUs);
@@ -108,7 +108,10 @@ export default function AboutUsPage() {
       const response = await fetch('/api/about-us', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          languageId: aboutUs?.languageId,
+        }),
       });
 
       const data = await response.json();
@@ -118,15 +121,15 @@ export default function AboutUsPage() {
         setIsEditing(false);
         setEmailError('');
         setError('');
-        showToast('About Us information saved successfully', 'success');
+        showToast(t('message.success'), 'success');
       } else {
-        setError(data.message || 'Failed to save');
-        showToast(data.message || 'Failed to save', 'error');
+        setError(data.message || t('message.error'));
+        showToast(data.message || t('message.error'), 'error');
       }
     } catch (error) {
       console.error('Failed to save:', error);
-      setError('Failed to save');
-      showToast('Failed to save', 'error');
+      setError(t('message.error'));
+      showToast(t('message.error'), 'error');
     } finally {
       setSaving(false);
     }
@@ -170,6 +173,15 @@ export default function AboutUsPage() {
           )}
         </div>
 
+        {/* Info Note */}
+        {adminLanguage === 'en' && isEditing && (
+          <div className="mb-6 bg-blue-50 border border-blue-200 p-4 rounded-lg">
+            <p className="text-sm text-blue-700 font-medium">
+              ✨ {t('services.autoTranslateNote')}
+            </p>
+          </div>
+        )}
+
       <div className="bg-white rounded-lg shadow p-8 max-w-2xl">
         {!isEditing ? (
           // Display Mode
@@ -199,15 +211,9 @@ export default function AboutUsPage() {
             </div>
 
             {/* Address */}
-            <div className="border-b pb-4">
+            <div>
               <p className="text-sm text-gray-600 mb-1">📍 {t('aboutUs.address')}</p>
               <p className="text-lg font-medium text-gray-900">{formData.address || '-'}</p>
-            </div>
-
-            {/* City */}
-            <div>
-              <p className="text-sm text-gray-600 mb-1">🏙️ {t('aboutUs.city')}</p>
-              <p className="text-lg font-medium text-gray-900">{formData.city || '-'}</p>
             </div>
           </div>
         ) : (
@@ -274,24 +280,19 @@ export default function AboutUsPage() {
 
             {/* Address */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">📍 {t('aboutUs.address')}</label>
-              <input
-                type="text"
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                📍 {t('aboutUs.address')}
+                {adminLanguage === 'en' && (
+                  <span className="ml-2 text-xs text-blue-600 font-normal">
+                    (Will be auto-translated to all languages)
+                  </span>
+                )}
+              </label>
+              <textarea
                 value={formData.address || ''}
                 onChange={(e) => handleChange('address', e.target.value)}
                 placeholder={t('placeholder.enterDescription')}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-              />
-            </div>
-
-            {/* City */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">🏙️ {t('aboutUs.city')}</label>
-              <input
-                type="text"
-                value={formData.city || ''}
-                onChange={(e) => handleChange('city', e.target.value)}
-                placeholder={t('placeholder.enterDescription')}
+                rows={3}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               />
             </div>
@@ -300,7 +301,7 @@ export default function AboutUsPage() {
             <div className="flex gap-4 pt-4">
               <button
                 onClick={handleSave}
-                disabled={saving}
+                disabled={saving || !!emailError}
                 className="flex-1 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {saving ? t('modal.saving') : t('button.save')}

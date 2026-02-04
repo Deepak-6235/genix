@@ -9,9 +9,11 @@ import { useConfirmModal } from '@/hooks/useConfirmModal';
 
 interface Statistic {
   id: string;
-  label: string;
+  key: string;
   value: number;
-  icon: string;
+  suffix: string | null;
+  icon: string | null;
+  color: string | null;
   order: number;
 }
 
@@ -147,8 +149,10 @@ export default function StatisticsPage() {
           <tbody className="divide-y">
             {statistics.map((stat) => (
               <tr key={stat.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 text-2xl">{stat.icon}</td>
-                <td className="px-6 py-4 text-gray-900 font-medium">{stat.label}</td>
+                <td className="px-6 py-4 text-2xl">{stat.icon || '📊'}</td>
+                <td className="px-6 py-4 text-gray-900 font-medium">
+                  {t(`statistics.${stat.key}`) || stat.key}
+                </td>
                 <td className="px-6 py-4">
                   {editingId === stat.id ? (
                     <div>
@@ -172,7 +176,9 @@ export default function StatisticsPage() {
                       )}
                     </div>
                   ) : (
-                    <span className="text-gray-900 font-bold text-lg">{stat.value}</span>
+                    <span className="text-gray-900 font-bold text-lg">
+                      {stat.value}{stat.suffix || ''}
+                    </span>
                   )}
                 </td>
                 <td className="px-6 py-4">
