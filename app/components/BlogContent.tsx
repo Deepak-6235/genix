@@ -176,12 +176,9 @@ export default function BlogContent() {
                       {/* Read More Link */}
                       <Link
                         href={`/blog/${post.slug}`}
-                        className={`inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-semibold transition-colors group/link text-sm sm:text-base ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
+                        className={`text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors ${dir === 'rtl' ? '' : ''}`}
                       >
-                        <span>{t.readMore}</span>
-                        <svg className={`w-4 h-4 transition-transform ${dir === 'rtl' ? 'group-hover/link:-translate-x-1 rotate-180' : 'group-hover/link:translate-x-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                        </svg>
+                        {t.readMore} →
                       </Link>
                     </div>
                   </article>

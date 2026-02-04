@@ -187,12 +187,9 @@ export default function ServicesContent() {
                       {/* Read More Button */}
                       <Link
                         href={`/services/${service.slug}`}
-                        className="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-semibold transition-colors group"
+                        className="text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors"
                       >
-                        <span>{t.readMore}</span>
-                        <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                        </svg>
+                        {t.readMore} →
                       </Link>
                     </div>
                   </div>
@@ -311,7 +308,7 @@ export default function ServicesContent() {
             </p>
             <Link
               href="/contact"
-              className="inline-block bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="btn-view-more text-white px-8 py-4 rounded-xl font-bold text-lg inline-block"
             >
               <span suppressHydrationWarning>{t.cta.button}</span>
             </Link>

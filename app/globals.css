@@ -509,3 +509,19 @@ button {
   background: linear-gradient(to left, #a4d84a 0%, #6ba83d 50%, #4c8642 100%);
   background-position: 100% 0%;
 }
+
+/* ============================================
+   View More Button (Secondary Style)
+   ============================================ */
+.btn-view-more {
+  background: linear-gradient(to right, #7db644 0%, #6ba83d 50%, #5a9638 100%);
+  background-size: 200% 100%;
+  background-position: 0% 0%;
+  transition: background-position 0.5s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.btn-view-more:hover {
+  background: linear-gradient(to left, #7db644 0%, #6ba83d 50%, #5a9638 100%);
+  background-position: 100% 0%;
+  transform: translateY(-2px);
+}

@@ -204,7 +204,7 @@ export default function AboutUsContent() {
                 </p>
                 <Link
                   href="/contact"
-                  className="inline-block bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                  className="btn-view-more text-white px-8 py-4 rounded-xl font-bold text-lg inline-block"
                 >
                   {t.contactUsNow}
                 </Link>

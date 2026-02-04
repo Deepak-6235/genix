@@ -131,12 +131,9 @@ export default function Services() {
 
                     {/* Learn More Button */}
                     <div
-                      className={`inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-semibold transition-colors group ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
+                      className={`text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors ${dir === 'rtl' ? '' : ''}`}
                     >
-                      <span>{t.cta}</span>
-                      <svg className={`w-4 h-4 transition-transform ${dir === 'rtl' ? 'group-hover:-translate-x-1 rotate-180' : 'group-hover:translate-x-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
+                      {t.cta} →
                     </div>
                   </div>
                 </Link>

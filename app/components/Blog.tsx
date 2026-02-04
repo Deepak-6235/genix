@@ -180,12 +180,9 @@ export default function Blog() {
 
                     <Link
                       href={`/blog/${blog.slug}`}
-                      className={`inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-semibold transition-colors ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
+                      className={`text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors ${dir === 'rtl' ? '' : ''}`}
                     >
-                      <span>{t.readMore}</span>
-                      <svg className={`w-4 h-4 transition-transform ${dir === 'rtl' ? 'group-hover:-translate-x-1 rotate-180' : 'group-hover:translate-x-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
+                      {t.readMore} →
                     </Link>
                   </div>
                 </article>
@@ -197,7 +194,7 @@ export default function Blog() {
         <div className="text-center mt-6 sm:mt-8 px-4">
           <Link
             href="/blog"
-            className={`inline-flex items-center gap-2 bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-2xl font-bold text-sm sm:text-base hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
+            className={`btn-view-more text-white px-6 sm:px-8 py-3 rounded-xl font-bold inline-flex items-center gap-2 text-sm sm:text-base ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
           >
             <span>{t.viewMore}</span>
             <svg className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
