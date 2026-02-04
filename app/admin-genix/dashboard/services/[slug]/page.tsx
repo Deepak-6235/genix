@@ -259,7 +259,7 @@ export default function ServiceDetailPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-purple-600"></div>
       </div>
     );
   }
@@ -322,7 +322,7 @@ export default function ServiceDetailPage() {
                       onClick={() => setViewLanguage(lang as LanguageCode)}
                       className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
                         viewLanguage === lang
-                          ? 'bg-purple-600 text-white'
+                          ? 'bg-accent-purple-600 text-white'
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                     >
@@ -335,7 +335,7 @@ export default function ServiceDetailPage() {
 
             {/* Edit Mode Notice */}
             {isEditMode && (
-              <div className="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg text-sm font-medium">
+              <div className="bg-primary-100 text-primary-800 px-4 py-2 rounded-lg text-sm font-medium">
                 {t('services.autoTranslateNote')}
               </div>
             )}
@@ -344,7 +344,7 @@ export default function ServiceDetailPage() {
       </div>
 
       {/* Hero Section */}
-      <section className="py-8 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-b from-blue-50 to-white">
+      <section className="py-8 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-b from-primary-50 to-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             {/* Service Image */}
@@ -357,7 +357,7 @@ export default function ServiceDetailPage() {
                   className="object-cover"
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center">
+                <div className="w-full h-full bg-gradient-to-br from-accent-purple-100 to-primary-100 flex items-center justify-center">
                   <div className="text-6xl">🔧</div>
                 </div>
               )}
@@ -373,7 +373,7 @@ export default function ServiceDetailPage() {
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
+                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-accent-purple-50 file:text-accent-purple-700 hover:file:bg-accent-purple-100"
                 />
                 <p className="text-xs text-gray-500 mt-1">Max 5MB. JPG, PNG, WebP</p>
               </div>
@@ -387,13 +387,13 @@ export default function ServiceDetailPage() {
                     type="checkbox"
                     checked={formData.isActive}
                     onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                    className="h-4 w-4 text-purple-600 border-gray-300 rounded mr-2"
+                    className="h-4 w-4 text-accent-purple-600 border-gray-300 rounded mr-2"
                   />
                   <span className="text-sm font-medium text-gray-700">{t('status.active')}</span>
                 </label>
               ) : (
                 <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${
-                  service.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                  service.isActive ? 'bg-success-100 text-success-800' : 'bg-gray-100 text-gray-800'
                 }`}>
                   {service.isActive ? t('status.active') : t('status.inactive')}
                 </span>
@@ -430,7 +430,7 @@ export default function ServiceDetailPage() {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   maxLength={CHAR_LIMITS.name}
-                  className="w-full text-2xl font-bold text-gray-900 border-2 border-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                  className="w-full text-2xl font-bold text-gray-900 border-2 border-accent-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-accent-purple-500"
                   placeholder="Pest Control"
                 />
               ) : (
@@ -456,7 +456,7 @@ export default function ServiceDetailPage() {
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   maxLength={CHAR_LIMITS.title}
-                  className="w-full text-2xl font-bold text-gray-900 border-2 border-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                  className="w-full text-2xl font-bold text-gray-900 border-2 border-accent-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-accent-purple-500"
                   placeholder="Pest Control Services in Riyadh"
                 />
               ) : (
@@ -482,7 +482,7 @@ export default function ServiceDetailPage() {
                   value={formData.subtitle}
                   onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
                   maxLength={CHAR_LIMITS.subtitle}
-                  className="w-full text-xl font-semibold text-gray-800 border-2 border-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                  className="w-full text-xl font-semibold text-gray-800 border-2 border-accent-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-accent-purple-500"
                   placeholder="Services Provided"
                 />
               ) : (
@@ -508,7 +508,7 @@ export default function ServiceDetailPage() {
                   onChange={(e) => setFormData({ ...formData, shortDescription: e.target.value })}
                   maxLength={CHAR_LIMITS.shortDescription}
                   rows={3}
-                  className="w-full text-base text-gray-700 border-2 border-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                  className="w-full text-base text-gray-700 border-2 border-accent-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-accent-purple-500"
                   placeholder="Brief description shown on services page"
                 />
               ) : (
@@ -534,7 +534,7 @@ export default function ServiceDetailPage() {
                   onChange={(e) => setFormData({ ...formData, fullDescription: e.target.value })}
                   maxLength={CHAR_LIMITS.fullDescription}
                   rows={6}
-                  className="w-full text-base text-gray-700 border-2 border-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                  className="w-full text-base text-gray-700 border-2 border-accent-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-accent-purple-500"
                   placeholder="Detailed description of the service"
                 />
               ) : currentData.fullDescription ? (
@@ -560,7 +560,7 @@ export default function ServiceDetailPage() {
                   <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="w-full sm:w-auto px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium disabled:opacity-50"
+                    className="w-full sm:w-auto px-8 py-3 bg-accent-purple-600 text-white rounded-lg hover:bg-accent-purple-700 transition font-medium disabled:opacity-50"
                   >
                     {saving ? t('message.savingChanges') : t('button.save')}
                   </button>
@@ -575,7 +575,7 @@ export default function ServiceDetailPage() {
                   </Link>
                   <button
                     onClick={() => setIsEditMode(true)}
-                    className="w-full sm:w-auto px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium"
+                    className="w-full sm:w-auto px-8 py-3 bg-accent-purple-600 text-white rounded-lg hover:bg-accent-purple-700 transition font-medium"
                   >
                     {t('services.editService')}
                   </button>

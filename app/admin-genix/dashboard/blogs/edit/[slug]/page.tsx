@@ -233,7 +233,7 @@ export default function EditBlogPage() {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-accent-purple-600"></div>
           <p className="mt-4 text-gray-600">Loading blog...</p>
         </div>
       </div>
@@ -259,7 +259,7 @@ export default function EditBlogPage() {
               <h1 className="text-2xl font-bold text-gray-900">Edit Blog</h1>
             </div>
 
-            <div className="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg text-sm font-medium">
+            <div className="bg-primary-100 text-primary-800 px-4 py-2 rounded-lg text-sm font-medium">
               Editing in English - Will auto-translate to all languages
             </div>
           </div>
@@ -274,7 +274,7 @@ export default function EditBlogPage() {
               onClick={() => setCurrentTab('main')}
               className={`px-6 py-3 font-medium border-b-2 transition ${
                 currentTab === 'main'
-                  ? 'border-purple-600 text-purple-600'
+                  ? 'border-accent-purple-600 text-accent-purple-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
@@ -284,7 +284,7 @@ export default function EditBlogPage() {
               onClick={() => setCurrentTab('details')}
               className={`px-6 py-3 font-medium border-b-2 transition ${
                 currentTab === 'details'
-                  ? 'border-purple-600 text-purple-600'
+                  ? 'border-accent-purple-600 text-accent-purple-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
@@ -299,7 +299,7 @@ export default function EditBlogPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto space-y-8">
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+              <div className="bg-error-50 border border-error-200 text-error-700 px-4 py-3 rounded-lg text-sm">
                 {error}
               </div>
             )}
@@ -315,7 +315,7 @@ export default function EditBlogPage() {
                       type="checkbox"
                       checked={formData.isActive}
                       onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                      className="h-4 w-4 text-purple-600 border-gray-300 rounded mr-2"
+                      className="h-4 w-4 text-accent-purple-600 border-gray-300 rounded mr-2"
                     />
                     <span className="text-sm font-medium text-gray-700">Active</span>
                   </label>
@@ -331,7 +331,7 @@ export default function EditBlogPage() {
                       <img
                         src={imagePreview}
                         alt="Preview"
-                        className="w-32 h-32 rounded-lg object-cover border-2 border-purple-300"
+                        className="w-32 h-32 rounded-lg object-cover border-2 border-accent-purple-300"
                       />
                     )}
                     <div className="flex-1">
@@ -339,7 +339,7 @@ export default function EditBlogPage() {
                         type="file"
                         accept="image/*"
                         onChange={handleImageChange}
-                        className="w-full px-4 py-2 border-2 border-purple-300 rounded-lg focus:outline-none focus:border-purple-500"
+                        className="w-full px-4 py-2 border-2 border-accent-purple-300 rounded-lg focus:outline-none focus:border-accent-purple-500"
                       />
                       <p className="text-xs text-gray-500 mt-2">Leave empty to keep current image. Recommended: 1200x630px, max 2MB</p>
                     </div>
@@ -357,7 +357,7 @@ export default function EditBlogPage() {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     maxLength={200}
-                    className="w-full text-xl font-bold text-gray-900 border-2 border-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                    className="w-full text-xl font-bold text-gray-900 border-2 border-accent-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-accent-purple-500"
                     placeholder="Best house cleaning companies in Riyadh"
                     required
                   />
@@ -374,7 +374,7 @@ export default function EditBlogPage() {
                     onChange={(e) => setFormData({ ...formData, shortDescription: e.target.value })}
                     maxLength={500}
                     rows={4}
-                    className="w-full text-base text-gray-700 border-2 border-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                    className="w-full text-base text-gray-700 border-2 border-accent-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-accent-purple-500"
                     placeholder="A comprehensive guide to the best cleaning companies in Riyadh with tips for choosing the right company for your needs."
                     required
                   />
@@ -391,7 +391,7 @@ export default function EditBlogPage() {
                     value={formData.author}
                     onChange={(e) => setFormData({ ...formData, author: e.target.value })}
                     maxLength={100}
-                    className="w-full text-lg text-gray-800 border-2 border-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                    className="w-full text-lg text-gray-800 border-2 border-accent-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-accent-purple-500"
                     placeholder="John Doe"
                     required
                   />
@@ -404,14 +404,14 @@ export default function EditBlogPage() {
                     type="date"
                     value={formData.publishedAt}
                     onChange={(e) => setFormData({ ...formData, publishedAt: e.target.value })}
-                    className="w-full text-lg text-gray-800 border-2 border-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                    className="w-full text-lg text-gray-800 border-2 border-accent-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-accent-purple-500"
                   />
                 </div>
 
                 <div className="flex justify-end">
                   <button
                     onClick={() => setCurrentTab('details')}
-                    className="px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium"
+                    className="px-8 py-3 bg-accent-purple-600 text-white rounded-lg hover:bg-accent-purple-700 transition font-medium"
                   >
                     Next: Edit Detailed Sections →
                   </button>
@@ -422,8 +422,8 @@ export default function EditBlogPage() {
             {/* Details Tab */}
             {currentTab === 'details' && (
               <>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <p className="text-sm text-blue-800">
+                <div className="bg-primary-50 border border-primary-200 rounded-lg p-4">
+                  <p className="text-sm text-primary-800">
                     <strong>Edit detailed content sections</strong> for your blog. You can modify existing sections or add new ones.
                   </p>
                 </div>
@@ -431,12 +431,12 @@ export default function EditBlogPage() {
                 {/* Detailed Sections List */}
                 <div className="space-y-4">
                   {detailedSections.map((section, index) => (
-                    <div key={index} className="bg-white rounded-xl shadow-sm border-2 border-purple-200 p-6">
+                    <div key={index} className="bg-white rounded-xl shadow-sm border-2 border-accent-purple-200 p-6">
                       <div className="flex justify-between items-center mb-4">
                         <h4 className="font-bold text-gray-900">Section {index + 1}</h4>
                         <button
                           onClick={() => removeDetailedSection(index)}
-                          className="text-red-600 hover:text-red-800 font-medium text-sm"
+                          className="text-error-600 hover:text-error-800 font-medium text-sm"
                         >
                           Remove
                         </button>
@@ -466,7 +466,7 @@ export default function EditBlogPage() {
                                     handleSectionImageChange(index, file);
                                   }
                                 }}
-                                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500 text-sm"
+                                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-accent-purple-500 text-sm"
                               />
                               <p className="text-xs text-gray-500 mt-1">Leave empty to keep current image. Recommended: 800x600px, max 2MB</p>
                             </div>
@@ -484,7 +484,7 @@ export default function EditBlogPage() {
                             value={section.title}
                             onChange={(e) => updateDetailedSection(index, 'title', e.target.value)}
                             maxLength={200}
-                            className="w-full text-lg font-semibold text-gray-900 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                            className="w-full text-lg font-semibold text-gray-900 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-accent-purple-500"
                             placeholder="Why Choose Professional Cleaning?"
                             required
                           />
@@ -501,7 +501,7 @@ export default function EditBlogPage() {
                             onChange={(e) => updateDetailedSection(index, 'description', e.target.value)}
                             maxLength={2000}
                             rows={6}
-                            className="w-full text-base text-gray-700 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                            className="w-full text-base text-gray-700 border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-accent-purple-500"
                             placeholder="Professional cleaning companies provide advanced equipment, trained staff, and quality service that ensures your home is thoroughly cleaned..."
                             required
                           />
@@ -514,7 +514,7 @@ export default function EditBlogPage() {
                 {/* Add More Button */}
                 <button
                   onClick={addDetailedSection}
-                  className="w-full px-6 py-4 border-2 border-dashed border-purple-400 text-purple-600 rounded-lg hover:bg-purple-50 transition font-medium"
+                  className="w-full px-6 py-4 border-2 border-dashed border-accent-purple-400 text-accent-purple-600 rounded-lg hover:bg-accent-purple-50 transition font-medium"
                 >
                   + Add Another Section
                 </button>
@@ -537,7 +537,7 @@ export default function EditBlogPage() {
                     <button
                       onClick={handleSubmit}
                       disabled={saving}
-                      className="flex-1 sm:flex-none px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium disabled:opacity-50"
+                      className="flex-1 sm:flex-none px-8 py-3 bg-success-600 text-white rounded-lg hover:bg-success-700 transition font-medium disabled:opacity-50"
                     >
                       {saving ? 'Updating Blog...' : 'Update Blog'}
                     </button>

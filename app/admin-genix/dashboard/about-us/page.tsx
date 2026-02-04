@@ -139,7 +139,7 @@ export default function AboutUsPage() {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-accent-purple-600"></div>
           <p className="mt-4 text-gray-600">{t('loading.please')}</p>
         </div>
       </div>
@@ -166,7 +166,7 @@ export default function AboutUsPage() {
           {!isEditing && (
             <button
               onClick={handleEdit}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
+              className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition font-medium"
             >
               {t('button.edit')}
             </button>
@@ -175,8 +175,8 @@ export default function AboutUsPage() {
 
         {/* Info Note */}
         {adminLanguage === 'en' && isEditing && (
-          <div className="mb-6 bg-blue-50 border border-blue-200 p-4 rounded-lg">
-            <p className="text-sm text-blue-700 font-medium">
+          <div className="mb-6 bg-primary-50 border border-primary-200 p-4 rounded-lg">
+            <p className="text-sm text-primary-700 font-medium">
               ✨ {t('services.autoTranslateNote')}
             </p>
           </div>
@@ -220,7 +220,7 @@ export default function AboutUsPage() {
           // Edit Mode
           <div className="space-y-6">
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+              <div className="bg-error-50 border border-error-200 text-error-700 px-4 py-3 rounded-lg text-sm">
                 {error}
               </div>
             )}
@@ -233,12 +233,12 @@ export default function AboutUsPage() {
                 value={formData.email || ''}
                 onChange={(e) => handleChange('email', e.target.value)}
                 placeholder={t('placeholder.enterEmail')}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent ${
-                  emailError ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-accent-purple-600 focus:border-transparent ${
+                  emailError ? 'border-error-500 bg-error-50' : 'border-gray-300'
                 }`}
               />
               {emailError && (
-                <p className="mt-1 text-xs text-red-600 font-medium">{emailError}</p>
+                <p className="mt-1 text-xs text-error-600 font-medium">{emailError}</p>
               )}
             </div>
 
@@ -250,7 +250,7 @@ export default function AboutUsPage() {
                 value={formData.phoneNumber1 || ''}
                 onChange={(e) => handleChange('phoneNumber1', e.target.value)}
                 placeholder={t('placeholder.enterPhone')}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-purple-600 focus:border-transparent"
               />
             </div>
 
@@ -262,7 +262,7 @@ export default function AboutUsPage() {
                 value={formData.phoneNumber2 || ''}
                 onChange={(e) => handleChange('phoneNumber2', e.target.value)}
                 placeholder={t('placeholder.enterPhone')}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-purple-600 focus:border-transparent"
               />
             </div>
 
@@ -274,7 +274,7 @@ export default function AboutUsPage() {
                 value={formData.workingHours || ''}
                 onChange={(e) => handleChange('workingHours', e.target.value)}
                 placeholder={t('placeholder.enterDescription')}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-purple-600 focus:border-transparent"
               />
             </div>
 
@@ -283,7 +283,7 @@ export default function AboutUsPage() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 📍 {t('aboutUs.address')}
                 {adminLanguage === 'en' && (
-                  <span className="ml-2 text-xs text-blue-600 font-normal">
+                  <span className="ml-2 text-xs text-primary-600 font-normal">
                     (Will be auto-translated to all languages)
                   </span>
                 )}
@@ -293,7 +293,7 @@ export default function AboutUsPage() {
                 onChange={(e) => handleChange('address', e.target.value)}
                 placeholder={t('placeholder.enterDescription')}
                 rows={3}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-purple-600 focus:border-transparent"
               />
             </div>
 
@@ -302,7 +302,7 @@ export default function AboutUsPage() {
               <button
                 onClick={handleSave}
                 disabled={saving || !!emailError}
-                className="flex-1 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-6 py-3 bg-success-600 text-white rounded-lg hover:bg-success-700 transition font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {saving ? t('modal.saving') : t('button.save')}
               </button>

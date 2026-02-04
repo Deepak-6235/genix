@@ -47,12 +47,12 @@ function SubmissionCard({
 
   return (
     <div className={`bg-white rounded-xl shadow-sm border-2 p-6 hover:shadow-lg transition ${
-      submission.isRead ? 'border-gray-200' : 'border-blue-400 bg-blue-50'
+      submission.isRead ? 'border-gray-200' : 'border-primary-400 bg-primary-50'
     }`}>
       {/* Header */}
       <div className="flex justify-between items-start mb-4">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center flex-shrink-0">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center flex-shrink-0">
             <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
             </svg>
@@ -63,7 +63,7 @@ function SubmissionCard({
           </div>
         </div>
         <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-          submission.isRead ? 'bg-gray-100 text-gray-800' : 'bg-blue-100 text-blue-800'
+          submission.isRead ? 'bg-gray-100 text-gray-800' : 'bg-primary-100 text-primary-800'
         }`}>
           {submission.isRead ? t('status.read') || 'Read' : t('status.unread') || 'Unread'}
         </span>
@@ -75,7 +75,7 @@ function SubmissionCard({
           <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
-          <a href={`mailto:${submission.email}`} className="text-blue-600 hover:text-blue-700">
+          <a href={`mailto:${submission.email}`} className="text-primary-600 hover:text-primary-700">
             {submission.email}
           </a>
         </div>
@@ -84,7 +84,7 @@ function SubmissionCard({
             <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
             </svg>
-            <a href={`tel:${submission.phone}`} className="text-blue-600 hover:text-blue-700">
+            <a href={`tel:${submission.phone}`} className="text-primary-600 hover:text-primary-700">
               {submission.phone}
             </a>
           </div>
@@ -110,7 +110,7 @@ function SubmissionCard({
         <div className="flex justify-end">
           <button
             onClick={() => onMarkAsRead(submission.id)}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium"
+            className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition text-sm font-medium"
           >
             {t('markAsRead') || 'Mark as Read'}
           </button>
@@ -202,7 +202,7 @@ export default function ContactSubmissionsPage() {
           onClick={() => setFilter('all')}
           className={`px-4 py-2 rounded-lg font-medium transition ${
             filter === 'all'
-              ? 'bg-blue-600 text-white'
+              ? 'bg-primary-600 text-white'
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           }`}
         >
@@ -212,7 +212,7 @@ export default function ContactSubmissionsPage() {
           onClick={() => setFilter('unread')}
           className={`px-4 py-2 rounded-lg font-medium transition ${
             filter === 'unread'
-              ? 'bg-blue-600 text-white'
+              ? 'bg-primary-600 text-white'
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           }`}
         >
@@ -222,7 +222,7 @@ export default function ContactSubmissionsPage() {
           onClick={() => setFilter('read')}
           className={`px-4 py-2 rounded-lg font-medium transition ${
             filter === 'read'
-              ? 'bg-blue-600 text-white'
+              ? 'bg-primary-600 text-white'
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           }`}
         >

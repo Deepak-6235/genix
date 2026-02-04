@@ -111,7 +111,7 @@ export default function StatisticsPage() {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-accent-purple-600"></div>
           <p className="mt-4 text-gray-600">{t('loading.please')}</p>
         </div>
       </div>
@@ -165,14 +165,14 @@ export default function StatisticsPage() {
                           const error = validateValue(value);
                           setValueError(error);
                         }}
-                        className={`w-24 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent ${
-                          valueError ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                        className={`w-24 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-accent-purple-600 focus:border-transparent ${
+                          valueError ? 'border-error-500 bg-error-50' : 'border-gray-300'
                         }`}
                         autoFocus
                         min="0"
                       />
                       {valueError && (
-                        <p className="mt-1 text-xs text-red-600 font-medium">{valueError}</p>
+                        <p className="mt-1 text-xs text-error-600 font-medium">{valueError}</p>
                       )}
                     </div>
                   ) : (
@@ -187,7 +187,7 @@ export default function StatisticsPage() {
                       <button
                         onClick={() => handleSave(stat.id)}
                         disabled={saving || !!valueError}
-                        className="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-3 py-2 bg-success-600 text-white rounded-lg hover:bg-success-700 transition text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {saving ? t('modal.saving') : t('button.save')}
                       </button>
@@ -201,7 +201,7 @@ export default function StatisticsPage() {
                   ) : (
                     <button
                       onClick={() => handleEdit(stat)}
-                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm"
+                      className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition text-sm"
                     >
                       {t('button.edit')}
                     </button>

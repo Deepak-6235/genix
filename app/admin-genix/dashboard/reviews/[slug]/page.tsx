@@ -186,7 +186,7 @@ export default function ReviewDetailPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-purple-600"></div>
       </div>
     );
   }
@@ -235,7 +235,7 @@ export default function ReviewDetailPage() {
                       onClick={() => setViewLanguage(lang as LanguageCode)}
                       className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
                         viewLanguage === lang
-                          ? 'bg-purple-600 text-white'
+                          ? 'bg-accent-purple-600 text-white'
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                     >
@@ -248,7 +248,7 @@ export default function ReviewDetailPage() {
 
             {/* Edit Mode Notice */}
             {isEditMode && (
-              <div className="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg text-sm font-medium">
+              <div className="bg-primary-100 text-primary-800 px-4 py-2 rounded-lg text-sm font-medium">
                 {t('services.autoTranslateNote')}
               </div>
             )}
@@ -276,7 +276,7 @@ export default function ReviewDetailPage() {
                     type="checkbox"
                     checked={formData.isActive}
                     onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                    className="h-4 w-4 text-purple-600 border-gray-300 rounded mr-2"
+                    className="h-4 w-4 text-accent-purple-600 border-gray-300 rounded mr-2"
                   />
                   <span className="text-sm font-medium text-gray-700">{t('status.active')}</span>
                 </label>
@@ -301,7 +301,7 @@ export default function ReviewDetailPage() {
                       className="focus:outline-none"
                     >
                       <svg
-                        className={`w-8 h-8 ${star <= formData.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+                        className={`w-8 h-8 ${star <= formData.rating ? 'text-warning-400 fill-current' : 'text-gray-300'}`}
                         viewBox="0 0 20 20"
                       >
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -315,7 +315,7 @@ export default function ReviewDetailPage() {
                   {[...Array(5)].map((_, index) => (
                     <svg
                       key={index}
-                      className={`w-6 h-6 ${index < review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+                      className={`w-6 h-6 ${index < review.rating ? 'text-warning-400 fill-current' : 'text-gray-300'}`}
                       viewBox="0 0 20 20"
                     >
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -341,7 +341,7 @@ export default function ReviewDetailPage() {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   maxLength={CHAR_LIMITS.name}
-                  className="w-full text-xl font-bold text-gray-900 border-2 border-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                  className="w-full text-xl font-bold text-gray-900 border-2 border-accent-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-accent-purple-500"
                   placeholder="Ahmed Al-Maliki"
                 />
               ) : (
@@ -367,7 +367,7 @@ export default function ReviewDetailPage() {
                   value={formData.position}
                   onChange={(e) => setFormData({ ...formData, position: e.target.value })}
                   maxLength={CHAR_LIMITS.position}
-                  className="w-full text-lg text-gray-800 border-2 border-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                  className="w-full text-lg text-gray-800 border-2 border-accent-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-accent-purple-500"
                   placeholder="Facilities Manager"
                 />
               ) : (
@@ -393,11 +393,11 @@ export default function ReviewDetailPage() {
                   value={formData.company}
                   onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                   maxLength={CHAR_LIMITS.company}
-                  className="w-full text-lg text-blue-600 border-2 border-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                  className="w-full text-lg text-primary-600 border-2 border-accent-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-accent-purple-500"
                   placeholder="Elite Trading Company"
                 />
               ) : (
-                <p className="text-lg text-blue-600" dir={LANGUAGES[viewLanguage]?.dir}>
+                <p className="text-lg text-primary-600" dir={LANGUAGES[viewLanguage]?.dir}>
                   {currentData.company}
                 </p>
               )}
@@ -419,7 +419,7 @@ export default function ReviewDetailPage() {
                   onChange={(e) => setFormData({ ...formData, text: e.target.value })}
                   maxLength={CHAR_LIMITS.text}
                   rows={6}
-                  className="w-full text-base text-gray-700 border-2 border-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                  className="w-full text-base text-gray-700 border-2 border-accent-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-accent-purple-500"
                   placeholder="Excellent and highly professional service..."
                 />
               ) : (
@@ -443,7 +443,7 @@ export default function ReviewDetailPage() {
                   <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="w-full sm:w-auto px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium disabled:opacity-50"
+                    className="w-full sm:w-auto px-8 py-3 bg-accent-purple-600 text-white rounded-lg hover:bg-accent-purple-700 transition font-medium disabled:opacity-50"
                   >
                     {saving ? t('message.savingChanges') : t('button.save')}
                   </button>
@@ -458,7 +458,7 @@ export default function ReviewDetailPage() {
                   </Link>
                   <button
                     onClick={() => setIsEditMode(true)}
-                    className="w-full sm:w-auto px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium"
+                    className="w-full sm:w-auto px-8 py-3 bg-accent-purple-600 text-white rounded-lg hover:bg-accent-purple-700 transition font-medium"
                   >
                     {t('reviews.editReview')}
                   </button>

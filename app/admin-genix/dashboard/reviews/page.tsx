@@ -49,7 +49,7 @@ function ReviewCard({ review, onEdit, onDelete, currentLang, t }: {
       <div className="flex justify-between items-start mb-4">
         <div className="flex-1"></div>
         <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
-          review.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+          review.isActive ? 'bg-success-100 text-success-800' : 'bg-gray-100 text-gray-800'
         }`}>
           {review.isActive ? t('status.active') : t('status.inactive')}
         </span>
@@ -60,7 +60,7 @@ function ReviewCard({ review, onEdit, onDelete, currentLang, t }: {
         {[...Array(5)].map((_, index) => (
           <svg
             key={index}
-            className={`w-6 h-6 ${index < review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+            className={`w-6 h-6 ${index < review.rating ? 'text-warning-400 fill-current' : 'text-gray-300'}`}
             viewBox="0 0 20 20"
           >
             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -76,7 +76,7 @@ function ReviewCard({ review, onEdit, onDelete, currentLang, t }: {
       {/* Reviewer Info */}
       <div className="flex items-center gap-3 mb-4 pb-4 border-b border-gray-100">
         {/* Avatar */}
-        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center flex-shrink-0">
+        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center flex-shrink-0">
           <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
           </svg>
@@ -86,7 +86,7 @@ function ReviewCard({ review, onEdit, onDelete, currentLang, t }: {
         <div className="flex-1" dir={LANGUAGES[currentLang]?.dir}>
           <h3 className="font-bold text-gray-900">{displayData.name}</h3>
           <p className="text-sm text-gray-600">{displayData.position}</p>
-          <p className="text-sm text-blue-600">{displayData.company}</p>
+          <p className="text-sm text-primary-600">{displayData.company}</p>
         </div>
       </div>
 
@@ -94,7 +94,7 @@ function ReviewCard({ review, onEdit, onDelete, currentLang, t }: {
       <div className="flex items-center gap-3">
         <button
           onClick={() => onEdit(review.slug)}
-          className="p-1 text-gray-600 hover:text-blue-600 transition"
+          className="p-1 text-gray-600 hover:text-primary-600 transition"
           title="Edit"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -103,7 +103,7 @@ function ReviewCard({ review, onEdit, onDelete, currentLang, t }: {
         </button>
         <button
           onClick={() => onDelete(review.slug)}
-          className="p-1 text-red-600 hover:text-red-700 transition"
+          className="p-1 text-error-600 hover:text-error-700 transition"
           title="Delete"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -166,7 +166,7 @@ export default function ReviewsPage() {
         }
       },
       'Delete',
-      'bg-red-600 hover:bg-red-700'
+      'bg-error-600 hover:bg-error-700'
     );
   };
 
@@ -174,7 +174,7 @@ export default function ReviewsPage() {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-accent-purple-600"></div>
           <p className="mt-4 text-gray-600">Loading reviews...</p>
         </div>
       </div>
@@ -203,7 +203,7 @@ export default function ReviewsPage() {
           </div>
           <button
             onClick={() => router.push('/admin-genix/dashboard/reviews/new')}
-            className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium"
+            className="px-4 py-2 bg-accent-purple-600 text-white rounded-lg hover:bg-accent-purple-700 transition font-medium"
           >
             + {t('reviews.addNew')}
           </button>
