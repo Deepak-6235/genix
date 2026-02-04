@@ -331,15 +331,19 @@ body {
 html,
 body,
 * {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 /* Ensure scrolling still works */
 html,
 body {
-  overflow: -moz-scrollbars-none; /* Firefox (older versions) */
-  -ms-overflow-style: none; /* IE and Edge */
+  overflow: -moz-scrollbars-none;
+  /* Firefox (older versions) */
+  -ms-overflow-style: none;
+  /* IE and Edge */
 }
 
 /* ============================================
@@ -446,6 +450,7 @@ button {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -461,6 +466,7 @@ button {
     opacity: 0;
     transform: translateX(100%);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -469,4 +475,90 @@ button {
 
 .animate-slide-in-right {
   animation: slide-in-right 0.3s ease-out;
+}
+
+/* ============================================
+   Swiper Customization
+   ============================================ */
+/* ============================================
+   Swiper Customization
+   ============================================ */
+/* ============================================
+   Swiper Customization
+   ============================================ */
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--primary-600) !important;
+  width: auto !important;
+  height: auto !important;
+  background-color: transparent;
+  box-shadow: none;
+  transition: all var(--transition-base);
+  z-index: 50;
+  /* Ensure arrows are above */
+}
+
+.swiper-button-prev {
+  left: -16px !important;
+}
+
+.swiper-button-next {
+  right: -16px !important;
+}
+
+@media (min-width: 768px) {
+  .swiper-button-prev {
+    left: -48px !important;
+  }
+
+  .swiper-button-next {
+    right: -48px !important;
+  }
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  content: "" !important;
+  width: 24px;
+  height: 24px;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.swiper-button-prev::after {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15 18 9 12 15 6'%3E%3C/polyline%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15 18 9 12 15 6'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+.swiper-button-next::after {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'%3E%3C/polyline%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background-color: transparent;
+  transform: scale(1.2);
+  color: var(--primary-700) !important;
+}
+
+/* Pagination Adjustments */
+.swiper-pagination-bullet-active {
+  background-color: var(--primary-600) !important;
+}
+
+.swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  transition: all 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+  width: 24px;
+  border-radius: 5px;
 }
