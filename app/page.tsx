@@ -25,7 +25,6 @@ export default function HomePage() {
       <Statistics variant="dark" />
       <Testimonials />
       <Blog />
-      {/* <WhatsAppSection /> */}
       <Footer />
     </div>
   );
