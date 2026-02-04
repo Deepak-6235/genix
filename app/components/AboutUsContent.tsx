@@ -196,7 +196,7 @@ export default function AboutUsContent() {
             {/* Search and Contact Section */}
             <div className="mb-16 sm:mb-20 md:mb-24">
               <div className="bg-gradient-to-r from-primary-600 to-secondary-500 rounded-2xl p-8 sm:p-10 md:p-12 lg:p-16 text-white text-center">
-                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 !text-white">
                   {t.searchAndContactTitle}
                 </h3>
                 <p className="text-base sm:text-lg md:text-xl leading-relaxed max-w-3xl mx-auto mb-8">
@@ -204,7 +204,7 @@ export default function AboutUsContent() {
                 </p>
                 <Link
                   href="/contact"
-                  className="inline-block bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                  className="inline-block bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 !text-white px-8 py-4 rounded-2xl font-bold text-lg hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
                 >
                   {t.contactUsNow}
                 </Link>

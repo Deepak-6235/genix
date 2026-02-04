@@ -152,12 +152,12 @@ export default function Blog() {
               className="!pt-4 !px-4 !pb-14"
             >
               {blogs.map((blog) => (
-                <SwiperSlide key={blog.id} className="pt-2 pb-2">
+                <SwiperSlide key={blog.id} className="pt-2 pb-2 !h-auto">
                   <article
-                    className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group h-full"
+                    className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group h-full flex flex-col"
                   >
                     {/* Blog Image */}
-                    <div className="relative h-40 sm:h-48 w-full overflow-hidden">
+                    <div className="relative h-40 sm:h-48 w-full overflow-hidden shrink-0">
                       <Image
                         src={blog.imageUrl}
                         alt={blog.name}
@@ -168,7 +168,7 @@ export default function Blog() {
                     </div>
 
                     {/* Content */}
-                    <div className="p-4 sm:p-6">
+                    <div className="p-4 sm:p-6 flex-1 flex flex-col">
                       <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
                         <span className="text-xs font-semibold text-primary-600 bg-primary-50 px-2 sm:px-3 py-1 rounded-full">
                           {blog.author}
@@ -176,7 +176,7 @@ export default function Blog() {
                         <span className="text-xs sm:text-sm text-slate-500">{formatDate(blog.publishedAt)}</span>
                       </div>
 
-                      <h3 className="text-lg sm:text-xl font-bold text-tertiary-600 mb-2 sm:mb-3 group-hover:text-primary-600 transition-colors">
+                      <h3 className="text-lg sm:text-xl font-bold text-tertiary-600 mb-2 sm:mb-3 group-hover:text-primary-600 transition-colors line-clamp-2">
                         {blog.name}
                       </h3>
 
@@ -186,7 +186,7 @@ export default function Blog() {
 
                       <Link
                         href={`/blog/${blog.slug}`}
-                        className={`inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-semibold transition-colors ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
+                        className={`mt-auto inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-semibold transition-colors ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
                       >
                         <span>{t.readMore}</span>
                         <svg className={`w-4 h-4 transition-transform ${dir === 'rtl' ? 'group-hover:-translate-x-1 rotate-180' : 'group-hover:translate-x-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">

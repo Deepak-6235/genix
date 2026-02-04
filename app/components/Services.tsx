@@ -107,13 +107,13 @@ export default function Services() {
               className="!pt-4 !px-4 !pb-14"
             >
               {services.map((service) => (
-                <SwiperSlide key={service.id} className="pt-2 pb-2">
+                <SwiperSlide key={service.id} className="pt-2 pb-2 !h-auto">
                   <Link
                     href={`/services/${service.slug}`}
-                    className="block h-full group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+                    className="block h-full flex flex-col group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
                   >
                     {/* Service Image */}
-                    <div className="relative h-48 w-full overflow-hidden">
+                    <div className="relative h-48 w-full overflow-hidden shrink-0">
                       <Image
                         src={getServiceImagePath(service.imageUrl)}
                         alt={service.name}
@@ -124,20 +124,20 @@ export default function Services() {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
 
-                    <div className="p-4 sm:p-6 md:p-8">
+                    <div className="p-4 sm:p-6 md:p-8 flex-1 flex flex-col">
                       {/* Title */}
-                      <h3 className="text-lg sm:text-xl font-bold text-tertiary-600 mb-2 sm:mb-3">
+                      <h3 className="text-lg sm:text-xl font-bold text-tertiary-600 mb-2 sm:mb-3 line-clamp-2">
                         {service.name}
                       </h3>
 
                       {/* Short Description */}
-                      <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 sm:mb-6">
+                      <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 sm:mb-6 line-clamp-3">
                         {service.shortDescription}
                       </p>
 
                       {/* Learn More Button */}
                       <div
-                        className={`inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-semibold transition-colors group ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
+                        className={`mt-auto inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-semibold transition-colors group ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
                       >
                         <span>{t.cta}</span>
                         <svg className={`w-4 h-4 transition-transform ${dir === 'rtl' ? 'group-hover:-translate-x-1 rotate-180' : 'group-hover:translate-x-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">

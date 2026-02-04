@@ -303,7 +303,7 @@ export default function ServicesContent() {
       <section className="py-8 sm:py-10 md:py-12 lg:py-14 bg-gradient-to-r from-primary-600 to-secondary-500">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center text-white">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 !text-white">
               {t.cta.title}
             </h2>
             <p className="text-base sm:text-lg md:text-xl leading-relaxed mb-8 max-w-2xl mx-auto">
@@ -311,7 +311,7 @@ export default function ServicesContent() {
             </p>
             <Link
               href="/contact"
-              className="inline-block bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="inline-block bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 !text-white px-8 py-4 rounded-2xl font-bold text-lg hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               <span suppressHydrationWarning>{t.cta.button}</span>
             </Link>
