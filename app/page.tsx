@@ -10,8 +10,6 @@ import WhyChooseUs from "./components/WhyChooseUs";
 import Testimonials from "./components/Testimonials";
 import Blog from "./components/Blog";
 import Footer from "./components/Footer";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { useServices } from "@/hooks/useServices";
 
 export default function HomePage() {
   return (
