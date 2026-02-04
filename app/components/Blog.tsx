@@ -29,22 +29,58 @@ export default function Blog() {
       try {
         const response = await fetch(`/api/blogs?lang=${language}`);
         const data = await response.json();
-        if (data.success) {
+        if (data.success && data.blogs && data.blogs.length > 0) {
           setBlogs(data.blogs);
+        } else {
+          // Fallback to static blog posts from translations if no database blogs
+          const staticBlogs: Blog[] = t.posts.map((post, index) => ({
+            id: `static-${index + 1}`,
+            slug: `blog-${index + 1}`,
+            name: post.title,
+            shortDescription: post.excerpt,
+            author: 'admin',
+            imageUrl: `/images/blog-${index + 1}.jpg`,
+            publishedAt: post.date,
+            isActive: true,
+          }));
+          setBlogs(staticBlogs);
         }
       } catch (error) {
         console.error('Failed to fetch blogs:', error);
+        // Fallback to static blog posts from translations on error
+        const staticBlogs: Blog[] = t.posts.map((post, index) => ({
+          id: `static-${index + 1}`,
+          slug: `blog-${index + 1}`,
+          name: post.title,
+          shortDescription: post.excerpt,
+          author: 'admin',
+          imageUrl: `/images/blog-${index + 1}.jpg`,
+          publishedAt: post.date,
+          isActive: true,
+        }));
+        setBlogs(staticBlogs);
       } finally {
         setLoading(false);
       }
     };
 
     fetchBlogs();
-  }, [language]);
+  }, [language, t.posts]);
 
   // Format date
   const formatDate = (dateString: string) => {
+    // If the date is already formatted (from static posts), return as is
+    // Database dates are ISO strings (contain 'T' or 'Z'), static dates are formatted strings
+    if (dateString && !dateString.includes('T') && !dateString.includes('Z')) {
+      return dateString;
+    }
+    
+    // Format database dates
     const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return dateString; // Return original if invalid
+    }
+    
     return date.toLocaleDateString(language === 'ar' ? 'ar-SA' : 'en-US', {
       year: 'numeric',
       month: 'long',
