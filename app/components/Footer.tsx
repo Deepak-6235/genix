@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useFooterTranslations, useContactTranslations } from "@/hooks/useTranslations";
 
 export default function Footer() {
   const t = useFooterTranslations();
   const contactT = useContactTranslations();
-  
+
   const navItems = [
     { label: t.navItems.home, href: "/" },
     { label: t.navItems.about, href: "/about-us" },
@@ -32,6 +33,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6 mb-3 sm:mb-4">
           {/* Brand Section */}
           <div>
+            <Link href="/" className="inline-block mb-4 hover:opacity-80 transition-opacity">
+              <Image
+                src="/images/logo-footer-final.png"
+                alt={t.logo}
+                width={150}
+                height={60}
+                className="h-12 sm:h-14 md:h-16 w-auto object-contain"
+              />
+            </Link>
             <h3 className="text-xl sm:text-2xl font-bold !text-primary-300 mb-1.5 sm:mb-2">
               {t.companyName}
             </h3>

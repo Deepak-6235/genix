@@ -10,6 +10,7 @@ export const footerTranslations: Record<LanguageCode, {
   workingHoursText: string;
   copyright: string;
   designedBy: string;
+  logo: string;
   navItems: {
     home: string;
     about: string;
@@ -38,6 +39,7 @@ export const footerTranslations: Record<LanguageCode, {
     workingHoursText: 'نعمل طوال أيام الأسبوع',
     copyright: 'جميع الحقوق محفوظة.',
     designedBy: 'برمجة وتصميم ❤️ نوفل سيو',
+    logo: 'ركن النخيل',
     navItems: {
       home: 'الرئيسية',
       about: 'من نحن',
@@ -66,6 +68,7 @@ export const footerTranslations: Record<LanguageCode, {
     workingHoursText: 'We work all week long',
     copyright: 'All rights reserved.',
     designedBy: 'Programming and Design ❤️ Noufal SEO',
+    logo: 'Rukn Al-Nakheel',
     navItems: {
       home: 'Home',
       about: 'About Us',
@@ -94,6 +97,7 @@ export const footerTranslations: Record<LanguageCode, {
     workingHoursText: 'Trabalhamos durante toda a semana',
     copyright: 'Todos os direitos reservados.',
     designedBy: 'Programação e Design ❤️ Noufal SEO',
+    logo: 'Rukn Al-Nakheel',
     navItems: {
       home: 'Início',
       about: 'Sobre Nós',
@@ -122,6 +126,7 @@ export const footerTranslations: Record<LanguageCode, {
     workingHoursText: '我们整周工作',
     copyright: '版权所有。',
     designedBy: '编程和设计 ❤️ Noufal SEO',
+    logo: '棕榈角',
     navItems: {
       home: '首页',
       about: '关于我们',
@@ -150,6 +155,7 @@ export const footerTranslations: Record<LanguageCode, {
     workingHoursText: '週を通して働いています',
     copyright: '全著作権所有。',
     designedBy: 'プログラミングとデザイン ❤️ Noufal SEO',
+    logo: 'ルクン・アルナキール',
     navItems: {
       home: 'ホーム',
       about: '私たちについて',
@@ -178,6 +184,7 @@ export const footerTranslations: Record<LanguageCode, {
     workingHoursText: 'Wir arbeiten die ganze Woche',
     copyright: 'Alle Rechte vorbehalten.',
     designedBy: 'Programmierung und Design ❤️ Noufal SEO',
+    logo: 'Rukn Al-Nakheel',
     navItems: {
       home: 'Startseite',
       about: 'Über Uns',
@@ -206,6 +213,7 @@ export const footerTranslations: Record<LanguageCode, {
     workingHoursText: 'Nous travaillons toute la semaine',
     copyright: 'Tous droits réservés.',
     designedBy: 'Programmation et Design ❤️ Noufal SEO',
+    logo: 'Rukn Al-Nakheel',
     navItems: {
       home: 'Accueil',
       about: 'À Propos',
