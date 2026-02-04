@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Cairo } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { cookies } from "next/headers";
+import { LANGUAGES, DEFAULT_LANGUAGE, type LanguageCode } from "@/lib/languages";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,17 +31,40 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const locale = cookieStore.get('NEXT_LOCALE')?.value as LanguageCode || DEFAULT_LANGUAGE;
+  const dir = LANGUAGES[locale]?.dir || LANGUAGES[DEFAULT_LANGUAGE].dir;
+  const lang = LANGUAGES[locale]?.code || DEFAULT_LANGUAGE;
+
   return (
-    <html lang="ar" dir="rtl" suppressHydrationWarning>
+    <html lang={lang} dir={dir} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var savedLang = localStorage.getItem('preferred-language');
+                  var cookieLang = document.cookie.match(/NEXT_LOCALE=([^;]+)/);
+                  var lang = (cookieLang && cookieLang[1]) || savedLang || '${DEFAULT_LANGUAGE}';
+                  var dir = (lang === 'ar') ? 'rtl' : 'ltr';
+                  document.documentElement.dir = dir;
+                  document.documentElement.lang = lang;
+                } catch (e) {}
+              })()
+            `,
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${cairo.variable} antialiased`}
       >
-        <LanguageProvider>
+        <LanguageProvider initialLanguage={locale}>
           {children}
         </LanguageProvider>
       </body>

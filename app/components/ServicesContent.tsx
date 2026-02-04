@@ -308,7 +308,7 @@ export default function ServicesContent() {
             </p>
             <Link
               href="/contact"
-              className="btn-view-more text-white px-8 py-4 rounded-xl font-bold text-lg inline-block"
+              className="btn-view-more text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg transition-all duration-500 shadow-lg hover:shadow-xl w-full sm:w-auto inline-block text-center"
             >
               <span suppressHydrationWarning>{t.cta.button}</span>
             </Link>

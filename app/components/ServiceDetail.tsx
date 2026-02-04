@@ -177,18 +177,18 @@ export default function ServiceDetail({ serviceSlug }: { serviceSlug: string }) 
       {/* ============================================
           CTA SECTION
           ============================================ */}
-      <section className="py-8 sm:py-10 md:py-12 lg:py-14 bg-gradient-to-r from-primary-600 to-secondary-500">
+      <section className="py-8 sm:py-10 md:py-12 lg:py-14 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center text-white">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">
+          <div className="max-w-4xl mx-auto text-center bg-white rounded-2xl p-8 sm:p-10 md:p-12 lg:p-16 border border-slate-100 shadow-xl">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-tertiary-600">
               {t.cta.title}
             </h2>
-            <p className="text-base sm:text-lg md:text-xl leading-relaxed mb-8 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl leading-relaxed mb-8 max-w-2xl mx-auto text-slate-600">
               {t.cta.subtitle}
             </p>
             <Link
               href="/contact"
-              className="inline-block bg-white text-primary-600 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="btn-view-more text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg transition-all duration-500 shadow-lg hover:shadow-xl w-full sm:w-auto inline-block text-center"
             >
               <span suppressHydrationWarning>{t.cta.button}</span>
             </Link>

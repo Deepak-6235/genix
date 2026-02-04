@@ -39,7 +39,7 @@ export default function WhatsAppSection() {
               href={whatsappLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-view-more text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-xl font-bold text-xs sm:text-sm inline-flex items-center gap-2 w-full sm:w-auto justify-center"
+              className="btn-view-more text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg transition-all duration-500 shadow-lg hover:shadow-xl w-full sm:w-auto inline-flex items-center gap-2 justify-center"
             >
               <svg
                 className="w-7 h-7"

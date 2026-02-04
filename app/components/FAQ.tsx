@@ -20,7 +20,7 @@ export default function FAQ() {
             </p>
             <Link
               href="/faq"
-              className={`btn-view-more text-white px-8 py-4 rounded-xl font-bold text-base sm:text-lg inline-flex items-center gap-2 ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
+              className={`btn-view-more text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg transition-all duration-500 shadow-lg hover:shadow-xl inline-flex items-center gap-2 ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
             >
               {t.viewAll}
               <svg className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -12,28 +12,35 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguageState] = useState<LanguageCode>(DEFAULT_LANGUAGE);
+export function LanguageProvider({
+  children,
+  initialLanguage = DEFAULT_LANGUAGE,
+}: {
+  children: React.ReactNode;
+  initialLanguage?: LanguageCode;
+}) {
+  const [language, setLanguageState] = useState<LanguageCode>(initialLanguage);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    // Load language from localStorage or browser preference
+    // Sync if localStorage differs (cookie usually takes precedence)
     const savedLang = localStorage.getItem('preferred-language') as LanguageCode;
-    if (savedLang && LANGUAGES[savedLang]) {
-      setLanguageState(savedLang);
-    } else {
-      // Try to detect browser language
-      const browserLang = navigator.language.split('-')[0] as LanguageCode;
-      if (LANGUAGES[browserLang]) {
-        setLanguageState(browserLang);
-      }
+    if (savedLang && LANGUAGES[savedLang] && savedLang !== language) {
+      // We don't necessarily want to force-update if the cookie was different, 
+      // but for consistency we can sync to the state.
     }
-  }, []);
+  }, [language]);
 
   const setLanguage = (lang: LanguageCode) => {
     setLanguageState(lang);
     localStorage.setItem('preferred-language', lang);
+
+    // Set cookie for server-side detection (expires in 1 year)
+    const d = new Date();
+    d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
+    document.cookie = `NEXT_LOCALE=${lang};expires=${d.toUTCString()};path=/;SameSite=Lax`;
+
     // Update HTML dir attribute for RTL support
     document.documentElement.dir = LANGUAGES[lang].dir;
     document.documentElement.lang = lang;

@@ -522,7 +522,7 @@ export default function ContactContent() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 text-white font-bold py-3 sm:py-4 px-6 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl text-base sm:text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="hero-gradient-btn text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg transition-all duration-500 shadow-lg hover:shadow-xl w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {submitting ? 'Sending...' : t.form.sendMessage}
                 </button>
@@ -541,7 +541,7 @@ export default function ContactContent() {
                 href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-view-more text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg inline-flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-center"
+                className="btn-view-more text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg transition-all duration-500 shadow-lg hover:shadow-xl w-full sm:w-auto inline-flex items-center gap-2 sm:gap-3 justify-center"
               >
                 <svg
                   className="w-6 h-6"

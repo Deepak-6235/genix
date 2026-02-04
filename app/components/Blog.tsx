@@ -201,7 +201,7 @@ export default function Blog() {
         <div className="text-center mt-6 sm:mt-8 px-4">
           <Link
             href="/blog"
-            className={`btn-view-more text-white px-6 sm:px-8 py-3 rounded-xl font-bold inline-flex items-center gap-2 text-sm sm:text-base ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
+            className={`btn-view-more text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg transition-all duration-500 shadow-lg hover:shadow-xl inline-flex items-center gap-2 ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
           >
             <span>{t.viewMore}</span>
             <svg className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -52,6 +52,6 @@ export const LANGUAGES = {
 
 export type LanguageCode = keyof typeof LANGUAGES;
 
-export const DEFAULT_LANGUAGE: LanguageCode = 'en';
+export const DEFAULT_LANGUAGE: LanguageCode = 'ar';
 
 export const LANGUAGE_CODES = Object.keys(LANGUAGES) as LanguageCode[];

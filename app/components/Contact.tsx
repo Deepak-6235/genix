@@ -229,7 +229,7 @@ export default function Contact() {
                 href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-view-more text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg inline-flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-center"
+                className="btn-view-more text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg transition-all duration-500 shadow-lg hover:shadow-xl w-full sm:w-auto inline-flex items-center gap-2 sm:gap-3 justify-center"
               >
                 <svg
                   className="w-6 h-6"
@@ -243,7 +243,7 @@ export default function Contact() {
 
               <Link
                 href="/contact"
-                className="btn-view-more text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg inline-flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-center"
+                className="btn-view-more text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg transition-all duration-500 shadow-lg hover:shadow-xl w-full sm:w-auto inline-flex items-center gap-2 sm:gap-3 justify-center"
               >
                 <svg
                   className="w-6 h-6"

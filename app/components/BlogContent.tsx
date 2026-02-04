@@ -200,7 +200,7 @@ export default function BlogContent() {
                 <button
                   onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                   disabled={!pagination.hasPreviousPage}
-                  className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white rounded-2xl font-semibold hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="hero-gradient-btn px-4 py-2 sm:px-5 sm:py-2.5 text-white rounded-2xl font-semibold transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                   aria-label="Previous Page"
                 >
                   <svg className={`w-5 h-5 ${dir === 'rtl' ? '' : 'rotate-180'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -237,8 +237,8 @@ export default function BlogContent() {
                       key={pageNum}
                       onClick={() => setCurrentPage(pageNum)}
                       className={`px-4 py-2 sm:px-5 sm:py-2.5 rounded-2xl font-semibold transition-all duration-300 shadow-lg ${currentPage === pageNum
-                          ? 'bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white'
-                          : 'bg-white text-slate-700 border-2 border-slate-200 hover:border-primary-400'
+                        ? 'hero-gradient-btn text-white'
+                        : 'bg-white text-slate-700 border-2 border-slate-200 hover:border-primary-400'
                         }`}
                     >
                       {pageNum}
@@ -250,7 +250,7 @@ export default function BlogContent() {
                 <button
                   onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                   disabled={!pagination.hasNextPage}
-                  className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white rounded-2xl font-semibold hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="hero-gradient-btn px-4 py-2 sm:px-5 sm:py-2.5 text-white rounded-2xl font-semibold transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                   aria-label="Next Page"
                 >
                   <svg className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
