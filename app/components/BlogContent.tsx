@@ -103,9 +103,14 @@ export default function BlogContent() {
             </nav>
 
             {/* Main Page Title */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 mb-4 sm:mb-6 leading-tight">
-              {t.pageTitle}
-            </h1>
+            <div className="text-center">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 mb-4 sm:mb-6 leading-tight">
+                {t.pageTitle}
+              </h1>
+              <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
+                Stay updated with our latest news, home maintenance tips, and professional advice.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -231,11 +236,10 @@ export default function BlogContent() {
                     <button
                       key={pageNum}
                       onClick={() => setCurrentPage(pageNum)}
-                      className={`px-4 py-2 sm:px-5 sm:py-2.5 rounded-2xl font-semibold transition-all duration-300 shadow-lg ${
-                        currentPage === pageNum
+                      className={`px-4 py-2 sm:px-5 sm:py-2.5 rounded-2xl font-semibold transition-all duration-300 shadow-lg ${currentPage === pageNum
                           ? 'bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white'
                           : 'bg-white text-slate-700 border-2 border-slate-200 hover:border-primary-400'
-                      }`}
+                        }`}
                     >
                       {pageNum}
                     </button>

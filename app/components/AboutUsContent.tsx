@@ -196,7 +196,7 @@ export default function AboutUsContent() {
             {/* Search and Contact Section */}
             <div className="mb-16 sm:mb-20 md:mb-24">
               <div className="bg-gradient-to-r from-primary-600 to-secondary-500 rounded-2xl p-8 sm:p-10 md:p-12 lg:p-16 text-white text-center">
-                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 !text-white">
                   {t.searchAndContactTitle}
                 </h3>
                 <p className="text-base sm:text-lg md:text-xl leading-relaxed max-w-3xl mx-auto mb-8">

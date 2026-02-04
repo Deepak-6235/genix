@@ -9,7 +9,7 @@ export default function AboutUs() {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-6 sm:mb-8 md:mb-10">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-4 sm:mb-6">
               {t.title}
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
@@ -39,20 +39,20 @@ export default function AboutUs() {
 
             {/* Why Choose Our Services Section */}
             <div className="mb-6 sm:mb-8 md:mb-10">
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 !text-white">
                 {t.whyChoose}
               </h3>
-              <p className="text-base sm:text-lg md:text-xl leading-relaxed mb-4 sm:mb-6 text-white/95">
+              <p className="text-base sm:text-lg md:text-xl leading-relaxed mb-4 sm:mb-6 !text-white/95">
                 {t.description1}
               </p>
-              <p className="text-base sm:text-lg md:text-xl leading-relaxed text-white/95">
+              <p className="text-base sm:text-lg md:text-xl leading-relaxed !text-white/95">
                 {t.description2}
               </p>
             </div>
 
             {/* Mission Statement */}
             <div className="border-t border-white/20 pt-6 sm:pt-8">
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 text-center">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 text-center !text-white">
                 {t.missionTitle}
               </h3>
               <p className="text-base sm:text-lg md:text-xl leading-relaxed text-center text-white/95">

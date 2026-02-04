@@ -300,7 +300,7 @@ export default function ServicesContent() {
       <section className="py-8 sm:py-10 md:py-12 lg:py-14 bg-gradient-to-r from-primary-600 to-secondary-500">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center text-white">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 !text-white">
               {t.cta.title}
             </h2>
             <p className="text-base sm:text-lg md:text-xl leading-relaxed mb-8 max-w-2xl mx-auto">

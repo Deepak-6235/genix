@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Autoplay } from 'swiper/modules';
+import { Pagination, Autoplay, Navigation } from 'swiper/modules';
 import { useServicesTranslations } from "@/hooks/useTranslations";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 import 'swiper/css';
 import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 interface Service {
   id: string;
@@ -58,7 +59,7 @@ export default function Services() {
     <section id="services" className="py-10 sm:py-16 md:py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center mb-6 sm:mb-8 md:mb-12">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-4 sm:mb-6">
             {t.title}
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
@@ -81,53 +82,58 @@ export default function Services() {
             ))}
           </div>
         ) : (
-          <Swiper
-            modules={[Pagination, Autoplay]}
-            spaceBetween={30}
-            slidesPerView={1}
-            pagination={{ clickable: true }}
-            autoplay={{
-              delay: 5000,
-              disableOnInteraction: false,
-            }}
-            breakpoints={{
-              640: {
-                slidesPerView: 2,
-              },
-              1024: {
-                slidesPerView: 3,
-              },
-            }}
-            className="pb-16"
-          >
-            {services.map((service) => (
-              <SwiperSlide key={service.id}>
-                <Link
-                  href={`/services/${service.slug}`}
-                  className="block h-full group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
-                >
-                  {/* Service Image */}
-                  <div className="relative h-48 w-full overflow-hidden">
-                    <Image
-                      src={getServiceImagePath(service.imageUrl)}
-                      alt={service.name}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-300"
-                      unoptimized
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </div>
+          <div className="relative group">
+            <Swiper
+              modules={[Pagination, Autoplay, Navigation]}
+              spaceBetween={30}
+              slidesPerView={1}
+              navigation={{
+                nextEl: '.services-button-next',
+                prevEl: '.services-button-prev',
+              }}
+              pagination={{ clickable: true }}
+              autoplay={{
+                delay: 5000,
+                disableOnInteraction: false,
+              }}
+              breakpoints={{
+                640: {
+                  slidesPerView: 2,
+                },
+                1024: {
+                  slidesPerView: 3,
+                },
+              }}
+              className="!pt-4 !px-4 !pb-14"
+            >
+              {services.map((service) => (
+                <SwiperSlide key={service.id} className="pt-2 pb-2 !h-auto">
+                  <Link
+                    href={`/services/${service.slug}`}
+                    className="block h-full flex flex-col group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+                  >
+                    {/* Service Image */}
+                    <div className="relative h-48 w-full overflow-hidden shrink-0">
+                      <Image
+                        src={getServiceImagePath(service.imageUrl)}
+                        alt={service.name}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-300"
+                        unoptimized
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
 
-                  <div className="p-4 sm:p-6 md:p-8">
-                    {/* Title */}
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2 sm:mb-3">
-                      {service.name}
-                    </h3>
+                    <div className="p-4 sm:p-6 md:p-8 flex-1 flex flex-col">
+                      {/* Title */}
+                      <h3 className="text-lg sm:text-xl font-bold text-tertiary-600 mb-2 sm:mb-3 line-clamp-2">
+                        {service.name}
+                      </h3>
 
-                    {/* Short Description */}
-                    <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 sm:mb-6">
-                      {service.shortDescription}
-                    </p>
+                      {/* Short Description */}
+                      <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 sm:mb-6 line-clamp-3">
+                        {service.shortDescription}
+                      </p>
 
                     {/* Learn More Button */}
                     <div

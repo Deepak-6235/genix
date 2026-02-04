@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Autoplay } from 'swiper/modules';
+import { Pagination, Autoplay, Navigation } from 'swiper/modules';
 import { useBlogTranslations } from "@/hooks/useTranslations";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 import 'swiper/css';
 import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 interface Blog {
   id: string;
@@ -97,7 +98,7 @@ export default function Blog() {
     <section id="blog" className="py-10 sm:py-16 md:py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center mb-6 sm:mb-8 md:mb-12">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-4 sm:mb-6">
             {t.title}
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
@@ -126,57 +127,62 @@ export default function Blog() {
             ))}
           </div>
         ) : (
-          <Swiper
-            modules={[Pagination, Autoplay]}
-            spaceBetween={30}
-            slidesPerView={1}
-            pagination={{ clickable: true }}
-            autoplay={{
-              delay: 5000,
-              disableOnInteraction: false,
-            }}
-            breakpoints={{
-              640: {
-                slidesPerView: 2,
-              },
-              1024: {
-                slidesPerView: 3,
-              },
-            }}
-            className="pb-16"
-          >
-            {blogs.map((blog) => (
-              <SwiperSlide key={blog.id}>
-                <article
-                  className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group h-full"
-                >
-                  {/* Blog Image */}
-                  <div className="relative h-40 sm:h-48 w-full overflow-hidden">
-                    <Image
-                      src={blog.imageUrl}
-                      alt={blog.name}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-300"
-                      unoptimized
-                    />
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-4 sm:p-6">
-                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
-                      <span className="text-xs font-semibold text-primary-600 bg-primary-50 px-2 sm:px-3 py-1 rounded-full">
-                        {blog.author}
-                      </span>
-                      <span className="text-xs sm:text-sm text-slate-500">{formatDate(blog.publishedAt)}</span>
+          <div className="relative group">
+            <Swiper
+              modules={[Pagination, Autoplay, Navigation]}
+              spaceBetween={30}
+              slidesPerView={1}
+              navigation={{
+                nextEl: '.blog-button-next',
+                prevEl: '.blog-button-prev',
+              }}
+              pagination={{ clickable: true }}
+              autoplay={{
+                delay: 5000,
+                disableOnInteraction: false,
+              }}
+              breakpoints={{
+                640: {
+                  slidesPerView: 2,
+                },
+                1024: {
+                  slidesPerView: 3,
+                },
+              }}
+              className="!pt-4 !px-4 !pb-14"
+            >
+              {blogs.map((blog) => (
+                <SwiperSlide key={blog.id} className="pt-2 pb-2 !h-auto">
+                  <article
+                    className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group h-full flex flex-col"
+                  >
+                    {/* Blog Image */}
+                    <div className="relative h-40 sm:h-48 w-full overflow-hidden shrink-0">
+                      <Image
+                        src={blog.imageUrl}
+                        alt={blog.name}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-300"
+                        unoptimized
+                      />
                     </div>
 
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2 sm:mb-3 group-hover:text-primary-600 transition-colors">
-                      {blog.name}
-                    </h3>
+                    {/* Content */}
+                    <div className="p-4 sm:p-6 flex-1 flex flex-col">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
+                        <span className="text-xs font-semibold text-primary-600 bg-primary-50 px-2 sm:px-3 py-1 rounded-full">
+                          {blog.author}
+                        </span>
+                        <span className="text-xs sm:text-sm text-slate-500">{formatDate(blog.publishedAt)}</span>
+                      </div>
 
-                    <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 line-clamp-3">
-                      {blog.shortDescription}
-                    </p>
+                      <h3 className="text-lg sm:text-xl font-bold text-tertiary-600 mb-2 sm:mb-3 group-hover:text-primary-600 transition-colors line-clamp-2">
+                        {blog.name}
+                      </h3>
+
+                      <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 line-clamp-3">
+                        {blog.shortDescription}
+                      </p>
 
                     <Link
                       href={`/blog/${blog.slug}`}
