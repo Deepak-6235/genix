@@ -1,29 +1,52 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useContactContentTranslations } from "@/hooks/useTranslations";
 import { useContactTranslations } from "@/hooks/useTranslations";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 /**
  * Contact Content Component
- * 
+ *
  * This component displays a contact page with:
  * - A hero section with breadcrumb navigation
  * - Contact information cards
  * - Contact form with validation
  * - WhatsApp CTA section
- * 
+ *
  * Features:
  * - Form validation with error messages
  * - Responsive design for all screen sizes
  * - Contact information display
+ * - Dynamically fetches data from AboutUs table
  */
+
+interface AboutUsData {
+  email: string | null;
+  phoneNumber1: string | null;
+  phoneNumber2: string | null;
+  workingHours: string | null;
+  address: string | null;
+}
+
+interface Service {
+  id: string;
+  slug: string;
+  name: string;
+}
 
 export default function ContactContent() {
   const t = useContactContentTranslations();
   const contactT = useContactTranslations();
-  const phoneNumber = "0582010834";
+  const { language } = useLanguage();
+
+  const [aboutUs, setAboutUs] = useState<AboutUsData | null>(null);
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [servicesLoading, setServicesLoading] = useState(true);
+
+  const phoneNumber = aboutUs?.phoneNumber1?.replace(/^0/, '') || "582010834";
   const whatsappMessage = encodeURIComponent(t.whatsappMessage);
   const whatsappLink = `https://wa.me/966${phoneNumber}?text=${whatsappMessage}`;
 
@@ -36,13 +59,48 @@ export default function ContactContent() {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitting, setSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
-  const services = [
-    "House Cleaning",
-    "Indoor Cleaning",
-    "Plumbing Services",
-    "Bathroom Cleaning",
-  ];
+  // Fetch About Us data
+  useEffect(() => {
+    const fetchAboutUs = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/about-us?lang=${language}`);
+        const data = await response.json();
+        if (data.success) {
+          setAboutUs(data.aboutUs);
+        }
+      } catch (error) {
+        console.error('Failed to fetch about us data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAboutUs();
+  }, [language]);
+
+  // Fetch Services data
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        setServicesLoading(true);
+        const response = await fetch(`/api/services?lang=${language}`);
+        const data = await response.json();
+        if (data.success) {
+          setServices(data.services);
+        }
+      } catch (error) {
+        console.error('Failed to fetch services:', error);
+      } finally {
+        setServicesLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, [language]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -76,16 +134,60 @@ export default function ContactContent() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      // Here you would typically send the form data to your backend
-      // For now, we'll use mailto as a fallback
-      const subject = encodeURIComponent(`طلب خدمة: ${formData.service}`);
-      const body = encodeURIComponent(
-        `الاسم: ${formData.name}\nالبريد الإلكتروني: ${formData.email}\nالهاتف: ${formData.phone || "غير محدد"}\nالخدمة: ${formData.service}\n\nالرسالة:\n${formData.message}`
-      );
-      window.location.href = `mailto:roknalnakheel@gmail.com?subject=${subject}&body=${body}`;
+      try {
+        setSubmitting(true);
+        setSubmitSuccess(false);
+
+        // Find the selected service to get its slug
+        const selectedService = services.find(s => s.name === formData.service);
+
+        if (!selectedService) {
+          setErrors({ service: 'Invalid service selected' });
+          return;
+        }
+
+        const response = await fetch('/api/contact-form-submissions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            serviceSlug: selectedService.slug,
+            message: formData.message,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          setSubmitSuccess(true);
+          // Reset form
+          setFormData({
+            name: "",
+            email: "",
+            phone: "",
+            service: "",
+            message: "",
+          });
+          // Show success message for 5 seconds
+          setTimeout(() => {
+            setSubmitSuccess(false);
+          }, 5000);
+        } else {
+          alert(data.message || 'Failed to submit form. Please try again.');
+        }
+      } catch (error) {
+        console.error('Form submission error:', error);
+        alert('Failed to submit form. Please try again.');
+      } finally {
+        setSubmitting(false);
+      }
     }
   };
 
@@ -156,20 +258,31 @@ export default function ContactContent() {
                     {contactT.phone}
                   </h3>
                 </div>
-                <div className="space-y-2">
-                  <a
-                    href={`tel:+966${phoneNumber}`}
-                    className="block text-blue-600 hover:text-blue-700 font-semibold text-base sm:text-lg transition-colors"
-                  >
-                    {phoneNumber}
-                  </a>
-                  <a
-                    href="tel:+966562596295"
-                    className="block text-blue-600 hover:text-blue-700 font-semibold text-base sm:text-lg transition-colors"
-                  >
-                    0562596295
-                  </a>
-                </div>
+                {loading ? (
+                  <div className="space-y-2">
+                    <div className="h-6 bg-gray-200 rounded w-32 animate-pulse"></div>
+                    <div className="h-6 bg-gray-200 rounded w-32 animate-pulse"></div>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {aboutUs?.phoneNumber1 && (
+                      <a
+                        href={`tel:+966${aboutUs.phoneNumber1.replace(/^0/, '')}`}
+                        className="block text-blue-600 hover:text-blue-700 font-semibold text-base sm:text-lg transition-colors"
+                      >
+                        {aboutUs.phoneNumber1}
+                      </a>
+                    )}
+                    {aboutUs?.phoneNumber2 && (
+                      <a
+                        href={`tel:+966${aboutUs.phoneNumber2.replace(/^0/, '')}`}
+                        className="block text-blue-600 hover:text-blue-700 font-semibold text-base sm:text-lg transition-colors"
+                      >
+                        {aboutUs.phoneNumber2}
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Email Card */}
@@ -194,12 +307,16 @@ export default function ContactContent() {
                     {contactT.email}
                   </h3>
                 </div>
-                <a
-                  href="mailto:roknalnakheel@gmail.com"
-                  className="text-blue-600 hover:text-blue-700 font-semibold text-sm sm:text-base md:text-lg transition-colors break-all"
-                >
-                  roknalnakheel@gmail.com
-                </a>
+                {loading ? (
+                  <div className="h-6 bg-gray-200 rounded w-48 animate-pulse"></div>
+                ) : (
+                  <a
+                    href={`mailto:${aboutUs?.email || 'roknalnakheel@gmail.com'}`}
+                    className="text-blue-600 hover:text-blue-700 font-semibold text-sm sm:text-base md:text-lg transition-colors break-all"
+                  >
+                    {aboutUs?.email || 'roknalnakheel@gmail.com'}
+                  </a>
+                )}
               </div>
 
               {/* Location Card */}
@@ -230,9 +347,13 @@ export default function ContactContent() {
                     {contactT.address}
                   </h3>
                 </div>
-                <p className="text-slate-700 text-base sm:text-lg font-medium">
-                  {contactT.location} {contactT.city}
-                </p>
+                {loading ? (
+                  <div className="h-6 bg-gray-200 rounded w-64 animate-pulse"></div>
+                ) : (
+                  <p className="text-slate-700 text-base sm:text-lg font-medium">
+                    {aboutUs?.address || `${contactT.location} ${contactT.city}`}
+                  </p>
+                )}
               </div>
 
               {/* Hours Card */}
@@ -257,9 +378,13 @@ export default function ContactContent() {
                     {contactT.hours}
                   </h3>
                 </div>
-                <p className="text-slate-700 text-base sm:text-lg font-bold">
-                  {contactT.hoursValue}
-                </p>
+                {loading ? (
+                  <div className="h-6 bg-gray-200 rounded w-24 animate-pulse"></div>
+                ) : (
+                  <p className="text-slate-700 text-base sm:text-lg font-bold">
+                    {aboutUs?.workingHours || contactT.hoursValue}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -350,10 +475,10 @@ export default function ContactContent() {
                     className={`w-full px-4 py-3 rounded-lg border ${errors.service ? "border-red-500" : "border-slate-300"
                       } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 bg-white`}
                   >
-                    <option value="">{t.form.chooseServices}</option>
+                    <option value="">{servicesLoading ? 'Loading services...' : t.form.chooseServices}</option>
                     {services.map((service) => (
-                      <option key={service} value={service}>
-                        {service}
+                      <option key={service.id} value={service.name}>
+                        {service.name}
                       </option>
                     ))}
                   </select>
@@ -385,12 +510,21 @@ export default function ContactContent() {
                   )}
                 </div>
 
+                {/* Success Message */}
+                {submitSuccess && (
+                  <div className="p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+                    <p className="font-semibold">Success! Your message has been sent.</p>
+                    <p className="text-sm">We will get back to you soon.</p>
+                  </div>
+                )}
+
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 text-white font-bold py-3 sm:py-4 px-6 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl text-base sm:text-lg"
+                  disabled={submitting}
+                  className="w-full bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 text-white font-bold py-3 sm:py-4 px-6 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl text-base sm:text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {t.form.sendMessage}
+                  {submitting ? 'Sending...' : t.form.sendMessage}
                 </button>
               </form>
             </div>

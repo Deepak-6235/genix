@@ -1,27 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useHeaderTranslations } from "@/hooks/useTranslations";
 import { useLanguage } from "@/contexts/LanguageContext";
 import iconImage from "../icon.png";
 
+interface Service {
+  id: string;
+  slug: string;
+  name: string;
+  isActive: boolean;
+  order: number;
+}
+
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [services, setServices] = useState<Service[]>([]);
   const t = useHeaderTranslations();
-  const { dir } = useLanguage();
+  const { language, dir } = useLanguage();
 
-  const services = [
-    { label: t.services.pestControl, href: "/services/pest-control" },
-    { label: t.services.disinfection, href: "/services/disinfection-against-viruses" },
-    { label: t.services.paints, href: "/services/paints-and-decorations" },
-    { label: t.services.acMaintenance, href: "/services/air-conditioner-maintenance" },
-    { label: t.services.waterfalls, href: "/services/waterfalls-and-fountains" },
-    { label: t.services.pools, href: "/services/swimming-pools-construction-maintenance" },
-    { label: t.services.restoration, href: "/services/interior-exterior-restoration" },
-  ];
+  // Fetch services from database
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await fetch(`/api/services?lang=${language}`);
+        const data = await response.json();
+        if (data.success) {
+          setServices(data.services);
+        }
+      } catch (error) {
+        console.error('Failed to fetch services:', error);
+      }
+    };
+
+    fetchServices();
+  }, [language]);
 
   const navItems = [
     { label: t.navItems.home, href: "/" },
@@ -87,16 +103,16 @@ export default function Header() {
                     </a>
                     {isServicesOpen && (
                       <div className={`absolute top-full pt-2 w-64 ${dir === 'rtl' ? 'right-0' : 'left-0'}`}>
-                        <div className="bg-white rounded-xl shadow-xl border border-slate-200 py-2">
+                        <div className="bg-white rounded-xl shadow-xl border border-slate-200 py-2 max-h-96 overflow-y-auto">
                           {services.map((service) => (
                             <a
-                              key={service.label}
-                              href={service.href}
+                              key={service.id}
+                              href={`/services/${service.slug}`}
                               className="block px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition-colors text-sm"
                               onClick={() => setIsServicesOpen(false)}
                               suppressHydrationWarning
                             >
-                              {service.label}
+                              {service.name}
                             </a>
                           ))}
                         </div>
@@ -181,11 +197,11 @@ export default function Header() {
                       </svg>
                     </button>
                     {isServicesOpen && (
-                      <ul className={`mt-2 space-y-1 ${dir === 'rtl' ? 'mr-4' : 'ml-4'}`}>
+                      <ul className={`mt-2 space-y-1 ${dir === 'rtl' ? 'mr-4' : 'ml-4'} max-h-80 overflow-y-auto`}>
                         {services.map((service) => (
-                          <li key={service.label}>
+                          <li key={service.id}>
                             <a
-                              href={service.href}
+                              href={`/services/${service.slug}`}
                               className="block text-slate-600 hover:text-blue-600 hover:bg-slate-50 py-2 px-4 rounded-lg transition-colors text-sm"
                               onClick={() => {
                                 setIsServicesOpen(false);
@@ -193,7 +209,7 @@ export default function Header() {
                               }}
                               suppressHydrationWarning
                             >
-                              {service.label}
+                              {service.name}
                             </a>
                           </li>
                         ))}

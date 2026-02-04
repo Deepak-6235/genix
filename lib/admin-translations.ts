@@ -306,6 +306,22 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'aboutUs.address': 'Address',
     'aboutUs.city': 'City',
 
+    // Contact Submissions Page
+    'nav.contactSubmissions': 'Contact Submissions',
+    'contactSubmissions.title': 'Contact Form Submissions',
+    'contactSubmissions.subtitle': 'Manage and respond to contact form submissions',
+    'filter.all': 'All',
+    'filter.unread': 'Unread',
+    'filter.read': 'Read',
+    'status.read': 'Read',
+    'status.unread': 'Unread',
+    'message': 'Message',
+    'markAsRead': 'Mark as Read',
+    'noSubmissions': 'No contact submissions',
+    'noUnreadSubmissions': 'No unread submissions',
+    'noReadSubmissions': 'No read submissions',
+    'noSubmissionsYet': 'No submissions yet',
+
     // Settings Page
     'settings.accountInfo': 'Account Information',
     'settings.role': 'Role',
@@ -648,6 +664,22 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'aboutUs.address': 'العنوان',
     'aboutUs.city': 'المدينة',
 
+    // Contact Submissions Page
+    'nav.contactSubmissions': 'رسائل الاتصال',
+    'contactSubmissions.title': 'رسائل نموذج الاتصال',
+    'contactSubmissions.subtitle': 'إدارة والرد على رسائل نموذج الاتصال',
+    'filter.all': 'الكل',
+    'filter.unread': 'غير مقروءة',
+    'filter.read': 'مقروءة',
+    'status.read': 'مقروءة',
+    'status.unread': 'غير مقروءة',
+    'message': 'الرسالة',
+    'markAsRead': 'تعليم كمقروء',
+    'noSubmissions': 'لا توجد رسائل اتصال',
+    'noUnreadSubmissions': 'لا توجد رسائل غير مقروءة',
+    'noReadSubmissions': 'لا توجد رسائل مقروءة',
+    'noSubmissionsYet': 'لا توجد رسائل بعد',
+
     // Settings Page
     'settings.accountInfo': 'معلومات الحساب',
     'settings.role': 'الدور',
@@ -969,6 +1001,22 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'aboutUs.address': 'Endereço',
     'aboutUs.city': 'Cidade',
 
+    // Contact Submissions Page
+    'nav.contactSubmissions': 'Envios de Contato',
+    'contactSubmissions.title': 'Envios do Formulário de Contato',
+    'contactSubmissions.subtitle': 'Gerencie e responda aos envios do formulário de contato',
+    'filter.all': 'Todos',
+    'filter.unread': 'Não lidos',
+    'filter.read': 'Lidos',
+    'status.read': 'Lido',
+    'status.unread': 'Não lido',
+    'message': 'Mensagem',
+    'markAsRead': 'Marcar como Lido',
+    'noSubmissions': 'Nenhum envio de contato',
+    'noUnreadSubmissions': 'Nenhum envio não lido',
+    'noReadSubmissions': 'Nenhum envio lido',
+    'noSubmissionsYet': 'Nenhum envio ainda',
+
     // Settings Page
     'settings.accountInfo': 'Informações da Conta',
     'settings.role': 'Função',
@@ -1288,6 +1336,22 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'aboutUs.workingHours': '工作时间',
     'aboutUs.address': '地址',
     'aboutUs.city': '城市',
+
+    // Contact Submissions Page
+    'nav.contactSubmissions': '联系提交',
+    'contactSubmissions.title': '联系表单提交',
+    'contactSubmissions.subtitle': '管理和回复联系表单提交',
+    'filter.all': '全部',
+    'filter.unread': '未读',
+    'filter.read': '已读',
+    'status.read': '已读',
+    'status.unread': '未读',
+    'message': '消息',
+    'markAsRead': '标记为已读',
+    'noSubmissions': '没有联系提交',
+    'noUnreadSubmissions': '没有未读提交',
+    'noReadSubmissions': '没有已读提交',
+    'noSubmissionsYet': '还没有提交',
 
     // Settings Page
     'settings.accountInfo': '账户信息',
@@ -1610,6 +1674,22 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'aboutUs.address': '住所',
     'aboutUs.city': '都市',
 
+    // Contact Submissions Page
+    'nav.contactSubmissions': 'お問い合わせ送信',
+    'contactSubmissions.title': 'お問い合わせフォーム送信',
+    'contactSubmissions.subtitle': 'お問い合わせフォームの送信を管理し、返信する',
+    'filter.all': 'すべて',
+    'filter.unread': '未読',
+    'filter.read': '既読',
+    'status.read': '既読',
+    'status.unread': '未読',
+    'message': 'メッセージ',
+    'markAsRead': '既読にする',
+    'noSubmissions': 'お問い合わせ送信はありません',
+    'noUnreadSubmissions': '未読の送信はありません',
+    'noReadSubmissions': '既読の送信はありません',
+    'noSubmissionsYet': 'まだ送信はありません',
+
     // Settings Page
     'settings.accountInfo': 'アカウント情報',
     'settings.role': '役割',
@@ -1931,6 +2011,22 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'aboutUs.address': 'Adresse',
     'aboutUs.city': 'Stadt',
 
+    // Contact Submissions Page
+    'nav.contactSubmissions': 'Kontaktanfragen',
+    'contactSubmissions.title': 'Kontaktformular-Einsendungen',
+    'contactSubmissions.subtitle': 'Kontaktformular-Einsendungen verwalten und beantworten',
+    'filter.all': 'Alle',
+    'filter.unread': 'Ungelesen',
+    'filter.read': 'Gelesen',
+    'status.read': 'Gelesen',
+    'status.unread': 'Ungelesen',
+    'message': 'Nachricht',
+    'markAsRead': 'Als gelesen markieren',
+    'noSubmissions': 'Keine Kontaktanfragen',
+    'noUnreadSubmissions': 'Keine ungelesenen Einsendungen',
+    'noReadSubmissions': 'Keine gelesenen Einsendungen',
+    'noSubmissionsYet': 'Noch keine Einsendungen',
+
     // Settings Page
     'settings.accountInfo': 'Kontoinformationen',
     'settings.role': 'Rolle',
@@ -2250,6 +2346,22 @@ export const adminTranslations: Record<LanguageCode, Record<string, string>> = {
     'aboutUs.workingHours': 'Heures de travail',
     'aboutUs.address': 'Adresse',
     'aboutUs.city': 'Ville',
+
+    // Contact Submissions Page
+    'nav.contactSubmissions': 'Soumissions de Contact',
+    'contactSubmissions.title': 'Soumissions du Formulaire de Contact',
+    'contactSubmissions.subtitle': 'Gérer et répondre aux soumissions du formulaire de contact',
+    'filter.all': 'Tous',
+    'filter.unread': 'Non lus',
+    'filter.read': 'Lus',
+    'status.read': 'Lu',
+    'status.unread': 'Non lu',
+    'message': 'Message',
+    'markAsRead': 'Marquer comme lu',
+    'noSubmissions': 'Aucune soumission de contact',
+    'noUnreadSubmissions': 'Aucune soumission non lue',
+    'noReadSubmissions': 'Aucune soumission lue',
+    'noSubmissionsYet': 'Aucune soumission pour le moment',
 
     // Settings Page
     'settings.accountInfo': 'Informations du compte',
