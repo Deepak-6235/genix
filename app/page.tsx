@@ -8,7 +8,6 @@ import AboutUs from "./components/AboutUs";
 import Services from "./components/Services";
 import WhyChooseUs from "./components/WhyChooseUs";
 import Testimonials from "./components/Testimonials";
-import WhatsAppSection from "./components/WhatsAppSection";
 import Blog from "./components/Blog";
 import Footer from "./components/Footer";
 import { useLanguage } from "@/contexts/LanguageContext";
