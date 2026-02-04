@@ -114,14 +114,20 @@ export default function AboutUsContent() {
       {/* ============================================
           HERO SECTION WITH BREADCRUMB
           ============================================ */}
-      <section className="py-4 sm:py-8 md:py-10 lg:py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section
+        className="relative bg-cover bg-center bg-no-repeat min-h-[40vh] flex items-center py-20 overflow-hidden"
+        style={{ backgroundImage: "url('/images/about-us-hero.jpg')" }}
+      >
+        {/* Overlay for better text readability */}
+        <div className="absolute inset-0 bg-slate-900/40 z-0"></div>
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-4xl mx-auto">
             {/* Breadcrumb Navigation */}
-            <nav className="mb-3 sm:mb-4" aria-label="Breadcrumb">
-              <ol className="flex items-center gap-2 text-sm sm:text-base text-slate-600 justify-center">
+            <nav className="mb-4 sm:mb-6" aria-label="Breadcrumb">
+              <ol className="flex items-center gap-2 text-sm sm:text-base text-white/90 justify-center">
                 <li>
-                  <Link href="/" className="hover:text-primary-600 transition-colors">
+                  <Link href="/" className="hover:text-primary-400 transition-colors">
                     {t.breadcrumbHome}
                   </Link>
                 </li>
@@ -130,20 +136,20 @@ export default function AboutUsContent() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </li>
-                <li className="text-slate-900 font-semibold">{t.breadcrumbAbout}</li>
+                <li className="text-white font-semibold">{t.breadcrumbAbout}</li>
               </ol>
             </nav>
 
             {/* Main Page Title */}
             <div className="text-center">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 mb-4 sm:mb-6 leading-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
                 {t.pageTitle}
               </h1>
               <div className="flex items-center justify-center gap-3 mb-6">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-600">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-400">
                   {t.companyName}
                 </h2>
-                <span className="text-lg sm:text-xl md:text-2xl text-slate-600 font-semibold">
+                <span className="text-lg sm:text-xl md:text-2xl text-white font-semibold">
                   {t.experience}
                 </span>
               </div>
