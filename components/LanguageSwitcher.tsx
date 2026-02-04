@@ -5,7 +5,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { LANGUAGE_CODES } from '@/lib/languages';
 
 export default function LanguageSwitcher() {
-  const { language, setLanguage, languages } = useLanguage();
+  const { language, setLanguage, languages, dir } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -43,7 +43,7 @@ export default function LanguageSwitcher() {
       </button>
 
       {isOpen && (
-        <div className="absolute top-full mt-2 right-0 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[200px]">
+        <div className={`absolute top-full mt-2 ${dir === 'rtl' ? 'left-0' : 'right-0'} bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[200px]`}>
           <div className="py-2">
             {LANGUAGE_CODES.map((lang) => (
               <button
@@ -55,7 +55,7 @@ export default function LanguageSwitcher() {
                 className={`w-full flex items-center px-4 py-2.5 hover:bg-gray-100 transition ${language === lang ? 'bg-accent-purple-50 text-accent-purple-700' : 'text-gray-700'
                   }`}
               >
-                <div className="flex-1 text-left">
+                <div className="flex-1 text-start">
                   <div className="font-medium">{languages[lang].nativeName}</div>
                   <div className="text-xs text-gray-500">{languages[lang].name}</div>
                 </div>

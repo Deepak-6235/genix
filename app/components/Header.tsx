@@ -177,7 +177,7 @@ export default function Header() {
                   <div>
                     <button
                       onClick={() => setIsServicesOpen(!isServicesOpen)}
-                      className={`w-full text-slate-700 hover:text-primary-600 hover:bg-slate-50 font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-between ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                      className={`w-full text-slate-700 hover:text-primary-600 hover:bg-slate-50 font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-between text-start`}
                       suppressHydrationWarning
                     >
                       {item.label}
