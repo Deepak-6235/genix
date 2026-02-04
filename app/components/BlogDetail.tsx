@@ -40,12 +40,14 @@ interface Blog {
 }
 
 interface Comment {
-  id: number;
-  userName: string;
-  email?: string;
-  website?: string;
+  id: string;
+  commentId: string;
+  name: string;
+  email: string;
+  website: string | null;
   comment: string;
-  date: string;
+  isApproved: boolean;
+  createdAt: string;
 }
 
 export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
@@ -53,11 +55,14 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
   const { dir, language } = useLanguage();
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(true);
+  const [commentsLoading, setCommentsLoading] = useState(true);
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [website, setWebsite] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   // Fetch blog data
   useEffect(() => {
@@ -79,6 +84,28 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
     fetchBlog();
   }, [blogSlug, language]);
 
+  // Fetch comments
+  useEffect(() => {
+    const fetchComments = async () => {
+      if (!blogSlug) return;
+
+      try {
+        setCommentsLoading(true);
+        const response = await fetch(`/api/blogs/${blogSlug}/comments?lang=${language}`);
+        const data = await response.json();
+        if (data.success) {
+          setComments(data.comments);
+        }
+      } catch (error) {
+        console.error('Failed to fetch comments:', error);
+      } finally {
+        setCommentsLoading(false);
+      }
+    };
+
+    fetchComments();
+  }, [blogSlug, language]);
+
   // Format date
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -89,22 +116,48 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
     });
   };
 
-  const handleSubmitComment = (e: React.FormEvent) => {
+  const handleSubmitComment = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (newComment.trim() && userName.trim()) {
-      const comment: Comment = {
-        id: comments.length + 1,
-        userName: userName.trim(),
-        email: email.trim() || undefined,
-        website: website.trim() || undefined,
-        comment: newComment.trim(),
-        date: t.now,
-      };
-      setComments([comment, ...comments]);
-      setNewComment("");
-      setUserName("");
-      setEmail("");
-      setWebsite("");
+    if (!newComment.trim() || !userName.trim() || !email.trim()) return;
+
+    try {
+      setSubmitting(true);
+      setSubmitSuccess(false);
+
+      const response = await fetch(`/api/blogs/${blogSlug}/comments`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: userName.trim(),
+          email: email.trim(),
+          website: website.trim() || null,
+          comment: newComment.trim(),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSubmitSuccess(true);
+        setNewComment("");
+        setUserName("");
+        setEmail("");
+        setWebsite("");
+
+        // Show success message for 5 seconds
+        setTimeout(() => {
+          setSubmitSuccess(false);
+        }, 5000);
+      } else {
+        alert(data.message || 'Failed to submit comment. Please try again.');
+      }
+    } catch (error) {
+      console.error('Comment submission error:', error);
+      alert('Failed to submit comment. Please try again.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -259,7 +312,7 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
           <div className="max-w-4xl mx-auto">
             {/* Comments Header */}
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-6 sm:mb-8">
-              {t.commentsTitle} ({comments.length})
+              {t.commentsTitle} ({comments.filter(c => c.isApproved).length})
             </h2>
 
             {/* Add Comment Form */}
@@ -267,6 +320,15 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
               <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-4 sm:mb-6">
                 {t.addComment}
               </h3>
+
+              {/* Success Message */}
+              {submitSuccess && (
+                <div className="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+                  <p className="font-semibold">Comment submitted successfully!</p>
+                  <p className="text-sm">Your comment is awaiting approval and will appear after review.</p>
+                </div>
+              )}
+
               <form onSubmit={handleSubmitComment} className="space-y-4">
                 <div>
                   <label htmlFor="userName" className="block text-sm font-semibold text-slate-700 mb-2">
@@ -325,48 +387,72 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
                 </div>
                 <button
                   type="submit"
-                  className="w-full sm:w-auto bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white px-6 sm:px-8 py-3 rounded-xl font-bold text-base sm:text-lg hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  disabled={submitting}
+                  className="w-full sm:w-auto bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white px-6 sm:px-8 py-3 rounded-xl font-bold text-base sm:text-lg hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {t.submitComment}
+                  {submitting ? 'Submitting...' : t.submitComment}
                 </button>
               </form>
             </div>
 
             {/* Existing Comments */}
             <div className="space-y-4 sm:space-y-6">
-              {comments.length === 0 ? (
+              {commentsLoading ? (
+                <div className="bg-white rounded-2xl p-6 sm:p-8 text-center shadow-lg">
+                  <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
+                  <p className="text-slate-600">Loading comments...</p>
+                </div>
+              ) : comments.filter(c => c.isApproved).length === 0 ? (
                 <div className="bg-white rounded-2xl p-6 sm:p-8 text-center shadow-lg">
                   <p className="text-slate-600 text-base sm:text-lg">
                     {t.noCommentsYet}
                   </p>
                 </div>
               ) : (
-                comments.map((comment) => (
-                  <div
-                    key={comment.id}
-                    className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-shadow duration-300"
-                  >
-                    <div className="flex items-start gap-4">
-                      {/* User Avatar */}
-                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold text-lg">
-                        {comment.userName.charAt(0).toUpperCase()}
-                      </div>
-                      
-                      {/* Comment Content */}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h4 className="font-bold text-slate-900 text-base sm:text-lg">
-                            {comment.userName}
-                          </h4>
-                          <span className="text-sm text-slate-500">{comment.date}</span>
+                comments
+                  .filter(c => c.isApproved)
+                  .map((comment) => (
+                    <div
+                      key={comment.id}
+                      className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-shadow duration-300"
+                    >
+                      <div className="flex items-start gap-4">
+                        {/* User Avatar */}
+                        <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold text-lg">
+                          {comment.name.charAt(0).toUpperCase()}
                         </div>
-                        <p className="text-slate-700 leading-relaxed text-sm sm:text-base">
-                          {comment.comment}
-                        </p>
+
+                        {/* Comment Content */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-3 mb-2 flex-wrap">
+                            <h4 className="font-bold text-slate-900 text-base sm:text-lg">
+                              {comment.name}
+                            </h4>
+                            {comment.website && (
+                              <a
+                                href={comment.website}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-sm text-blue-600 hover:text-blue-700"
+                              >
+                                🔗 Website
+                              </a>
+                            )}
+                            <span className="text-sm text-slate-500">
+                              {new Date(comment.createdAt).toLocaleDateString(language === 'ar' ? 'ar-SA' : 'en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                              })}
+                            </span>
+                          </div>
+                          <p className="text-slate-700 leading-relaxed text-sm sm:text-base whitespace-pre-line">
+                            {comment.comment}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))
+                  ))
               )}
             </div>
           </div>
