@@ -48,11 +48,13 @@ async function generateUniqueSlug(baseSlug: string): Promise<string> {
   }
 }
 
-// GET all blogs in selected language
+// GET all blogs in selected language with pagination
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const lang = searchParams.get('lang') || DEFAULT_LANGUAGE;
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '6');
 
     // First, find the language
     const language = await prisma.language.findUnique({
@@ -66,13 +68,26 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Then fetch blogs for that language
+    // Calculate pagination
+    const skip = (page - 1) * limit;
+
+    // Get total count for pagination
+    const totalBlogs = await prisma.blog.count({
+      where: {
+        languageId: language.id,
+        isActive: true,
+      },
+    });
+
+    // Then fetch blogs for that language with pagination
     const blogs = await prisma.blog.findMany({
       where: {
         languageId: language.id,
         isActive: true,
       },
       orderBy: { publishedAt: 'desc' },
+      skip,
+      take: limit,
       include: {
         language: true,
         detailedBlogs: {
@@ -86,9 +101,19 @@ export async function GET(request: NextRequest) {
       },
     });
 
+    const totalPages = Math.ceil(totalBlogs / limit);
+
     return NextResponse.json({
       success: true,
       blogs,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalBlogs,
+        limit,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1,
+      },
       language: lang,
     });
   } catch (error) {

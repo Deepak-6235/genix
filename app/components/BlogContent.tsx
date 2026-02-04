@@ -36,16 +36,27 @@ export default function BlogContent() {
   const { dir, language } = useLanguage();
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    totalPages: 1,
+    totalBlogs: 0,
+    hasNextPage: false,
+    hasPreviousPage: false,
+  });
 
   // Fetch blogs from database
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api/blogs?lang=${language}`);
+        const response = await fetch(`/api/blogs?lang=${language}&page=${currentPage}&limit=6`);
         const data = await response.json();
         if (data.success) {
           setBlogs(data.blogs);
+          setPagination(data.pagination);
+          setTotalPages(data.pagination.totalPages);
         }
       } catch (error) {
         console.error('Failed to fetch blogs:', error);
@@ -55,7 +66,7 @@ export default function BlogContent() {
     };
 
     fetchBlogs();
-  }, [language]);
+  }, [language, currentPage]);
 
   // Format date helper
   const formatDate = (dateString: string | null) => {
@@ -181,40 +192,72 @@ export default function BlogContent() {
             {/* ============================================
                 PAGINATION
                 ============================================ */}
-            <div className="flex justify-center items-center gap-2 sm:gap-3">
-              {/* Previous Button */}
-              <button
-                className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white rounded-2xl font-semibold hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled
-                aria-label={dir === 'rtl' ? 'Previous Page' : 'Previous Page'}
-              >
-                <svg className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center gap-2 sm:gap-3">
+                {/* Previous Button */}
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={!pagination.hasPreviousPage}
+                  className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white rounded-2xl font-semibold hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  aria-label="Previous Page"
+                >
+                  <svg className={`w-5 h-5 ${dir === 'rtl' ? '' : 'rotate-180'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
 
-              {/* Page Numbers */}
-              <button className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white rounded-2xl font-semibold hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg">
-                1
-              </button>
-              <button className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white rounded-2xl font-semibold hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg">
-                2
-              </button>
-              <span className="px-2 text-slate-500">…</span>
-              <button className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white rounded-2xl font-semibold hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg">
-                6
-              </button>
+                {/* Page Numbers */}
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => {
+                  // Show first page, last page, current page, and pages around current
+                  const shouldShow =
+                    pageNum === 1 ||
+                    pageNum === totalPages ||
+                    (pageNum >= currentPage - 1 && pageNum <= currentPage + 1);
 
-              {/* Next Button */}
-              <button 
-                className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white rounded-2xl font-semibold hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg"
-                aria-label={dir === 'rtl' ? 'Next Page' : 'Next Page'}
-              >
-                <svg className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-            </div>
+                  // Show ellipsis
+                  const showEllipsisBefore = pageNum === currentPage - 1 && currentPage > 3;
+                  const showEllipsisAfter = pageNum === currentPage + 1 && currentPage < totalPages - 2;
+
+                  if (!shouldShow && !showEllipsisBefore && !showEllipsisAfter) {
+                    return null;
+                  }
+
+                  if (showEllipsisBefore && pageNum !== 2) {
+                    return <span key={`ellipsis-before-${pageNum}`} className="px-2 text-slate-500">…</span>;
+                  }
+
+                  if (showEllipsisAfter && pageNum !== totalPages - 1) {
+                    return <span key={`ellipsis-after-${pageNum}`} className="px-2 text-slate-500">…</span>;
+                  }
+
+                  return (
+                    <button
+                      key={pageNum}
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`px-4 py-2 sm:px-5 sm:py-2.5 rounded-2xl font-semibold transition-all duration-300 shadow-lg ${
+                        currentPage === pageNum
+                          ? 'bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white'
+                          : 'bg-white text-slate-700 border-2 border-slate-200 hover:border-blue-400'
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                })}
+
+                {/* Next Button */}
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                  disabled={!pagination.hasNextPage}
+                  className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white rounded-2xl font-semibold hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  aria-label="Next Page"
+                >
+                  <svg className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>
