@@ -9,9 +9,7 @@ import Services from "./components/Services";
 import WhyChooseUs from "./components/WhyChooseUs";
 import Testimonials from "./components/Testimonials";
 import WhatsAppSection from "./components/WhatsAppSection";
-import FAQ from "./components/FAQ";
 import Blog from "./components/Blog";
-import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useServices } from "@/hooks/useServices";
@@ -21,15 +19,13 @@ export default function HomePage() {
     <div className="min-h-screen bg-white">
       <Header />
       <Hero />
-      <Statistics variant="dark" />
+      <WhyChooseUs />
       <AboutUs />
       <Services />
-      <WhyChooseUs />
+      <Statistics variant="dark" />
       <Testimonials />
-      <WhatsAppSection />
-      <FAQ />
       <Blog />
-      <Contact />
+      {/* <WhatsAppSection /> */}
       <Footer />
     </div>
   );
