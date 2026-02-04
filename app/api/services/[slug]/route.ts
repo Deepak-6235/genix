@@ -22,10 +22,10 @@ async function verifyAuth(request: NextRequest) {
 // GET single service by slug and language
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { id } = await params;
+    const { slug } = await params;
     const { searchParams } = new URL(request.url);
     const lang = searchParams.get('lang') || DEFAULT_LANGUAGE;
 
@@ -43,7 +43,7 @@ export async function GET(
 
     const service = await prisma.service.findFirst({
       where: {
-        slug: id,
+        slug: slug,
         languageId: language.id,
       },
     });

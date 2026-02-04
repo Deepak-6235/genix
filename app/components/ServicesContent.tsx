@@ -1,141 +1,67 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useServicesContentTranslations } from "@/hooks/useTranslations";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 /**
  * Services Content Component
- * 
+ *
  * This component displays the services page with:
  * - A hero section with breadcrumb navigation
  * - All available services with descriptions
  * - Links to individual service pages
- * 
+ *
  * Features:
  * - Responsive design for all screen sizes
  * - Modern UI with gradient backgrounds
  * - Service cards with icons and images
  */
 
-const serviceConfigs = [
-  {
-    id: 1,
-    key: "pestControl" as const,
-    href: "/services/pest-control",
-    icon: (
-      <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-      </svg>
-    ),
-    color: "rose",
-    imageId: "1584622782905-0c0c0c0c0c0c",
-    useLocalImage: true,
-    localImagePath: "/images/service-1.jpg",
-  },
-  {
-    id: 2,
-    key: "disinfection" as const,
-    href: "/services/disinfection-against-viruses",
-    icon: (
-      <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-      </svg>
-    ),
-    color: "blue",
-    imageId: "1564013799919-ab608027fe79",
-    useLocalImage: true,
-    localImagePath: "/images/service-2.jpg",
-  },
-  {
-    id: 3,
-    key: "paints" as const,
-    href: "/services/paints-and-decorations",
-    icon: (
-      <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-      </svg>
-    ),
-    color: "purple",
-    imageId: "1581578731548-c64695cc6952",
-    useLocalImage: false,
-  },
-  {
-    id: 4,
-    key: "acMaintenance" as const,
-    href: "/services/air-conditioner-maintenance",
-    icon: (
-      <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-      </svg>
-    ),
-    color: "emerald",
-    imageId: "1621906116683-7a4c85a3a8c1",
-    useLocalImage: true,
-    localImagePath: "/images/service-4.jpg",
-  },
-  {
-    id: 5,
-    key: "waterfalls" as const,
-    href: "/services/waterfalls-and-fountains",
-    icon: (
-      <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-      </svg>
-    ),
-    color: "indigo",
-    imageId: "1600585154340-be6161a56a0c",
-    useLocalImage: true,
-    localImagePath: "/images/service-5.jpg",
-  },
-  {
-    id: 6,
-    key: "pools" as const,
-    href: "/services/swimming-pools-construction-maintenance",
-    icon: (
-      <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
-      </svg>
-    ),
-    color: "cyan",
-    imageId: "1571896349842-33c89424de2d",
-    useLocalImage: true,
-    localImagePath: "/images/service-6.jpg",
-  },
-  {
-    id: 7,
-    key: "restoration" as const,
-    href: "/services/interior-exterior-restoration",
-    icon: (
-      <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-      </svg>
-    ),
-    color: "orange",
-    imageId: "1564013799919-ab608027fe79",
-    useLocalImage: true,
-    localImagePath: "/images/service-7.jpg",
-  },
-];
-
-const colorClasses: { [key: string]: string } = {
-  blue: "from-blue-500 to-blue-600",
-  purple: "from-purple-500 to-purple-600",
-  emerald: "from-emerald-500 to-emerald-600",
-  orange: "from-orange-500 to-orange-600",
-  cyan: "from-cyan-500 to-cyan-600",
-  indigo: "from-indigo-500 to-indigo-600",
-  rose: "from-rose-500 to-rose-600",
-};
+interface Service {
+  id: string;
+  slug: string;
+  name: string;
+  title: string;
+  subtitle: string;
+  shortDescription: string;
+  fullDescription: string | null;
+  imageUrl: string | null;
+  isActive: boolean;
+  order: number;
+}
 
 export default function ServicesContent() {
   const t = useServicesContentTranslations();
-  
-  const services = serviceConfigs.map(config => ({
-    ...config,
-    title: t.services[config.key].title,
-    description: t.services[config.key].description,
-  }));
+  const { language } = useLanguage();
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch services from database
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await fetch(`/api/services?lang=${language}`);
+        const data = await response.json();
+        if (data.success) {
+          setServices(data.services);
+        }
+      } catch (error) {
+        console.error('Failed to fetch services:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, [language]);
+
+  // Fallback image if service doesn't have one
+  const getServiceImagePath = (imageUrl: string | null): string => {
+    return imageUrl || "/images/service-1.jpg";
+  };
 
   return (
     <div className="min-h-screen">
@@ -181,49 +107,65 @@ export default function ServicesContent() {
       <section className="py-8 sm:py-10 md:py-12 lg:py-14">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
-              {services.map((service) => (
-                <div
-                  key={service.id}
-                  className="group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
-                >
-                  {/* Service Image */}
-                  <div className="relative h-48 w-full overflow-hidden">
-                    <Image
-                      src={service.useLocalImage && service.localImagePath ? service.localImagePath : `https://images.unsplash.com/photo-${service.imageId}?w=600&h=400&fit=crop&q=80`}
-                      alt={service.title}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-300"
-                      unoptimized
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            {/* Loading State */}
+            {loading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div key={i} className="animate-pulse bg-white border border-slate-200 rounded-2xl overflow-hidden">
+                    <div className="bg-gray-200 h-48"></div>
+                    <div className="p-6 sm:p-8 space-y-4">
+                      <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+                      <div className="h-4 bg-gray-200 rounded"></div>
+                      <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                    </div>
                   </div>
-                  
-                  <div className="p-6 sm:p-8 md:p-10">
-                    {/* Title */}
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2 sm:mb-3">
-                      {service.title}
-                    </h3>
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
+                {services.map((service) => (
+                  <div
+                    key={service.id}
+                    className="group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+                  >
+                    {/* Service Image */}
+                    <div className="relative h-48 w-full overflow-hidden">
+                      <Image
+                        src={getServiceImagePath(service.imageUrl)}
+                        alt={service.name}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-300"
+                        unoptimized
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
 
-                    {/* Description */}
-                    <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 sm:mb-6">
-                      {service.description}
-                    </p>
+                    <div className="p-6 sm:p-8 md:p-10">
+                      {/* Title */}
+                      <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2 sm:mb-3">
+                        {service.name}
+                      </h3>
 
-                    {/* Read More Button */}
-                    <Link
-                      href={service.href}
-                      className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors group"
-                    >
-                      <span>{t.readMore}</span>
-                      <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                      </svg>
-                    </Link>
+                      {/* Description */}
+                      <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 sm:mb-6">
+                        {service.shortDescription}
+                      </p>
+
+                      {/* Read More Button */}
+                      <Link
+                        href={`/services/${service.slug}`}
+                        className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors group"
+                      >
+                        <span>{t.readMore}</span>
+                        <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                        </svg>
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
