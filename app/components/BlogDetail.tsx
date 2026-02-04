@@ -8,30 +8,36 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 /**
  * Blog Detail Component
- * 
+ *
  * This component displays a detailed blog post with:
  * - A hero section with title and description
  * - An image in the aside
  * - Full description content below
- * 
+ *
  * Features:
  * - Responsive design for all screen sizes
  * - Modern UI with proper layout
  * - Breadcrumb navigation
  */
 
-// Placeholder image IDs for Unsplash
-const getBlogImageId = (id: number): string => {
-  const imageIds: { [key: number]: string } = {
-    1: "1564013799919-ab608027fe79", // Cleaning - home cleaning
-    2: "1600585154340-be6161a56a0c", // Waterfall - landscape design
-    3: "1621906116683-7a4c85a3a8c1", // AC Repair - maintenance
-    4: "1581578731548-c64695cc6952", // Painting - interior design
-    5: "1621906116683-7a4c85a3a8c1", // AC Maintenance - repair
-    6: "1564013799919-ab608027fe79", // Building - construction
-  };
-  return imageIds[id] || "1564013799919-ab608027fe79";
-};
+interface DetailedBlog {
+  id: string;
+  title: string;
+  description: string;
+  imageUrl: string | null;
+  order: number;
+}
+
+interface Blog {
+  id: string;
+  slug: string;
+  name: string;
+  shortDescription: string;
+  author: string;
+  imageUrl: string;
+  publishedAt: string;
+  detailedBlogs: DetailedBlog[];
+}
 
 interface Comment {
   id: number;
@@ -42,54 +48,47 @@ interface Comment {
   date: string;
 }
 
-// Get mock comments from translations
-const getMockComments = (blogId: number, translations: any): Comment[] => {
-  const blogComments = translations.mockComments.find((mc: any) => mc.blogId === blogId);
-  if (!blogComments) return [];
-  
-  return blogComments.comments.map((comment: any, index: number) => ({
-    id: index + 1,
-    userName: comment.userName,
-    comment: comment.comment,
-    date: comment.date,
-  }));
-};
-
-export default function BlogDetail({ blogId }: { blogId: string }) {
+export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
   const t = useBlogContentTranslations();
-  const { dir } = useLanguage();
+  const { dir, language } = useLanguage();
+  const [blog, setBlog] = useState<Blog | null>(null);
+  const [loading, setLoading] = useState(true);
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [website, setWebsite] = useState("");
-  
-  const blogIdNum = parseInt(blogId, 10);
-  
-  // Initialize comments when component mounts
+
+  // Fetch blog data
   useEffect(() => {
-    if (!isNaN(blogIdNum) && blogIdNum >= 1 && blogIdNum <= 6) {
-      setComments(getMockComments(blogIdNum, t));
-    }
-  }, [blogIdNum, t]);
-  
-  if (isNaN(blogIdNum) || blogIdNum < 1 || blogIdNum > t.posts.length) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-slate-900 mb-4">Blog Post Not Found</h1>
-          <Link href="/blog" className="text-blue-600 hover:text-blue-700">
-            Back to Blog
-          </Link>
-        </div>
-      </div>
-    );
-  }
-  
-  const post = t.posts[blogIdNum - 1];
-  const imageId = getBlogImageId(blogIdNum);
-  const imagePath = `/images/blog-${blogIdNum}.jpg`;
-  
+    const fetchBlog = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/blogs/${blogSlug}?lang=${language}`);
+        const data = await response.json();
+        if (data.success) {
+          setBlog(data.blog);
+        }
+      } catch (error) {
+        console.error('Failed to fetch blog:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlog();
+  }, [blogSlug, language]);
+
+  // Format date
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString(language === 'ar' ? 'ar-SA' : 'en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  };
+
   const handleSubmitComment = (e: React.FormEvent) => {
     e.preventDefault();
     if (newComment.trim() && userName.trim()) {
@@ -108,6 +107,32 @@ export default function BlogDetail({ blogId }: { blogId: string }) {
       setWebsite("");
     }
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Not found state
+  if (!blog) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-slate-900 mb-4">Blog Post Not Found</h1>
+          <Link href="/blog" className="text-blue-600 hover:text-blue-700">
+            Back to Blog
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen">
@@ -140,7 +165,7 @@ export default function BlogDetail({ blogId }: { blogId: string }) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
                 </li>
-                <li className="text-slate-900 font-semibold line-clamp-1">{post.title}</li>
+                <li className="text-slate-900 font-semibold line-clamp-1">{blog.name}</li>
               </ol>
             </nav>
 
@@ -149,16 +174,21 @@ export default function BlogDetail({ blogId }: { blogId: string }) {
               {/* Main Content */}
               <div className="lg:col-span-2">
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4 sm:mb-6 leading-tight">
-                  {post.title}
+                  {blog.name}
                 </h1>
                 <div className="flex items-center gap-3 mb-6 text-sm sm:text-base text-slate-500">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  <span>{blog.author}</span>
+                  <span>•</span>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
-                  <span>{post.date}</span>
+                  <span>{formatDate(blog.publishedAt)}</span>
                 </div>
                 <p className="text-base sm:text-lg md:text-xl text-slate-600 leading-relaxed">
-                  {post.excerpt}
+                  {blog.shortDescription}
                 </p>
               </div>
 
@@ -166,8 +196,8 @@ export default function BlogDetail({ blogId }: { blogId: string }) {
               <aside className="lg:col-span-1">
                 <div className="relative h-64 sm:h-80 lg:h-96 w-full rounded-2xl overflow-hidden shadow-xl">
                   <Image
-                    src={`https://images.unsplash.com/photo-${imageId}?w=800&h=500&fit=crop&q=80`}
-                    alt={post.title}
+                    src={blog.imageUrl}
+                    alt={blog.name}
                     fill
                     className="object-cover"
                     sizes="(max-width: 1024px) 100vw, 33vw"
@@ -181,19 +211,45 @@ export default function BlogDetail({ blogId }: { blogId: string }) {
       </section>
 
       {/* ============================================
-          DESCRIPTION CONTENT
+          DETAILED BLOG SECTIONS
           ============================================ */}
-      <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="prose prose-lg max-w-none">
-              <p className="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed whitespace-pre-line">
-                {post.description || post.excerpt}
-              </p>
+      {blog.detailedBlogs && blog.detailedBlogs.length > 0 && (
+        <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto space-y-12">
+              {blog.detailedBlogs.map((section) => (
+                <div key={section.id} className="space-y-6">
+                  {/* Section Title */}
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900">
+                    {section.title}
+                  </h2>
+
+                  {/* Section Image (if exists) */}
+                  {section.imageUrl && (
+                    <div className="relative h-64 sm:h-80 md:h-96 w-full rounded-2xl overflow-hidden shadow-lg">
+                      <Image
+                        src={section.imageUrl}
+                        alt={section.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 896px"
+                        unoptimized
+                      />
+                    </div>
+                  )}
+
+                  {/* Section Description */}
+                  <div className="prose prose-lg max-w-none">
+                    <p className="text-base sm:text-lg text-slate-700 leading-relaxed whitespace-pre-line">
+                      {section.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ============================================
           COMMENTS SECTION
