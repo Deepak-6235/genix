@@ -42,13 +42,13 @@ export default function Hero() {
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-12 px-4">
             <a
               href="#contact"
-              className="bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl w-full sm:w-auto"
+              className="hero-gradient-btn text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg transition-all duration-500 shadow-lg hover:shadow-xl w-full sm:w-auto"
             >
               {t.ctaContact}
             </a>
             <a
               href="#services"
-              className="bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl w-full sm:w-auto"
+              className="hero-gradient-btn text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg transition-all duration-500 shadow-lg hover:shadow-xl w-full sm:w-auto"
             >
               {t.ctaServices}
             </a>
