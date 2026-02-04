@@ -71,17 +71,19 @@ export default function WhyChooseUs() {
                     {features.map((feature, index) => (
                         <div
                             key={index}
-                            className="bg-white rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-slate-100 flex flex-col h-full"
+                            className="bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 p-[2px] rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
                         >
-                            <div className={`w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br ${colorClasses[feature.color]} rounded-xl flex items-center justify-center text-white mb-4 sm:mb-6 shadow-lg flex-shrink-0`}>
-                                {feature.icon}
+                            <div className="bg-white rounded-2xl p-4 sm:p-6 md:p-8 h-full flex flex-col">
+                                <div className={`w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br ${colorClasses[feature.color]} rounded-xl flex items-center justify-center text-white mb-4 sm:mb-6 shadow-lg flex-shrink-0`}>
+                                    {feature.icon}
+                                </div>
+                                <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2 sm:mb-3 flex-shrink-0">
+                                    {feature.title}
+                                </h3>
+                                <p className="text-sm sm:text-base text-slate-600 leading-relaxed flex-grow">
+                                    {feature.description}
+                                </p>
                             </div>
-                            <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2 sm:mb-3 flex-shrink-0">
-                                {feature.title}
-                            </h3>
-                            <p className="text-sm sm:text-base text-slate-600 leading-relaxed flex-grow">
-                                {feature.description}
-                            </p>
                         </div>
                     ))}
                 </div>
