@@ -68,9 +68,30 @@ export async function GET(request: NextRequest) {
       },
     });
 
+    // Fetch service names for each submission
+    const submissionsWithServiceNames = await Promise.all(
+      submissions.map(async (submission) => {
+        // Find the service by slug and language
+        const service = await prisma.service.findFirst({
+          where: {
+            slug: submission.serviceSlug,
+            languageId: language.id,
+          },
+          select: {
+            name: true,
+          },
+        });
+
+        return {
+          ...submission,
+          serviceName: service?.name || null,
+        };
+      })
+    );
+
     return NextResponse.json({
       success: true,
-      submissions,
+      submissions: submissionsWithServiceNames,
     });
   } catch (error) {
     console.error('Get contact submissions error:', error);
