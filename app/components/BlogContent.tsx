@@ -2,102 +2,64 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useBlogContentTranslations } from "@/hooks/useTranslations";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 /**
  * Blog Content Component
  * 
- * This component displays a blog grid page with:
+ * This component displays the blog page with:
  * - A hero section with breadcrumb navigation
- * - Blog posts in a grid layout
+ * - Blog posts in a responsive grid layout
  * - Pagination controls
  * 
  * Features:
- * - Responsive grid layout
- * - Blog post cards with images, dates, and "Read more" links
- * - Pagination navigation
+ * - Responsive design for all screen sizes
+ * - Modern UI with hover effects
+ * - Blog post cards with images, dates, and excerpts
+ * - Local image support
  */
 
-// Blog posts data from the live website
-const blogPosts = [
-  {
-    id: 1,
-    title: "أفضل شركات تنظيف منازل في الرياض",
-    date: "أبريل 9, 2022",
-    author: "admin",
-    image: "/images/blog-1.jpg",
-    excerpt: "دليل شامل لأفضل شركات التنظيف في الرياض مع نصائح لاختيار الشركة المناسبة لاحتياجاتك.",
-  },
-  {
-    id: 2,
-    title: "شركة ركن النخيل لتصميم شلالات جدارية",
-    date: "أبريل 7, 2022",
-    author: "admin",
-    image: "/images/blog-2.jpg",
-    excerpt: "اكتشف كيف يمكن لشلالات جدارية أن تضيف لمسة جمالية فريدة لمنزلك أو مكتبك.",
-  },
-  {
-    id: 3,
-    title: "شركة تصليح مكيف سبلت بالرياض",
-    date: "أبريل 6, 2022",
-    author: "admin",
-    image: "/images/blog-3.jpg",
-    excerpt: "دليل شامل لصيانة وإصلاح مكيفات السبليت مع أهم النصائح للحفاظ على كفاءة المكيف.",
-  },
-  {
-    id: 4,
-    title: "اشهر شركات الدهانات بالرياض باحدث التقنيات المستخدمه",
-    date: "أبريل 4, 2022",
-    author: "admin",
-    image: "/images/blog-4.jpg",
-    excerpt: "تعرف على أحدث تقنيات الدهانات والديكورات المستخدمة في الرياض وأهم الاتجاهات الحديثة.",
-  },
-  {
-    id: 5,
-    title: "التعرف على كيفية تصليح مكيفات سبليت واكثر المشاكل شيوعاً",
-    date: "أبريل 4, 2022",
-    author: "admin",
-    image: "/images/blog-5.jpg",
-    excerpt: "دليل شامل لأكثر مشاكل مكيفات السبليت شيوعاً وكيفية إصلاحها بطرق احترافية.",
-  },
-  {
-    id: 6,
-    title: "شركة عزل الاسطح بالاسمنت الأبيض بأفضل الاسعار",
-    date: "أبريل 3, 2022",
-    author: "admin",
-    image: "/images/blog-6.jpg",
-    excerpt: "كل ما تحتاج معرفته عن عزل الأسطح بالأسمنت الأبيض وأهميته في حماية المباني.",
-  },
-];
-
 export default function BlogContent() {
+  const t = useBlogContentTranslations();
+  const { dir } = useLanguage();
+  
+  const blogPosts = t.posts.map((post, index) => ({
+    id: index + 1,
+    title: post.title,
+    date: post.date,
+    author: "admin",
+    image: `/images/blog-${index + 1}.jpg`,
+    excerpt: post.excerpt,
+  }));
   return (
     <div className="min-h-screen">
       {/* ============================================
           HERO SECTION WITH BREADCRUMB
           ============================================ */}
-      <section className="py-10 sm:py-28 md:py-32 lg:py-36">
+      <section className="py-4 sm:py-8 md:py-10 lg:py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             {/* Breadcrumb Navigation */}
-            <nav className="mb-6 sm:mb-8" aria-label="Breadcrumb">
-              <ol className="flex items-center gap-2 text-sm sm:text-base text-slate-600">
+            <nav className="mb-3 sm:mb-4" aria-label="Breadcrumb">
+              <ol className={`flex items-center gap-2 text-sm sm:text-base text-slate-600 justify-center ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}>
                 <li>
                   <Link href="/" className="hover:text-blue-600 transition-colors">
-                    الرئيسية
+                    {t.breadcrumbHome}
                   </Link>
                 </li>
                 <li>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
                 </li>
-                <li className="text-slate-900 font-semibold">المدونة</li>
+                <li className="text-slate-900 font-semibold">{t.breadcrumbBlog}</li>
               </ol>
             </nav>
 
             {/* Main Page Title */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 mb-6 sm:mb-8 leading-tight">
-              المدونة
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 mb-4 sm:mb-6 leading-tight">
+              {t.pageTitle}
             </h1>
           </div>
         </div>
@@ -106,7 +68,7 @@ export default function BlogContent() {
       {/* ============================================
           BLOG GRID SECTION
           ============================================ */}
-      <section className="pt-10 sm:pt-16 md:pt-20 pb-20 sm:pb-24 md:pb-28 lg:pb-32">
+      <section className="pt-6 sm:pt-10 md:pt-12 pb-12 sm:pb-16 md:pb-20 lg:pb-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             {/* Blog Posts Grid */}
@@ -114,7 +76,7 @@ export default function BlogContent() {
               {blogPosts.map((post) => (
                 <article
                   key={post.id}
-                  className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group"
+                  className="group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
                 >
                   {/* Blog Image */}
                   <div className="relative h-48 sm:h-56 w-full overflow-hidden">
@@ -124,20 +86,25 @@ export default function BlogContent() {
                       fill
                       className="object-cover group-hover:scale-110 transition-transform duration-300"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      unoptimized
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
 
                   {/* Content */}
-                  <div className="p-6 sm:p-8">
+                  <div className="p-6 sm:p-8 md:p-10">
                     {/* Date and Author */}
                     <div className="flex items-center gap-3 mb-4 text-sm text-slate-500">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
                       <span>{post.date}</span>
                       <span>•</span>
                       <span>{post.author}</span>
                     </div>
 
                     {/* Title */}
-                    <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3 sm:mb-4 group-hover:text-blue-600 transition-colors leading-tight">
+                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 mb-3 sm:mb-4 group-hover:text-blue-600 transition-colors leading-tight">
                       {post.title}
                     </h2>
 
@@ -148,11 +115,11 @@ export default function BlogContent() {
 
                     {/* Read More Link */}
                     <Link
-                      href="#"
-                      className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors text-sm sm:text-base"
+                      href={`/blog/${post.id}`}
+                      className={`inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors group/link text-sm sm:text-base ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
                     >
-                      اقرأ المزيد
-                      <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <span>{t.readMore}</span>
+                      <svg className={`w-4 h-4 transition-transform ${dir === 'rtl' ? 'group-hover/link:-translate-x-1 rotate-180' : 'group-hover/link:translate-x-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                       </svg>
                     </Link>
@@ -167,29 +134,33 @@ export default function BlogContent() {
             <div className="flex justify-center items-center gap-2 sm:gap-3">
               {/* Previous Button */}
               <button
-                className="px-4 py-2 sm:px-5 sm:py-2.5 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white rounded-2xl font-semibold hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled
+                aria-label={dir === 'rtl' ? 'Previous Page' : 'Previous Page'}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </button>
 
               {/* Page Numbers */}
-              <button className="px-4 py-2 sm:px-5 sm:py-2.5 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+              <button className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white rounded-2xl font-semibold hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg">
                 1
               </button>
-              <button className="px-4 py-2 sm:px-5 sm:py-2.5 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors">
+              <button className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white rounded-2xl font-semibold hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg">
                 2
               </button>
               <span className="px-2 text-slate-500">…</span>
-              <button className="px-4 py-2 sm:px-5 sm:py-2.5 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors">
+              <button className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white rounded-2xl font-semibold hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg">
                 6
               </button>
 
               {/* Next Button */}
-              <button className="px-4 py-2 sm:px-5 sm:py-2.5 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <button 
+                className="px-4 py-2 sm:px-5 sm:py-2.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white rounded-2xl font-semibold hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg"
+                aria-label={dir === 'rtl' ? 'Next Page' : 'Next Page'}
+              >
+                <svg className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>

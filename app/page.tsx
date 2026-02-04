@@ -3,6 +3,7 @@
 import TopBar from "./components/TopBar";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
+import Statistics from "./components/Statistics";
 import AboutUs from "./components/AboutUs";
 import Services from "./components/Services";
 import WhyChooseUs from "./components/WhyChooseUs";
@@ -16,14 +17,11 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useServices } from "@/hooks/useServices";
 
 export default function HomePage() {
-  const { language, dir } = useLanguage();
-  const { services, loading } = useServices();
-
   return (
     <div className="min-h-screen bg-white">
-      <TopBar />
       <Header />
       <Hero />
+      <Statistics variant="dark" />
       <AboutUs />
       <Services />
       <WhyChooseUs />

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useServicesContentTranslations } from "@/hooks/useTranslations";
 
 /**
  * Services Content Component
@@ -17,11 +18,10 @@ import Link from "next/link";
  * - Service cards with icons and images
  */
 
-const services = [
+const serviceConfigs = [
   {
     id: 1,
-    title: "مكافحة الحشرات",
-    description: "نقدم خدمات ابادة الحشرات في الرياض بأعلى مستويات الجودة والفعالية.",
+    key: "pestControl" as const,
     href: "/services/pest-control",
     icon: (
       <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -35,8 +35,7 @@ const services = [
   },
   {
     id: 2,
-    title: "تعقيم ضد الفيروسات",
-    description: "خلال خدمة التطهير والتنظيف لدينا، نمنع انتشار فيروس كورونا",
+    key: "disinfection" as const,
     href: "/services/disinfection-against-viruses",
     icon: (
       <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -50,8 +49,7 @@ const services = [
   },
   {
     id: 3,
-    title: "دهانات وديكورات",
-    description: "دائمًا في أيدي أفضل المحترفين.",
+    key: "paints" as const,
     href: "/services/paints-and-decorations",
     icon: (
       <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -60,13 +58,11 @@ const services = [
     ),
     color: "purple",
     imageId: "1581578731548-c64695cc6952",
-    useLocalImage: true,
-    localImagePath: "/images/service-3.jpg",
+    useLocalImage: false,
   },
   {
     id: 4,
-    title: "صيانة المكيفات",
-    description: "ركن النخيل متخصصة في تركيب وإصلاح وصيانة أجهزة تكييف الهواء والتبريد المنزلية والصناعية والمكتبية",
+    key: "acMaintenance" as const,
     href: "/services/air-conditioner-maintenance",
     icon: (
       <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,8 +76,7 @@ const services = [
   },
   {
     id: 5,
-    title: "تصميم وانشاء الشلالات والنوافير",
-    description: "تصميم وإنشاء الشلالات والنوافير في الرياض، تجتمع الخبرة والتكنولوجيا معًا لإنشاء نوافير تدهش وتثير الإثارة",
+    key: "waterfalls" as const,
     href: "/services/waterfalls-and-fountains",
     icon: (
       <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,8 +90,7 @@ const services = [
   },
   {
     id: 6,
-    title: "إنشاء وصيانة المسابح",
-    description: "توفير خدمة صيانة وتنظيف شاملة للمسبح على مدار العام تشمل الصيانة والإنشاء والمشورة",
+    key: "pools" as const,
     href: "/services/swimming-pools-construction-maintenance",
     icon: (
       <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -110,8 +104,7 @@ const services = [
   },
   {
     id: 7,
-    title: "الترميم الداخلي والخارجي",
-    description: "أفضل شركة ترميم منازل وفلل بالرياض نقوم بالترميم الداخلي والخارجي للمنزل بجودة وكفاءة عالية",
+    key: "restoration" as const,
     href: "/services/interior-exterior-restoration",
     icon: (
       <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -136,12 +129,20 @@ const colorClasses: { [key: string]: string } = {
 };
 
 export default function ServicesContent() {
+  const t = useServicesContentTranslations();
+  
+  const services = serviceConfigs.map(config => ({
+    ...config,
+    title: t.services[config.key].title,
+    description: t.services[config.key].description,
+  }));
+
   return (
     <div className="min-h-screen">
       {/* ============================================
           HERO SECTION WITH BREADCRUMB
           ============================================ */}
-      <section className="py-8 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-b from-blue-50 to-white">
+      <section className="py-6 sm:py-10 md:py-12 lg:py-14 bg-gradient-to-b from-blue-50 to-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             {/* Breadcrumb Navigation */}
@@ -149,7 +150,7 @@ export default function ServicesContent() {
               <ol className="flex items-center gap-2 text-sm sm:text-base text-slate-600">
                 <li>
                   <Link href="/" className="hover:text-blue-600 transition-colors">
-                    الرئيسية
+                    {t.breadcrumbHome}
                   </Link>
                 </li>
                 <li>
@@ -157,17 +158,17 @@ export default function ServicesContent() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
                 </li>
-                <li className="text-slate-900 font-semibold">الخدمات</li>
+                <li className="text-slate-900 font-semibold">{t.breadcrumbServices}</li>
               </ol>
             </nav>
 
             {/* Main Page Title */}
             <div className="text-center">
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 mb-4 sm:mb-6 leading-tight">
-                الخدمات
+                {t.pageTitle}
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
-                نقدم مجموعة شاملة من الخدمات عالية الجودة لتلبية جميع احتياجاتك
+                {t.pageSubtitle}
               </p>
             </div>
           </div>
@@ -177,7 +178,7 @@ export default function ServicesContent() {
       {/* ============================================
           SERVICES GRID SECTION
           ============================================ */}
-      <section className="py-12 sm:py-16 md:py-20 lg:py-24">
+      <section className="py-8 sm:py-10 md:py-12 lg:py-14">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
@@ -196,10 +197,6 @@ export default function ServicesContent() {
                       unoptimized
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    {/* Icon Overlay */}
-                    <div className={`absolute top-4 right-4 w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-white/90 backdrop-blur-sm bg-gradient-to-br ${colorClasses[service.color]} rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                      {service.icon}
-                    </div>
                   </div>
                   
                   <div className="p-6 sm:p-8 md:p-10">
@@ -218,7 +215,7 @@ export default function ServicesContent() {
                       href={service.href}
                       className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors group"
                     >
-                      <span>اقرأ المزيد</span>
+                      <span>{t.readMore}</span>
                       <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                       </svg>
@@ -234,128 +231,57 @@ export default function ServicesContent() {
       {/* ============================================
           REVIEWS SECTION
           ============================================ */}
-      <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-slate-50">
+      <section className="py-8 sm:py-10 md:py-12 lg:py-14 bg-slate-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             {/* Section Header */}
             <div className="text-center mb-12 sm:mb-16 md:mb-20">
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
-                أفضل مراجعة
+                {t.reviews.title}
               </h2>
               <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto px-4">
-                نحن سعداء للغاية للحصول على مراجعة جيدة. نحن نقدر التجريب وإصلاح الرسالة والحوافز الذكية.
+                {t.reviews.subtitle}
               </p>
             </div>
 
             {/* Reviews Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-              {/* Review 1 - سعد */}
-              <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-slate-100 hover:shadow-xl transition-all duration-300">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <svg
-                      key={i}
-                      className="w-5 h-5 text-yellow-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-                <p className="text-slate-700 mb-6 leading-relaxed text-base sm:text-lg">
-                  انا جربتهم بصراحة ممتازين جدا جدا ناس فعلا مدربين ونظافة و أمانة ويكفى انهم تابع لشركة معروف عنوانها بجد شكرا
-                </p>
-                <div className="flex items-center gap-4 pt-6 border-t border-slate-200">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                    س
+              {t.reviews.reviews.map((review, index) => {
+                const colors = [
+                  "from-blue-500 to-cyan-500",
+                  "from-emerald-500 to-emerald-600",
+                  "from-purple-500 to-purple-600",
+                  "from-orange-500 to-orange-600",
+                ];
+                const initials = review.name.charAt(0);
+                return (
+                  <div key={index} className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-slate-100 hover:shadow-xl transition-all duration-300">
+                    <div className="flex gap-1 mb-4">
+                      {[...Array(5)].map((_, i) => (
+                        <svg
+                          key={i}
+                          className="w-5 h-5 text-yellow-400"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                      ))}
+                    </div>
+                    <p className="text-slate-700 mb-6 leading-relaxed text-base sm:text-lg">
+                      {review.text}
+                    </p>
+                    <div className="flex items-center gap-4 pt-6 border-t border-slate-200">
+                      <div className={`w-12 h-12 bg-gradient-to-br ${colors[index % colors.length]} rounded-full flex items-center justify-center text-white font-bold text-lg`}>
+                        {initials}
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-slate-900 text-lg">{review.name}</h4>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-bold text-slate-900 text-lg">سعد</h4>
-                  </div>
-                </div>
-              </div>
-
-              {/* Review 2 - سالم */}
-              <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-slate-100 hover:shadow-xl transition-all duration-300">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <svg
-                      key={i}
-                      className="w-5 h-5 text-yellow-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-                <p className="text-slate-700 mb-6 leading-relaxed text-base sm:text-lg">
-                  انا بشكركم جدا علي مستوي الخدمه في تنظيف المفروشات وكمان الالتزام بالمواعيد والاحترام في التعامل .. بجد حاجه فوق الممتاز وان شاء الله مش هتكون اخر مره ليا ولكل عيلتي .
-                </p>
-                <div className="flex items-center gap-4 pt-6 border-t border-slate-200">
-                  <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                    س
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-slate-900 text-lg">سالم</h4>
-                  </div>
-                </div>
-              </div>
-
-              {/* Review 3 - علي */}
-              <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-slate-100 hover:shadow-xl transition-all duration-300">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <svg
-                      key={i}
-                      className="w-5 h-5 text-yellow-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-                <p className="text-slate-700 mb-6 leading-relaxed text-base sm:text-lg">
-                  لكم منى جزيل اﻻحترام والتقدير لمجهوداتكم 👏👏👏👏
-                </p>
-                <div className="flex items-center gap-4 pt-6 border-t border-slate-200">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                    ع
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-slate-900 text-lg">علي</h4>
-                  </div>
-                </div>
-              </div>
-
-              {/* Review 4 - صالح */}
-              <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-slate-100 hover:shadow-xl transition-all duration-300">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <svg
-                      key={i}
-                      className="w-5 h-5 text-yellow-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-                <p className="text-slate-700 mb-6 leading-relaxed text-base sm:text-lg">
-                  انا طلبت منهم خدمة فنى تكييف وجه حد محترم جدا وهما محترمين جدا وبيتابعوا معاكى
-                </p>
-                <div className="flex items-center gap-4 pt-6 border-t border-slate-200">
-                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                    ص
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-slate-900 text-lg">صالح</h4>
-                  </div>
-                </div>
-              </div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -364,20 +290,20 @@ export default function ServicesContent() {
       {/* ============================================
           CTA SECTION
           ============================================ */}
-      <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-r from-blue-600 to-cyan-500">
+      <section className="py-8 sm:py-10 md:py-12 lg:py-14 bg-gradient-to-r from-blue-600 to-cyan-500">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center text-white">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">
-              هل تحتاج إلى مساعدة في اختيار الخدمة المناسبة؟
+              {t.cta.title}
             </h2>
             <p className="text-base sm:text-lg md:text-xl leading-relaxed mb-8 max-w-2xl mx-auto">
-              يمكنك إرسال رسالة على الواتساب واستقبال عرض سعر مخصص لك
+              {t.cta.subtitle}
             </p>
             <Link
               href="/contact"
-              className="inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="inline-block bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
             >
-              <span suppressHydrationWarning>اتصل بنا الآن</span>
+              <span suppressHydrationWarning>{t.cta.button}</span>
             </Link>
           </div>
         </div>

@@ -1,41 +1,62 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useHeaderTranslations } from "@/hooks/useTranslations";
+import { useLanguage } from "@/contexts/LanguageContext";
+import iconImage from "../icon.png";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const t = useHeaderTranslations();
+  const { dir } = useLanguage();
 
   const services = [
-    { label: "مكافحة الحشرات", href: "/services/pest-control" },
-    { label: "تعقيم ضد الفيروسات", href: "/services/disinfection-against-viruses" },
-    { label: "دهانات وديكورات", href: "/services/paints-and-decorations" },
-    { label: "صيانة المكيفات", href: "/services/air-conditioner-maintenance" },
-    { label: "تصميم وإنشاء الشلالات والنوافير", href: "/services/waterfalls-and-fountains" },
-    { label: "إنشاء وصيانة المسابح", href: "/services/swimming-pools-construction-maintenance" },
-    { label: "الترميم الداخلي والخارجي", href: "/services/interior-exterior-restoration" },
+    { label: t.services.pestControl, href: "/services/pest-control" },
+    { label: t.services.disinfection, href: "/services/disinfection-against-viruses" },
+    { label: t.services.paints, href: "/services/paints-and-decorations" },
+    { label: t.services.acMaintenance, href: "/services/air-conditioner-maintenance" },
+    { label: t.services.waterfalls, href: "/services/waterfalls-and-fountains" },
+    { label: t.services.pools, href: "/services/swimming-pools-construction-maintenance" },
+    { label: t.services.restoration, href: "/services/interior-exterior-restoration" },
   ];
 
   const navItems = [
-    { label: "الرئيسية", href: "#home" },
-    { label: "من نحن", href: "/about-us" },
-    { label: "الخدمات", href: "/services", hasDropdown: true },
-    { label: "اسئلة شائعة", href: "/faq" },
-    { label: "المدونة", href: "/blog" },
-    { label: "اتصل بنا", href: "/contact" },
+    { label: t.navItems.home, href: "/" },
+    { label: t.navItems.about, href: "/about-us" },
+    { label: t.navItems.services, href: "/services", hasDropdown: true },
+    { label: t.navItems.faq, href: "/faq" },
+    { label: t.navItems.blog, href: "/blog" },
+    { label: t.navItems.contact, href: "/contact" },
   ];
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-slate-100">
-      <nav className="container mx-auto px-4 sm:px-6 py-3 sm:py-4" suppressHydrationWarning>
+      <nav className="container mx-auto px-4 sm:px-6 py-2 sm:py-3" suppressHydrationWarning>
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent" suppressHydrationWarning>
-            ركن النخيل
-          </div>
+          <a href="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity">
+            <Image
+              src={iconImage}
+              alt={t.logo}
+              width={48}
+              height={48}
+              className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain"
+              priority
+            />
+            <span className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent" suppressHydrationWarning>
+              {t.logo}
+            </span>
+          </a>
 
           {/* Desktop Navigation */}
           <ul className="hidden lg:flex items-center gap-4 xl:gap-6">
+            {/* Language Switcher */}
+            <li>
+              <LanguageSwitcher />
+            </li>
             {navItems.map((item) => (
               <li key={item.href} className="relative group">
                 {item.hasDropdown ? (
@@ -65,18 +86,20 @@ export default function Header() {
                       </svg>
                     </a>
                     {isServicesOpen && (
-                      <div className="absolute top-full right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-slate-200 py-2">
-                        {services.map((service) => (
-                          <a
-                            key={service.label}
-                            href={service.href}
-                            className="block px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition-colors text-sm"
-                            onClick={() => setIsServicesOpen(false)}
-                            suppressHydrationWarning
-                          >
-                            {service.label}
-                          </a>
-                        ))}
+                      <div className={`absolute top-full pt-2 w-64 ${dir === 'rtl' ? 'right-0' : 'left-0'}`}>
+                        <div className="bg-white rounded-xl shadow-xl border border-slate-200 py-2">
+                          {services.map((service) => (
+                            <a
+                              key={service.label}
+                              href={service.href}
+                              className="block px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition-colors text-sm"
+                              onClick={() => setIsServicesOpen(false)}
+                              suppressHydrationWarning
+                            >
+                              {service.label}
+                            </a>
+                          ))}
+                        </div>
                       </div>
                     )}
                   </div>
@@ -87,19 +110,23 @@ export default function Header() {
                     suppressHydrationWarning
                   >
                     {item.label}
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></span>
+                    <span className={`absolute bottom-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300 ${dir === 'rtl' ? 'right-0' : 'left-0'}`}></span>
                   </a>
                 )}
               </li>
             ))}
           </ul>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
-          >
+          {/* Language Switcher & Mobile Menu Button */}
+          <div className="flex items-center gap-3">
+            <div className="lg:hidden">
+              <LanguageSwitcher />
+            </div>
+            <button
+              className="lg:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
+            >
             <svg
               className="w-6 h-6 text-slate-700"
               fill="none"
@@ -123,6 +150,7 @@ export default function Header() {
               )}
             </svg>
           </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
@@ -134,7 +162,7 @@ export default function Header() {
                   <div>
                     <button
                       onClick={() => setIsServicesOpen(!isServicesOpen)}
-                      className="w-full text-right text-slate-700 hover:text-blue-600 hover:bg-slate-50 font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-between"
+                      className={`w-full text-slate-700 hover:text-blue-600 hover:bg-slate-50 font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-between ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
                       suppressHydrationWarning
                     >
                       {item.label}
@@ -153,7 +181,7 @@ export default function Header() {
                       </svg>
                     </button>
                     {isServicesOpen && (
-                      <ul className="mr-4 mt-2 space-y-1">
+                      <ul className={`mt-2 space-y-1 ${dir === 'rtl' ? 'mr-4' : 'ml-4'}`}>
                         {services.map((service) => (
                           <li key={service.label}>
                             <a
