@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useBlogContentTranslations } from "@/hooks/useTranslations";
 import { useLanguage } from "@/contexts/LanguageContext";
-import Statistics from "./Statistics";
 
 /**
  * Blog Content Component
@@ -67,11 +66,6 @@ export default function BlogContent() {
       </section>
 
       {/* ============================================
-          STATISTICS SECTION
-          ============================================ */}
-      <Statistics variant="dark" className="py-8 sm:py-12 md:py-16" />
-
-      {/* ============================================
           BLOG GRID SECTION
           ============================================ */}
       <section className="pt-6 sm:pt-10 md:pt-12 pb-12 sm:pb-16 md:pb-20 lg:pb-24">
@@ -121,7 +115,7 @@ export default function BlogContent() {
 
                     {/* Read More Link */}
                     <Link
-                      href="#"
+                      href={`/blog/${post.id}`}
                       className={`inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors group/link text-sm sm:text-base ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
                     >
                       <span>{t.readMore}</span>

@@ -77,7 +77,7 @@ export default function Blog() {
                 </p>
 
                 <Link
-                  href="#"
+                  href={`/blog/${post.id}`}
                   className={`inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
                 >
                   <span>{t.readMore}</span>
