@@ -30,13 +30,21 @@ interface AboutUsData {
   address: string | null;
 }
 
+interface Service {
+  id: string;
+  slug: string;
+  name: string;
+}
+
 export default function ContactContent() {
   const t = useContactContentTranslations();
   const contactT = useContactTranslations();
   const { language } = useLanguage();
 
   const [aboutUs, setAboutUs] = useState<AboutUsData | null>(null);
+  const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
+  const [servicesLoading, setServicesLoading] = useState(true);
 
   const phoneNumber = aboutUs?.phoneNumber1?.replace(/^0/, '') || "582010834";
   const whatsappMessage = encodeURIComponent(t.whatsappMessage);
@@ -72,12 +80,25 @@ export default function ContactContent() {
     fetchAboutUs();
   }, [language]);
 
-  const services = [
-    "House Cleaning",
-    "Indoor Cleaning",
-    "Plumbing Services",
-    "Bathroom Cleaning",
-  ];
+  // Fetch Services data
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        setServicesLoading(true);
+        const response = await fetch(`/api/services?lang=${language}`);
+        const data = await response.json();
+        if (data.success) {
+          setServices(data.services);
+        }
+      } catch (error) {
+        console.error('Failed to fetch services:', error);
+      } finally {
+        setServicesLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, [language]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -405,14 +426,15 @@ export default function ContactContent() {
                     name="service"
                     value={formData.service}
                     onChange={handleChange}
+                    disabled={servicesLoading}
                     className={`w-full px-4 py-3 rounded-lg border ${
                       errors.service ? "border-red-500" : "border-slate-300"
-                    } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 bg-white`}
+                    } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 bg-white max-h-60 overflow-y-auto disabled:opacity-50 disabled:cursor-not-allowed`}
                   >
-                    <option value="">{t.form.chooseServices}</option>
+                    <option value="">{servicesLoading ? 'Loading services...' : t.form.chooseServices}</option>
                     {services.map((service) => (
-                      <option key={service} value={service}>
-                        {service}
+                      <option key={service.id} value={service.name}>
+                        {service.name}
                       </option>
                     ))}
                   </select>
