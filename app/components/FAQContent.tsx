@@ -1,107 +1,45 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useFAQContentTranslations } from "@/hooks/useTranslations";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 /**
  * FAQ Content Component
- * 
+ *
  * This component displays a Frequently Asked Questions page with:
  * - A hero section with gradient background
  * - Expandable FAQ cards in a two-column layout
  * - A contact form section with contact information
- * 
+ *
  * Features:
  * - Accordion-style FAQ cards that expand/collapse on click
  * - Only one FAQ can be open at a time
  * - Contact form with validation
  * - Responsive design for all screen sizes
+ * - Dynamically fetches FAQs from database
+ * - Only displays FAQs that have answers
  */
 
-// FAQ data structure
-// Each FAQ item contains: id, question, answer, expanded state, and an icon
-const faqs = [
-  {
-    id: 1,
-    question: "What distinguishes Rakan Al Nakheel Paints and Decorations Company?",
-    answer: "Rukn Al Nakheel Company keeps up with the latest trends in paints and decorations to keep pace with modern times. We have specialists and technicians to treat uneven walls.",
-    expanded: true, // This FAQ will be open by default
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-      </svg>
-    ),
-  },
-  {
-    id: 2,
-    question: "What are the prices for interior and exterior restoration services?",
-    answer: "Our prices vary depending on the scope of work and materials used. Contact us for a customized quote based on your specific needs.",
-    expanded: false,
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    ),
-  },
-  {
-    id: 3,
-    question: "What are the means of communication with Rukn Al Nakheel Company for the construction and maintenance of swimming pools?",
-    answer: "You can contact us through phone, email, WhatsApp, or by filling out the contact form on our website. We are available 24/7 to assist you.",
-    expanded: false,
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-      </svg>
-    ),
-  },
-  {
-    id: 4,
-    question: "Why is Rukn Al Nakheel the best air conditioning maintenance company in Riyadh?",
-    answer: "We are authorized agents. Rukn Al Nakheel Company provides original spare parts and warranty, and we have 24-hour customer service throughout the week to respond. Our goal is to work hard for your comfort.",
-    expanded: true,
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    ),
-  },
-  {
-    id: 5,
-    question: "How does the antiviral sterilization service work at Rukan Al Nakheel Establishment?",
-    answer: "Our antiviral sterilization service uses European-level disinfectants that eliminate the coronavirus and are registered with the Ministry of Health. We disinfect both indoor and outdoor areas.",
-    expanded: false,
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-      </svg>
-    ),
-  },
-  {
-    id: 6,
-    question: "What are the advantages of Rukn Al Nakheel Establishment for the design and construction of waterfalls and fountains?",
-    answer: "We offer modern and contemporary fountain designs equipped with all the amenities needed. We design all types of waterfalls and place them anywhere the customer desires, with lighting installation inside waterfalls and fountains.",
-    expanded: false,
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-      </svg>
-    ),
-  },
-];
+interface FAQ {
+  id: string;
+  faqId: string;
+  question: string;
+  answer: string | null;
+  order: number;
+  isActive: boolean;
+}
 
 export default function FAQContent() {
   const t = useFAQContentTranslations();
-  
+  const { language } = useLanguage();
+
   // State Management
-  // Find the first FAQ with expanded: true to set initial open state
-  // This ensures only one FAQ is open on page load
-  const initialOpenIndex = faqs.findIndex(faq => faq.expanded) !== -1 ? faqs.findIndex(faq => faq.expanded) : null;
-  
-  // Tracks which FAQ card is currently open (by index)
-  // null means no FAQ is open
-  const [openIndex, setOpenIndex] = useState<number | null>(initialOpenIndex);
-  
+  const [faqs, setFaqs] = useState<FAQ[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
   // Form data state for the contact form
   const [formData, setFormData] = useState({
     firstName: "",
@@ -110,6 +48,30 @@ export default function FAQContent() {
     service: "",
     message: "",
   });
+
+  // Fetch FAQs from database
+  useEffect(() => {
+    const fetchFAQs = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/faqs?lang=${language}`);
+        const data = await response.json();
+        if (data.success) {
+          // Filter to only show FAQs that have answers
+          const faqsWithAnswers = data.faqs.filter(
+            (faq: FAQ) => faq.answer && faq.answer.trim() !== ''
+          );
+          setFaqs(faqsWithAnswers);
+        }
+      } catch (error) {
+        console.error('Failed to fetch FAQs:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFAQs();
+  }, [language]);
 
   /**
    * Toggle FAQ card open/closed state
@@ -151,6 +113,18 @@ export default function FAQContent() {
       [e.target.name]: e.target.value,
     });
   };
+
+  // Default icon for FAQs
+  const getDefaultIcon = () => (
+    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+  );
 
   // Split FAQs into two columns for better layout
   // Left column: FAQs at even indices (0, 2, 4...)
@@ -207,14 +181,35 @@ export default function FAQContent() {
             {/* ============================================
                 FAQ CARDS SECTION - Two Column Layout
                 ============================================ */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-10 mb-12 sm:mb-16 md:mb-20">
-              {/* Left Column - FAQs at even indices */}
-              <div className="flex flex-col gap-4 md:gap-6">
-                {leftColumnFAQs.map((faq, index) => {
-                  // Find the actual index in the original faqs array
-                  const actualIndex = faqs.findIndex(f => f.id === faq.id);
-                  // Check if this FAQ is currently open
-                  const isOpen = openIndex === actualIndex;
+            {loading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-10 mb-12 sm:mb-16 md:mb-20">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="animate-pulse rounded-2xl border border-slate-200 overflow-hidden">
+                    <div className="p-6 md:p-8">
+                      <div className="flex gap-4">
+                        <div className="w-12 h-12 bg-gray-200 rounded-xl"></div>
+                        <div className="flex-1">
+                          <div className="h-5 bg-gray-200 rounded w-3/4 mb-2"></div>
+                          <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : faqs.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-lg text-slate-600">No FAQs available at this time.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-10 mb-12 sm:mb-16 md:mb-20">
+                {/* Left Column - FAQs at even indices */}
+                <div className="flex flex-col gap-4 md:gap-6">
+                  {leftColumnFAQs.map((faq, index) => {
+                    // Find the actual index in the original faqs array
+                    const actualIndex = faqs.findIndex(f => f.id === faq.id);
+                    // Check if this FAQ is currently open
+                    const isOpen = openIndex === actualIndex;
                   
                   return (
                     <div
@@ -232,7 +227,7 @@ export default function FAQContent() {
                             ? "bg-blue-600 text-white" 
                             : "bg-slate-100 text-slate-600 group-hover:bg-blue-100 group-hover:text-blue-600"
                         }`}>
-                          {faq.icon}
+                          {getDefaultIcon()}
                         </div>
                         
                         {/* Question Text */}
@@ -274,80 +269,81 @@ export default function FAQContent() {
                         </div>
                       </div>
                     </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
 
-              {/* Right Column - FAQs at odd indices */}
-              <div className="flex flex-col gap-4 md:gap-6">
-                {rightColumnFAQs.map((faq, index) => {
-                  // Find the actual index in the original faqs array
-                  const actualIndex = faqs.findIndex(f => f.id === faq.id);
-                  // Check if this FAQ is currently open
-                  const isOpen = openIndex === actualIndex;
-                  
-                  return (
-                    <div
-                      key={faq.id}
-                      className="group rounded-2xl border border-slate-200 overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-                    >
-                      {/* FAQ Question Button - Clickable header */}
-                      <button
-                        onClick={() => toggleFAQ(actualIndex)}
-                        className="w-full px-6 py-6 md:px-8 md:py-7 flex items-start gap-4 text-left hover:bg-slate-50 transition-all duration-300"
-                      >
-                        {/* FAQ Icon - Changes color when open */}
-                        <div className={`flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                          isOpen 
-                            ? "bg-blue-600 text-white" 
-                            : "bg-slate-100 text-slate-600 group-hover:bg-blue-100 group-hover:text-blue-600"
-                        }`}>
-                          {faq.icon}
-                        </div>
-                        
-                        {/* Question Text */}
-                        <div className="flex-1 pt-1.5">
-                          <span className="text-base sm:text-lg font-bold text-slate-900 block leading-snug">
-                            {faq.question}
-                          </span>
-                        </div>
+                {/* Right Column - FAQs at odd indices */}
+                <div className="flex flex-col gap-4 md:gap-6">
+                  {rightColumnFAQs.map((faq, index) => {
+                    // Find the actual index in the original faqs array
+                    const actualIndex = faqs.findIndex(f => f.id === faq.id);
+                    // Check if this FAQ is currently open
+                    const isOpen = openIndex === actualIndex;
 
-                        {/* Chevron Icon - Rotates when FAQ is open */}
-                        <div className={`flex-shrink-0 pt-1.5 transition-all duration-300 ${
-                          isOpen ? "text-blue-600" : "text-slate-400"
-                        }`}>
-                          <svg
-                            className={`w-6 h-6 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-                          </svg>
-                        </div>
-                      </button>
-
-                      {/* FAQ Answer - Expandable content area */}
-                      {/* Uses max-h-[2000px] to allow full content expansion without height constraints */}
+                    return (
                       <div
-                        className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                          isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
-                        }`}
+                        key={faq.id}
+                        className="group rounded-2xl border border-slate-200 overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                       >
-                        <div className="px-6 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6 ml-16 md:ml-20">
-                          {/* Answer text with left border accent */}
-                          <div className="pl-4 md:pl-5 border-l-4 border-blue-200">
-                            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-                              {faq.answer}
-                            </p>
+                        {/* FAQ Question Button - Clickable header */}
+                        <button
+                          onClick={() => toggleFAQ(actualIndex)}
+                          className="w-full px-6 py-6 md:px-8 md:py-7 flex items-start gap-4 text-left hover:bg-slate-50 transition-all duration-300"
+                        >
+                          {/* FAQ Icon - Changes color when open */}
+                          <div className={`flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                            isOpen
+                              ? "bg-blue-600 text-white"
+                              : "bg-slate-100 text-slate-600 group-hover:bg-blue-100 group-hover:text-blue-600"
+                          }`}>
+                            {getDefaultIcon()}
+                          </div>
+
+                          {/* Question Text */}
+                          <div className="flex-1 pt-1.5">
+                            <span className="text-base sm:text-lg font-bold text-slate-900 block leading-snug">
+                              {faq.question}
+                            </span>
+                          </div>
+
+                          {/* Chevron Icon - Rotates when FAQ is open */}
+                          <div className={`flex-shrink-0 pt-1.5 transition-all duration-300 ${
+                            isOpen ? "text-blue-600" : "text-slate-400"
+                          }`}>
+                            <svg
+                              className={`w-6 h-6 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </div>
+                        </button>
+
+                        {/* FAQ Answer - Expandable content area */}
+                        {/* Uses max-h-[2000px] to allow full content expansion without height constraints */}
+                        <div
+                          className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                            isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
+                          }`}
+                        >
+                          <div className="px-6 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6 ml-16 md:ml-20">
+                            {/* Answer text with left border accent */}
+                            <div className="pl-4 md:pl-5 border-l-4 border-blue-200">
+                              <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+                                {faq.answer}
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* ============================================
                 CONTACT FORM SECTION
