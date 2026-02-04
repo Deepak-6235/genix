@@ -51,7 +51,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-slate-100">
       <nav className="container mx-auto px-4 sm:px-6 py-2 sm:py-3" suppressHydrationWarning>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center gap-6 lg:gap-10">
           {/* Logo */}
           <a href="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity">
             <Image
@@ -62,9 +62,7 @@ export default function Header() {
               className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain"
               priority
             />
-            <span className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 bg-clip-text text-transparent" suppressHydrationWarning>
-              {t.logo}
-            </span>
+
           </a>
 
           {/* Desktop Navigation */}
@@ -135,7 +133,7 @@ export default function Header() {
           </ul>
 
           {/* Language Switcher & Mobile Menu Button */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 ms-auto">
             <div className="lg:hidden">
               <LanguageSwitcher />
             </div>

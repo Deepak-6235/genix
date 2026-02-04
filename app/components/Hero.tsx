@@ -6,18 +6,12 @@ import { useHeroTranslations } from "@/hooks/useTranslations";
 export default function Hero() {
   const t = useHeroTranslations();
   return (
-    <section id="home" className="relative bg-gradient-to-b from-slate-50 to-white py-10 sm:py-16 md:py-24 overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="https://images.unsplash.com/photo-1564013799919-ab608027fe79?w=1920&h=1080&fit=crop&q=80"
-          alt="Hero Background"
-          fill
-          className="object-cover opacity-10"
-          priority
-          unoptimized
-        />
-      </div>
+    <section
+      id="home"
+      className="relative bg-cover bg-center bg-no-repeat min-h-[calc(100vh-5rem)] flex items-center py-20 overflow-hidden"
+      style={{ backgroundImage: "url('/images/hero.jpg')" }}
+    >
+
 
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">

@@ -135,17 +135,18 @@ export default function Services() {
                         {service.shortDescription}
                       </p>
 
-                    {/* Learn More Button */}
-                    <div
-                      className={`text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors ${dir === 'rtl' ? '' : ''}`}
-                    >
-                      {t.cta} →
+                      {/* Learn More Button */}
+                      <div
+                        className={`text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors ${dir === 'rtl' ? '' : ''}`}
+                      >
+                        {t.cta} →
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+                  </Link>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
         )}
       </div>
     </section>

@@ -184,17 +184,18 @@ export default function Blog() {
                         {blog.shortDescription}
                       </p>
 
-                    <Link
-                      href={`/blog/${blog.slug}`}
-                      className={`text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors ${dir === 'rtl' ? '' : ''}`}
-                    >
-                      {t.readMore} →
-                    </Link>
-                  </div>
-                </article>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+                      <Link
+                        href={`/blog/${blog.slug}`}
+                        className={`text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors ${dir === 'rtl' ? '' : ''}`}
+                      >
+                        {t.readMore} →
+                      </Link>
+                    </div>
+                  </article>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
         )}
 
         <div className="text-center mt-6 sm:mt-8 px-4">
