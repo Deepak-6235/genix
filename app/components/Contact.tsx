@@ -74,7 +74,7 @@ export default function Contact() {
               {/* Phone Card */}
               {(aboutUs?.phoneNumber1 || aboutUs?.phoneNumber2) && (
                 <div className="bg-white rounded-xl p-4 sm:p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100">
-                  <div className="flex items-center mb-4">
+                  <div className="flex items-center gap-4 mb-4">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-100 rounded-lg flex items-center justify-center text-emerald-600">
                       <svg
                         className="w-5 h-5 sm:w-6 sm:h-6"
@@ -90,7 +90,7 @@ export default function Contact() {
                         />
                       </svg>
                     </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mr-3 sm:mr-4">
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-900">
                       {t.phone}
                     </h3>
                   </div>
@@ -118,7 +118,7 @@ export default function Contact() {
               {/* Email Card */}
               {aboutUs?.email && (
                 <div className="bg-white rounded-xl p-4 sm:p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100">
-                  <div className="flex items-center mb-4">
+                  <div className="flex items-center gap-4 mb-4">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
                       <svg
                         className="w-5 h-5 sm:w-6 sm:h-6"
@@ -134,7 +134,7 @@ export default function Contact() {
                         />
                       </svg>
                     </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mr-3 sm:mr-4">
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-900">
                       {t.email}
                     </h3>
                   </div>
@@ -150,7 +150,7 @@ export default function Contact() {
               {/* Location Card */}
               {aboutUs?.address && (
                 <div className="bg-white rounded-xl p-4 sm:p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100">
-                  <div className="flex items-center mb-4">
+                  <div className="flex items-center gap-4 mb-4">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600">
                       <svg
                         className="w-5 h-5 sm:w-6 sm:h-6"
@@ -172,7 +172,7 @@ export default function Contact() {
                         />
                       </svg>
                     </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mr-3 sm:mr-4">
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-900">
                       {t.address}
                     </h3>
                   </div>
@@ -185,7 +185,7 @@ export default function Contact() {
               {/* Hours Card */}
               {aboutUs?.workingHours && (
                 <div className="bg-white rounded-xl p-4 sm:p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100">
-                  <div className="flex items-center mb-4">
+                  <div className="flex items-center gap-4 mb-4">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600">
                       <svg
                         className="w-5 h-5 sm:w-6 sm:h-6"
@@ -201,7 +201,7 @@ export default function Contact() {
                         />
                       </svg>
                     </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mr-3 sm:mr-4">
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-900">
                       {t.hours}
                     </h3>
                   </div>
@@ -223,7 +223,7 @@ export default function Contact() {
                 {t.offersDescription}
               </p>
             </div>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a
                 href={whatsappLink}
@@ -240,7 +240,7 @@ export default function Contact() {
                 </svg>
                 {t.whatsappButton}
               </a>
-              
+
               <Link
                 href="/contact"
                 className="inline-flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl w-full sm:w-auto justify-center"

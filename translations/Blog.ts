@@ -57,8 +57,8 @@ export const blogTranslations: Record<LanguageCode, {
     ],
   },
   en: {
-    title: 'Home Articles That Matter to You',
-    subtitle: 'Useful tips and information about maintenance and home improvements',
+    title: 'Blog',
+    subtitle: 'Expert insights, practical tips, and valuable information to help you make informed decisions',
     readMore: 'Read More',
     viewMore: 'View More',
     posts: [
