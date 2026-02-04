@@ -30,7 +30,6 @@ export default function AdminLanguageSwitcher() {
         aria-label="Select admin language"
         title="Change admin panel language"
       >
-        <span className="text-base">{languages[adminLanguage].flag}</span>
         <span className="text-sm font-medium text-gray-700 max-w-[80px] truncate">
           {languages[adminLanguage].nativeName}
         </span>
@@ -54,11 +53,9 @@ export default function AdminLanguageSwitcher() {
                   setAdminLanguage(lang);
                   setIsOpen(false);
                 }}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-100 transition text-left ${
-                  adminLanguage === lang ? 'bg-accent-purple-50 text-accent-purple-700' : 'text-gray-700'
-                }`}
+                className={`w-full flex items-center px-4 py-2.5 hover:bg-gray-100 transition text-left ${adminLanguage === lang ? 'bg-accent-purple-50 text-accent-purple-700' : 'text-gray-700'
+                  }`}
               >
-                <span className="text-lg">{languages[lang].flag}</span>
                 <div className="flex-1">
                   <div className="font-medium text-sm">{languages[lang].nativeName}</div>
                   <div className="text-xs text-gray-500">{languages[lang].name}</div>
