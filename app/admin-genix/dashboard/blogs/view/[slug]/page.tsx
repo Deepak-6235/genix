@@ -390,7 +390,7 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
   if (loading) {
     return (
       <div className="text-center py-12">
-        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-accent-purple-600"></div>
         <p className="mt-4 text-gray-600">{t('loading.please')}</p>
       </div>
     );
@@ -402,7 +402,7 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
         <p className="text-gray-600">{t('blogs.noBlogs')}</p>
         <button
           onClick={() => router.push('/admin-genix/dashboard/blogs')}
-          className="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
+          className="mt-4 px-4 py-2 bg-accent-purple-600 text-white rounded-lg hover:bg-accent-purple-700 transition"
         >
           {t('button.back')}
         </button>
@@ -422,7 +422,7 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
       };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-accent-purple-50 to-white">
       {/* Hero Section with Breadcrumb */}
       <section className="py-8 sm:py-12 md:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -433,7 +433,7 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
                 <li>
                   <button
                     onClick={() => router.push('/admin-genix/dashboard')}
-                    className="hover:text-purple-600 transition-colors"
+                    className="hover:text-accent-purple-600 transition-colors"
                   >
                     {t('nav.dashboard')}
                   </button>
@@ -446,7 +446,7 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
                 <li>
                   <button
                     onClick={() => router.push('/admin-genix/dashboard/blogs')}
-                    className="hover:text-purple-600 transition-colors"
+                    className="hover:text-accent-purple-600 transition-colors"
                   >
                     {t('blogs.title')}
                   </button>
@@ -464,8 +464,8 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
 
             {/* Edit Mode Notification */}
             {isEditMode && (
-              <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <p className="text-sm text-blue-800">
+              <div className="mb-6 p-4 bg-primary-50 border border-primary-200 rounded-lg">
+                <p className="text-sm text-primary-800">
                   📝 {t('blogs.editingNotice')}
                 </p>
               </div>
@@ -473,8 +473,8 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
 
             {/* Error Message */}
             {error && (
-              <div className={`mb-6 p-4 rounded-lg ${error.includes(t('blogs.translating')) || error.includes(t('blogs.uploadingImages')) || error.includes(t('blogs.saving')) ? 'bg-blue-50 border border-blue-200' : 'bg-red-50 border border-red-200'}`}>
-                <p className={`text-sm ${error.includes(t('blogs.translating')) || error.includes(t('blogs.uploadingImages')) || error.includes(t('blogs.saving')) ? 'text-blue-800' : 'text-red-800'}`}>
+              <div className={`mb-6 p-4 rounded-lg ${error.includes(t('blogs.translating')) || error.includes(t('blogs.uploadingImages')) || error.includes(t('blogs.saving')) ? 'bg-primary-50 border border-primary-200' : 'bg-error-50 border border-error-200'}`}>
+                <p className={`text-sm ${error.includes(t('blogs.translating')) || error.includes(t('blogs.uploadingImages')) || error.includes(t('blogs.saving')) ? 'text-primary-800' : 'text-error-800'}`}>
                   {error}
                 </p>
               </div>
@@ -494,7 +494,7 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
                       setFormData({ ...formData, name: e.target.value });
                     }
                   }}
-                  className="w-full px-4 py-3 text-3xl font-bold border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-3 text-3xl font-bold border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-purple-500"
                   placeholder={t('blogs.name')}
                 />
               </div>
@@ -518,7 +518,7 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
                           setFormData({ ...formData, author: e.target.value });
                         }
                       }}
-                      className="px-3 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="px-3 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-accent-purple-500"
                       placeholder={t('blogs.author.field')}
                     />
                   </div>
@@ -529,7 +529,7 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
                       type="date"
                       value={formData.publishedAt}
                       onChange={(e) => setFormData({ ...formData, publishedAt: e.target.value })}
-                      className="px-3 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="px-3 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-accent-purple-500"
                     />
                   </div>
                   <span>•</span>
@@ -538,7 +538,7 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
                       type="checkbox"
                       checked={formData.isActive}
                       onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                      className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                      className="w-4 h-4 text-accent-purple-600 border-gray-300 rounded focus:ring-accent-purple-500"
                     />
                     <span>{t('blogs.active')}</span>
                   </label>
@@ -565,7 +565,7 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
                   <span>•</span>
                   <span
                     className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      blog.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                      blog.isActive ? 'bg-success-100 text-success-800' : 'bg-gray-100 text-gray-800'
                     }`}
                   >
                     {blog.isActive ? t('status.active') : t('status.inactive')}
@@ -591,7 +591,7 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 mb-4"
+                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-accent-purple-50 file:text-accent-purple-700 hover:file:bg-accent-purple-100 mb-4"
                 />
                 {imagePreview && (
                   <div className="rounded-2xl overflow-hidden shadow-lg">
@@ -629,13 +629,13 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
                     }
                   }}
                   rows={4}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-purple-500"
                   placeholder={t('blogs.shortDescription')}
                 />
               </div>
             ) : (
-              <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl p-6 sm:p-8 mb-8 sm:mb-12 border border-purple-200 shadow-sm">
-                <h2 className="text-xl sm:text-2xl font-bold text-purple-900 mb-4">{t('blogs.overview')}</h2>
+              <div className="bg-gradient-to-br from-accent-purple-50 to-primary-50 rounded-2xl p-6 sm:p-8 mb-8 sm:mb-12 border border-accent-purple-200 shadow-sm">
+                <h2 className="text-xl sm:text-2xl font-bold text-accent-purple-900 mb-4">{t('blogs.overview')}</h2>
                 <p className="text-base sm:text-lg text-gray-700 leading-relaxed">{displayContent.shortDescription}</p>
               </div>
             )}
@@ -649,7 +649,7 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
                 {isEditMode && (
                   <button
                     onClick={addSection}
-                    className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition text-sm font-medium"
+                    className="px-4 py-2 bg-accent-purple-600 text-white rounded-lg hover:bg-accent-purple-700 transition text-sm font-medium"
                   >
                     + {t('blogs.addSection')}
                   </button>
@@ -667,7 +667,7 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
                         <h3 className="text-lg font-bold text-gray-900">{t('blogs.section')} {index + 1}</h3>
                         <button
                           onClick={() => removeSection(index)}
-                          className="px-3 py-1 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition text-sm"
+                          className="px-3 py-1 bg-error-100 text-error-700 rounded-lg hover:bg-error-200 transition text-sm"
                         >
                           {t('blogs.remove')}
                         </button>
@@ -682,7 +682,7 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
                             type="file"
                             accept="image/*"
                             onChange={(e) => handleSectionImageChange(index, e)}
-                            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
+                            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-accent-purple-50 file:text-accent-purple-700 hover:file:bg-accent-purple-100"
                           />
                           {section.imagePreview && (
                             <img
@@ -705,7 +705,7 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
                                 updateSection(index, 'title', e.target.value);
                               }
                             }}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-purple-500"
                             placeholder={t('blogs.sectionTitle')}
                           />
                         </div>
@@ -722,7 +722,7 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
                               }
                             }}
                             rows={6}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-purple-500"
                             placeholder={t('blogs.sectionDescription')}
                           />
                         </div>
@@ -756,7 +756,7 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
 
                         <div className="p-6 sm:p-8">
                           <div className="flex items-start gap-4 mb-4">
-                            <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-lg">
+                            <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-accent-purple-600 to-primary-600 rounded-xl flex items-center justify-center text-white font-bold text-lg">
                               {index + 1}
                             </div>
                             <h3 className="flex-1 text-xl sm:text-2xl font-bold text-gray-900 leading-tight">
@@ -795,7 +795,7 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
                   <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="flex-1 min-w-[200px] px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl hover:from-purple-700 hover:to-blue-700 transition font-semibold shadow-lg disabled:opacity-50"
+                    className="flex-1 min-w-[200px] px-6 py-3 bg-gradient-to-r from-accent-purple-600 to-primary-600 text-white rounded-xl hover:from-accent-purple-700 hover:to-primary-700 transition font-semibold shadow-lg disabled:opacity-50"
                   >
                     {saving ? t('message.saving') : t('blogs.saveChanges')}
                   </button>
@@ -810,7 +810,7 @@ export default function BlogViewPage({ params }: { params: Promise<{ slug: strin
                   </button>
                   <button
                     onClick={() => setIsEditMode(true)}
-                    className="flex-1 min-w-[200px] px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl hover:from-purple-700 hover:to-blue-700 transition font-semibold shadow-lg"
+                    className="flex-1 min-w-[200px] px-6 py-3 bg-gradient-to-r from-accent-purple-600 to-primary-600 text-white rounded-xl hover:from-accent-purple-700 hover:to-primary-700 transition font-semibold shadow-lg"
                   >
                     {t('button.edit')}
                   </button>
@@ -917,7 +917,7 @@ function CommentsSection({
       confirmText: currentStatus ? t('comments.unapprove') : t('comments.approve'),
       confirmButtonClass: currentStatus
         ? 'bg-gray-600 hover:bg-gray-700'
-        : 'bg-green-600 hover:bg-green-700',
+        : 'bg-success-600 hover:bg-success-700',
       onConfirm: async () => {
         try {
           const response = await fetch(`/api/comments/${commentId}`, {
@@ -951,7 +951,7 @@ function CommentsSection({
       title: t('comments.delete'),
       message: t('comments.deleteConfirm'),
       confirmText: t('button.delete'),
-      confirmButtonClass: 'bg-red-600 hover:bg-red-700',
+      confirmButtonClass: 'bg-error-600 hover:bg-error-700',
       onConfirm: async () => {
         try {
           const response = await fetch(`/api/comments/${commentId}`, {
@@ -1016,7 +1016,7 @@ function CommentsSection({
       <section className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('comments.title')}</h2>
         <div className="text-center py-8">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-accent-purple-600"></div>
         </div>
       </section>
     );
@@ -1058,7 +1058,7 @@ function CommentsSection({
               className={`border rounded-xl p-6 ${
                 comment.isApproved
                   ? 'border-gray-200 bg-white'
-                  : 'border-yellow-200 bg-yellow-50'
+                  : 'border-warning-200 bg-warning-50'
               }`}
             >
               {editingCommentId === comment.id ? (
@@ -1072,7 +1072,7 @@ function CommentsSection({
                         setEditFormData({ ...editFormData, name: e.target.value })
                       }
                       placeholder={t('comments.name')}
-                      className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+                      className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-purple-500 outline-none"
                     />
                     <input
                       type="email"
@@ -1081,7 +1081,7 @@ function CommentsSection({
                         setEditFormData({ ...editFormData, email: e.target.value })
                       }
                       placeholder={t('comments.email')}
-                      className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+                      className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-purple-500 outline-none"
                     />
                   </div>
                   <input
@@ -1091,7 +1091,7 @@ function CommentsSection({
                       setEditFormData({ ...editFormData, website: e.target.value })
                     }
                     placeholder={t('comments.website')}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-purple-500 outline-none"
                   />
                   <textarea
                     value={editFormData.comment}
@@ -1100,12 +1100,12 @@ function CommentsSection({
                     }
                     placeholder={t('comments.comment')}
                     rows={4}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-purple-500 outline-none"
                   />
                   <div className="flex gap-3">
                     <button
                       onClick={() => handleUpdate(comment.id)}
-                      className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
+                      className="px-6 py-2 bg-accent-purple-600 text-white rounded-lg hover:bg-accent-purple-700 transition"
                     >
                       {t('comments.saveChanges')}
                     </button>
@@ -1132,7 +1132,7 @@ function CommentsSection({
                               href={comment.website}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-purple-600 hover:underline"
+                              className="text-accent-purple-600 hover:underline"
                             >
                               {comment.website}
                             </a>
@@ -1145,8 +1145,8 @@ function CommentsSection({
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold ${
                         comment.isApproved
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-yellow-100 text-yellow-700'
+                          ? 'bg-success-100 text-success-700'
+                          : 'bg-warning-100 text-warning-700'
                       }`}
                     >
                       {comment.isApproved ? t('comments.approved') : t('comments.pending')}
@@ -1161,20 +1161,20 @@ function CommentsSection({
                       className={`px-4 py-2 text-sm font-medium rounded-lg transition ${
                         comment.isApproved
                           ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                          : 'bg-green-100 text-green-700 hover:bg-green-200'
+                          : 'bg-success-100 text-success-700 hover:bg-success-200'
                       }`}
                     >
                       {comment.isApproved ? t('comments.unapprove') : t('comments.approve')}
                     </button>
                     <button
                       onClick={() => startEdit(comment)}
-                      className="px-4 py-2 text-sm font-medium bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition"
+                      className="px-4 py-2 text-sm font-medium bg-primary-100 text-primary-700 rounded-lg hover:bg-primary-200 transition"
                     >
                       {t('button.edit')}
                     </button>
                     <button
                       onClick={() => handleDelete(comment.id)}
-                      className="px-4 py-2 text-sm font-medium bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition"
+                      className="px-4 py-2 text-sm font-medium bg-error-100 text-error-700 rounded-lg hover:bg-error-200 transition"
                     >
                       {t('button.delete')}
                     </button>

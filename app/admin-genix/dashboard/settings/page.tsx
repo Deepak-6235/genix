@@ -172,13 +172,13 @@ export default function SettingsPage() {
 
       {/* Success/Error Messages */}
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+        <div className="bg-error-50 border border-error-200 text-error-700 px-4 py-3 rounded-lg text-sm">
           {error}
         </div>
       )}
 
       {success && (
-        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
+        <div className="bg-success-50 border border-success-200 text-success-700 px-4 py-3 rounded-lg text-sm">
           {success}
         </div>
       )}
@@ -195,7 +195,7 @@ export default function SettingsPage() {
           </div>
           <div className="flex justify-between items-center py-2 border-b">
             <span className="text-sm font-medium text-gray-600">{t('settings.status')}</span>
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-800">
               {t('status.active')}
             </span>
           </div>

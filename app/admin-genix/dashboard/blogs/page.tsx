@@ -38,7 +38,7 @@ function BlogCard({ blog, onDelete, onView, onEdit, t }: {
       className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-200 cursor-pointer group"
     >
       {/* Blog Image with Status Badge */}
-      <div className="relative h-48 bg-gradient-to-br from-purple-100 to-blue-100">
+      <div className="relative h-48 bg-gradient-to-br from-accent-accent-purple-100 to-primary-100">
         {blog.imageUrl ? (
           <img
             src={blog.imageUrl}
@@ -47,7 +47,7 @@ function BlogCard({ blog, onDelete, onView, onEdit, t }: {
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
-            <svg className="w-16 h-16 text-purple-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-16 h-16 text-accent-purple-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
             </svg>
           </div>
@@ -57,7 +57,7 @@ function BlogCard({ blog, onDelete, onView, onEdit, t }: {
         <span
           className={`absolute top-3 right-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
             blog.isActive
-              ? 'bg-green-100 text-green-700'
+              ? 'bg-success-100 text-success-700'
               : 'bg-gray-100 text-gray-600'
           }`}
         >
@@ -67,7 +67,7 @@ function BlogCard({ blog, onDelete, onView, onEdit, t }: {
 
       {/* Blog Content */}
       <div className="p-6">
-        <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-purple-600 transition-colors">
+        <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-accent-purple-600 transition-colors">
           {blog.name}
         </h3>
 
@@ -76,7 +76,7 @@ function BlogCard({ blog, onDelete, onView, onEdit, t }: {
           {blog.detailedBlogs && blog.detailedBlogs.length > 0 && (
             <>
               <span>•</span>
-              <span className="text-purple-600 font-medium">
+              <span className="text-accent-purple-600 font-medium">
                 {blog.detailedBlogs.length} {t('blogs.sections')}
               </span>
             </>
@@ -94,7 +94,7 @@ function BlogCard({ blog, onDelete, onView, onEdit, t }: {
               e.stopPropagation();
               onEdit(blog.slug);
             }}
-            className="p-1 text-gray-600 hover:text-blue-600 transition"
+            className="p-1 text-gray-600 hover:text-primary-600 transition"
             title={t('button.edit')}
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -106,7 +106,7 @@ function BlogCard({ blog, onDelete, onView, onEdit, t }: {
               e.stopPropagation();
               onDelete(blog.slug);
             }}
-            className="p-1 text-red-600 hover:text-red-700 transition"
+            className="p-1 text-error-600 hover:text-error-700 transition"
             title={t('button.delete')}
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -165,7 +165,7 @@ export default function BlogsPage() {
   if (loading) {
     return (
       <div className="text-center py-12">
-        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-accent-purple-600"></div>
         <p className="mt-4 text-gray-600">{t('loading.please')}</p>
       </div>
     );
@@ -181,7 +181,7 @@ export default function BlogsPage() {
         </div>
         <button
           onClick={() => router.push('/admin-genix/dashboard/blogs/new')}
-          className="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all duration-200 font-semibold shadow-md hover:shadow-lg flex items-center gap-2"
+          className="px-5 py-2.5 bg-gradient-to-r from-accent-purple-600 to-primary-600 text-white rounded-xl hover:from-accent-purple-700 hover:to-primary-700 transition-all duration-200 font-semibold shadow-md hover:shadow-lg flex items-center gap-2"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

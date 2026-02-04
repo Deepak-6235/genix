@@ -24,6 +24,7 @@
   --primary-700: #4c8642;
   --primary-800: #3d6e35;
   --primary-900: #2d5128;
+  --primary-900: #2d5128;
 
   /* ========================================
      Secondary Brand Colors - Lime Green Scale
@@ -160,6 +161,12 @@
   --accent-orange: var(--accent-orange-500);
 
   /* ========================================
+     Button & Icon Colors
+     ======================================== */
+  --button-icon: #8cd102;
+  --icon-bright: #8cd102;
+
+  /* ========================================
      Brand Gradients
      ======================================== */
   --gradient-primary: linear-gradient(135deg, var(--primary-600), var(--secondary-500), var(--primary-600));
@@ -286,6 +293,10 @@
   --color-warning-700: var(--warning-700);
   --color-warning-800: var(--warning-800);
   --color-warning-900: var(--warning-900);
+
+  /* Button & Icon Colors */
+  --color-button-icon: var(--button-icon);
+  --color-icon-bright: var(--icon-bright);
 }
 
 /* ============================================
@@ -561,4 +572,32 @@ button {
 .swiper-pagination-bullet-active {
   width: 24px;
   border-radius: 5px;
+}
+
+/* ============================================
+   Gradient Button (Global - Use Anywhere!)
+   ============================================ */
+.gradient-btn {
+  background: linear-gradient(to right, #a4d84a 0%, #6ba83d 50%, #4c8642 100%);
+  background-size: 200% 100%;
+  background-position: 0% 0%;
+  transition: background-position 0.5s ease, box-shadow 0.3s ease;
+}
+
+.gradient-btn:hover {
+  background: linear-gradient(to left, #a4d84a 0%, #6ba83d 50%, #4c8642 100%);
+  background-position: 100% 0%;
+}
+
+/* Legacy class name for Hero component */
+.hero-gradient-btn {
+  background: linear-gradient(to right, #a4d84a 0%, #6ba83d 50%, #4c8642 100%);
+  background-size: 200% 100%;
+  background-position: 0% 0%;
+  transition: background-position 0.5s ease, box-shadow 0.3s ease;
+}
+
+.hero-gradient-btn:hover {
+  background: linear-gradient(to left, #a4d84a 0%, #6ba83d 50%, #4c8642 100%);
+  background-position: 100% 0%;
 }

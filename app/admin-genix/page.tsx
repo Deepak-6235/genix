@@ -88,10 +88,10 @@ function AdminLoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-100">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-secondary-50 to-primary-100">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-2xl shadow-2xl">
         <div className="text-center">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent mb-2">Genix Admin</h1>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary-600 to-secondary-500 bg-clip-text text-transparent mb-2">Genix Admin</h1>
           <p className="text-gray-600">Sign in to access the admin panel</p>
         </div>
 
@@ -108,7 +108,7 @@ function AdminLoginForm() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 rounded-lg    transition text-gray-900"
+                className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-primary-500 rounded-lg    transition text-gray-900"
                 placeholder="Enter your email"
               />
             </div>
@@ -125,7 +125,7 @@ function AdminLoginForm() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-transparent outline-none transition text-gray-900 pr-12"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-1 focus:ring-primary-500 focus:border-transparent outline-none transition text-gray-900 pr-12"
                   placeholder="Enter your password"
                 />
                 <button
@@ -149,7 +149,7 @@ function AdminLoginForm() {
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+            <div className="bg-error-50 border border-error-200 text-error-700 px-4 py-3 rounded-lg text-sm">
               {error}
             </div>
           )}
@@ -157,7 +157,7 @@ function AdminLoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-cyan-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-3 px-4 bg-gradient-to-r from-primary-600 to-secondary-500 text-white font-semibold rounded-lg hover:from-primary-700 hover:to-secondary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
@@ -172,9 +172,9 @@ function AdminLoginForm() {
 export default function AdminLogin() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-primary-50 via-secondary-50 to-primary-100 flex items-center justify-center p-4">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
           <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>

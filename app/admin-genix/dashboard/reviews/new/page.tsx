@@ -112,7 +112,7 @@ export default function NewReviewPage() {
             </div>
 
             {/* Edit Mode Notice */}
-            <div className="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg text-sm font-medium">
+            <div className="bg-primary-100 text-primary-800 px-4 py-2 rounded-lg text-sm font-medium">
               {t('reviews.creatingInEnglish')}
             </div>
           </div>
@@ -131,7 +131,7 @@ export default function NewReviewPage() {
             {error && (
               <div className={`border px-4 py-3 rounded-lg text-sm ${
                 error.includes('Translating')
-                  ? 'bg-blue-50 border-blue-200 text-blue-700'
+                  ? 'bg-primary-50 border-primary-200 text-primary-700'
                   : 'bg-red-50 border-red-200 text-red-700'
               }`}>
                 {error}
@@ -146,7 +146,7 @@ export default function NewReviewPage() {
                   type="checkbox"
                   checked={formData.isActive}
                   onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                  className="h-4 w-4 text-purple-600 border-gray-300 rounded mr-2"
+                  className="h-4 w-4 text-accent-purple-600 border-gray-300 rounded mr-2"
                 />
                 <span className="text-sm font-medium text-gray-700">{t('status.active')}</span>
               </label>
@@ -164,7 +164,7 @@ export default function NewReviewPage() {
                     type="button"
                   >
                     <svg
-                      className={`w-8 h-8 ${star <= formData.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'} hover:scale-110 transition`}
+                      className={`w-8 h-8 ${star <= formData.rating ? 'text-warning-400 fill-current' : 'text-gray-300'} hover:scale-110 transition`}
                       viewBox="0 0 20 20"
                     >
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -188,7 +188,7 @@ export default function NewReviewPage() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 maxLength={CHAR_LIMITS.name}
-                className="w-full text-xl font-bold text-gray-900 border-2 border-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                className="w-full text-xl font-bold text-gray-900 border-2 border-accent-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-accent-purple-500"
                 placeholder="Ahmed Al-Maliki"
                 required
               />
@@ -207,7 +207,7 @@ export default function NewReviewPage() {
                 value={formData.position}
                 onChange={(e) => setFormData({ ...formData, position: e.target.value })}
                 maxLength={CHAR_LIMITS.position}
-                className="w-full text-lg text-gray-800 border-2 border-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                className="w-full text-lg text-gray-800 border-2 border-accent-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-accent-purple-500"
                 placeholder="Facilities Manager"
                 required
               />
@@ -226,7 +226,7 @@ export default function NewReviewPage() {
                 value={formData.company}
                 onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                 maxLength={CHAR_LIMITS.company}
-                className="w-full text-lg text-blue-600 border-2 border-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                className="w-full text-lg text-primary-600 border-2 border-accent-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-accent-purple-500"
                 placeholder="Elite Trading Company"
                 required
               />
@@ -245,7 +245,7 @@ export default function NewReviewPage() {
                 onChange={(e) => setFormData({ ...formData, text: e.target.value })}
                 maxLength={CHAR_LIMITS.text}
                 rows={6}
-                className="w-full text-base text-gray-700 border-2 border-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                className="w-full text-base text-gray-700 border-2 border-accent-purple-300 rounded-lg px-4 py-2 focus:outline-none focus:border-accent-purple-500"
                 placeholder="Excellent and highly professional service. The team is committed and professional in their dealings. I highly recommend dealing with them."
                 required
               />
@@ -262,7 +262,7 @@ export default function NewReviewPage() {
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="w-full sm:w-auto px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium disabled:opacity-50"
+                className="w-full sm:w-auto px-8 py-3 bg-accent-purple-600 text-white rounded-lg hover:bg-accent-purple-700 transition font-medium disabled:opacity-50"
               >
                 {saving ? 'Creating Review...' : 'Create Review'}
               </button>

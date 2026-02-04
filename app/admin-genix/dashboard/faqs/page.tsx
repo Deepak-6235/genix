@@ -33,15 +33,15 @@ function FAQCard({ faq, onEdit, onDelete, onAnswer, t }: {
           <span
             className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${
               hasAnswer
-                ? 'bg-green-100 text-green-700'
-                : 'bg-yellow-100 text-yellow-700'
+                ? 'bg-success-100 text-success-700'
+                : 'bg-warning-100 text-warning-700'
             }`}
           >
             {hasAnswer ? t('faqs.answered') : t('faqs.pending')}
           </span>
           <span
             className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
-              faq.isActive ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
+              faq.isActive ? 'bg-primary-100 text-primary-800' : 'bg-gray-100 text-gray-800'
             }`}
           >
             {faq.isActive ? t('status.active') : t('status.inactive')}
@@ -70,20 +70,20 @@ function FAQCard({ faq, onEdit, onDelete, onAnswer, t }: {
           {!hasAnswer && (
             <button
               onClick={() => onAnswer(faq)}
-              className="flex-1 px-3 py-2 text-sm bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition font-medium"
+              className="flex-1 px-3 py-2 text-sm bg-success-100 text-success-700 rounded-lg hover:bg-success-200 transition font-medium"
             >
               {t('faqs.addAnswer')}
             </button>
           )}
           <button
             onClick={() => onEdit(faq)}
-            className={`${hasAnswer ? 'flex-1' : 'flex-1'} px-3 py-2 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition font-medium`}
+            className={`${hasAnswer ? 'flex-1' : 'flex-1'} px-3 py-2 text-sm bg-primary-100 text-primary-700 rounded-lg hover:bg-primary-200 transition font-medium`}
           >
             {t('button.edit')}
           </button>
           <button
             onClick={() => onDelete(faq.id)}
-            className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition"
+            className="p-2 text-error-600 hover:text-error-700 hover:bg-error-50 rounded-lg transition"
             title={t('button.delete')}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -327,14 +327,14 @@ export default function FAQsPage() {
         }
       },
       'Delete',
-      'bg-red-600 hover:bg-red-700'
+      'bg-error-600 hover:bg-error-700'
     );
   };
 
   if (loading) {
     return (
       <div className="text-center py-12">
-        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-accent-purple-600"></div>
         <p className="mt-4 text-gray-600">{t('loading.please')}</p>
       </div>
     );
@@ -362,7 +362,7 @@ export default function FAQsPage() {
           </div>
           <button
             onClick={() => openModal()}
-            className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
+            className="px-4 py-2 bg-accent-purple-600 text-white rounded-lg hover:bg-accent-purple-700 transition"
           >
             {t('faqs.addNew')}
           </button>
@@ -405,7 +405,7 @@ export default function FAQsPage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     {t('faqs.question')} *
-                    <span className={`ml-2 text-xs ${formData.question.length > CHAR_LIMITS.question ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
+                    <span className={`ml-2 text-xs ${formData.question.length > CHAR_LIMITS.question ? 'text-error-600 font-bold' : 'text-gray-500'}`}>
                       {formData.question.length}/{CHAR_LIMITS.question}
                     </span>
                   </label>
@@ -427,20 +427,20 @@ export default function FAQsPage() {
                         });
                       }
                     }}
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
-                      fieldErrors.question ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-purple-500 outline-none text-gray-900 ${
+                      fieldErrors.question ? 'border-error-500 bg-error-50' : 'border-gray-300'
                     }`}
                     placeholder="What is your question?"
                   />
                   {fieldErrors.question && (
-                    <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.question}</p>
+                    <p className="mt-1 text-xs text-error-600 font-medium">{fieldErrors.question}</p>
                   )}
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     {t('faqs.answer')} (optional)
-                    <span className={`ml-2 text-xs ${formData.answer.length > CHAR_LIMITS.answer ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
+                    <span className={`ml-2 text-xs ${formData.answer.length > CHAR_LIMITS.answer ? 'text-error-600 font-bold' : 'text-gray-500'}`}>
                       {formData.answer.length}/{CHAR_LIMITS.answer}
                     </span>
                   </label>
@@ -461,13 +461,13 @@ export default function FAQsPage() {
                         });
                       }
                     }}
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
-                      fieldErrors.answer ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-purple-500 outline-none text-gray-900 ${
+                      fieldErrors.answer ? 'border-error-500 bg-error-50' : 'border-gray-300'
                     }`}
                     placeholder="Leave empty to answer later"
                   />
                   {fieldErrors.answer && (
-                    <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.answer}</p>
+                    <p className="mt-1 text-xs text-error-600 font-medium">{fieldErrors.answer}</p>
                   )}
                 </div>
 
@@ -485,7 +485,7 @@ export default function FAQsPage() {
                 </div>
 
                 {error && (
-                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                  <div className="bg-error-50 border border-error-200 text-error-700 px-4 py-3 rounded-lg text-sm">
                     {error}
                   </div>
                 )}
@@ -501,7 +501,7 @@ export default function FAQsPage() {
                   <button
                     type="submit"
                     disabled={formLoading}
-                    className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition disabled:opacity-50"
+                    className="flex-1 px-4 py-2 bg-accent-purple-600 text-white rounded-lg hover:bg-accent-purple-700 transition disabled:opacity-50"
                   >
                     {formLoading ? t('modal.saving') : editingFaq ? t('button.update') : t('button.create')}
                   </button>
@@ -535,7 +535,7 @@ export default function FAQsPage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     {t('faqs.answer')} *
-                    <span className={`ml-2 text-xs ${answerFormData.answer.length > CHAR_LIMITS.answer ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
+                    <span className={`ml-2 text-xs ${answerFormData.answer.length > CHAR_LIMITS.answer ? 'text-error-600 font-bold' : 'text-gray-500'}`}>
                       {answerFormData.answer.length}/{CHAR_LIMITS.answer}
                     </span>
                   </label>
@@ -553,18 +553,18 @@ export default function FAQsPage() {
                         setFieldErrors({});
                       }
                     }}
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
-                      fieldErrors.answer ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-purple-500 outline-none text-gray-900 ${
+                      fieldErrors.answer ? 'border-error-500 bg-error-50' : 'border-gray-300'
                     }`}
                     placeholder="Type your answer here..."
                   />
                   {fieldErrors.answer && (
-                    <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.answer}</p>
+                    <p className="mt-1 text-xs text-error-600 font-medium">{fieldErrors.answer}</p>
                   )}
                 </div>
 
                 {error && (
-                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                  <div className="bg-error-50 border border-error-200 text-error-700 px-4 py-3 rounded-lg text-sm">
                     {error}
                   </div>
                 )}
@@ -580,7 +580,7 @@ export default function FAQsPage() {
                   <button
                     type="submit"
                     disabled={formLoading}
-                    className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition disabled:opacity-50"
+                    className="flex-1 px-4 py-2 bg-success-600 text-white rounded-lg hover:bg-success-700 transition disabled:opacity-50"
                   >
                     {formLoading ? 'Saving...' : 'Save Answer'}
                   </button>

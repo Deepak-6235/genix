@@ -50,7 +50,7 @@ function ServiceCard({ service, onEdit, onDelete, onView, t, currentLang }: {
       onClick={() => onView(service.slug)}
     >
       {/* Service Image */}
-      <div className="relative h-48 bg-gradient-to-br from-purple-100 to-blue-100">
+      <div className="relative h-48 bg-gradient-to-br from-accent-purple-100 to-primary-100">
         {service.imageUrl ? (
           <Image
             src={service.imageUrl}
@@ -67,7 +67,7 @@ function ServiceCard({ service, onEdit, onDelete, onView, t, currentLang }: {
         <div className="absolute top-3 right-3">
           <span
             className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
-              service.isActive ? 'bg-green-500 text-white' : 'bg-gray-500 text-white'
+              service.isActive ? 'bg-success-500 text-white' : 'bg-gray-500 text-white'
             }`}
           >
             {service.isActive ? t('status.active') : t('status.inactive')}
@@ -91,7 +91,7 @@ function ServiceCard({ service, onEdit, onDelete, onView, t, currentLang }: {
               e.stopPropagation();
               onEdit(service.slug);
             }}
-            className="p-1 text-gray-600 hover:text-blue-600 transition"
+            className="p-1 text-gray-600 hover:text-primary-600 transition"
             title="Edit"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -103,7 +103,7 @@ function ServiceCard({ service, onEdit, onDelete, onView, t, currentLang }: {
               e.stopPropagation();
               onDelete(service.slug);
             }}
-            className="p-1 text-red-600 hover:text-red-700 transition"
+            className="p-1 text-error-600 hover:text-error-700 transition"
             title="Delete"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -411,14 +411,14 @@ export default function ServicesPage() {
         }
       },
       'Delete',
-      'bg-red-600 hover:bg-red-700'
+      'bg-error-600 hover:bg-error-700'
     );
   };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-purple-600"></div>
       </div>
     );
   }
@@ -445,7 +445,7 @@ export default function ServicesPage() {
           </div>
           <button
             onClick={() => openModal()}
-            className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium"
+            className="px-4 py-2 bg-accent-purple-600 text-white rounded-lg hover:bg-accent-purple-700 transition font-medium"
           >
             + {t('services.addService')}
           </button>
@@ -494,7 +494,7 @@ export default function ServicesPage() {
                     type="checkbox"
                     checked={formData.isActive}
                     onChange={(e) => updateFormData('isActive', e.target.checked)}
-                    className="h-4 w-4 text-purple-600 border-gray-300 rounded"
+                    className="h-4 w-4 text-accent-purple-600 border-gray-300 rounded"
                   />
                   <span className="ml-2 text-sm text-gray-700">{t('form.isActive')}</span>
                 </label>
@@ -521,7 +521,7 @@ export default function ServicesPage() {
                       type="file"
                       accept="image/*"
                       onChange={handleImageChange}
-                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
+                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-accent-purple-50 file:text-accent-purple-700 hover:file:bg-accent-purple-100"
                     />
                     <p className="text-xs text-gray-500 mt-1">Max 5MB. JPG, PNG, WebP</p>
                   </div>
@@ -529,15 +529,15 @@ export default function ServicesPage() {
               </div>
 
               <div className="space-y-4 pt-4 border-t border-gray-200">
-                <div className="bg-blue-50 p-3 rounded-lg mb-4">
-                  <p className="text-xs text-blue-700 font-medium">{t('services.autoTranslateNote')}</p>
+                <div className="bg-primary-50 p-3 rounded-lg mb-4">
+                  <p className="text-xs text-primary-700 font-medium">{t('services.autoTranslateNote')}</p>
                 </div>
 
                 {/* Name Field */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Service Name *
-                    <span className={`ml-2 text-xs ${formData.name.length > CHAR_LIMITS.name ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
+                    <span className={`ml-2 text-xs ${formData.name.length > CHAR_LIMITS.name ? 'text-error-600 font-bold' : 'text-gray-500'}`}>
                       {formData.name.length}/{CHAR_LIMITS.name}
                     </span>
                   </label>
@@ -547,13 +547,13 @@ export default function ServicesPage() {
                     maxLength={CHAR_LIMITS.name}
                     value={formData.name}
                     onChange={(e) => updateFormData('name', e.target.value)}
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
-                      fieldErrors.name ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-purple-500 outline-none text-gray-900 ${
+                      fieldErrors.name ? 'border-error-500 bg-error-50' : 'border-gray-300'
                     }`}
                     placeholder="Pest Control"
                   />
                   {fieldErrors.name && (
-                    <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.name}</p>
+                    <p className="mt-1 text-xs text-error-600 font-medium">{fieldErrors.name}</p>
                   )}
                 </div>
 
@@ -561,7 +561,7 @@ export default function ServicesPage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     {t('form.title')} *
-                    <span className={`ml-2 text-xs ${formData.title.length > CHAR_LIMITS.title ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
+                    <span className={`ml-2 text-xs ${formData.title.length > CHAR_LIMITS.title ? 'text-error-600 font-bold' : 'text-gray-500'}`}>
                       {formData.title.length}/{CHAR_LIMITS.title}
                     </span>
                   </label>
@@ -571,13 +571,13 @@ export default function ServicesPage() {
                     maxLength={CHAR_LIMITS.title}
                     value={formData.title}
                     onChange={(e) => updateFormData('title', e.target.value)}
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
-                      fieldErrors.title ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-purple-500 outline-none text-gray-900 ${
+                      fieldErrors.title ? 'border-error-500 bg-error-50' : 'border-gray-300'
                     }`}
                     placeholder="Pest Control Services in Riyadh"
                   />
                   {fieldErrors.title && (
-                    <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.title}</p>
+                    <p className="mt-1 text-xs text-error-600 font-medium">{fieldErrors.title}</p>
                   )}
                 </div>
 
@@ -585,7 +585,7 @@ export default function ServicesPage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Subtitle *
-                    <span className={`ml-2 text-xs ${formData.subtitle.length > CHAR_LIMITS.subtitle ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
+                    <span className={`ml-2 text-xs ${formData.subtitle.length > CHAR_LIMITS.subtitle ? 'text-error-600 font-bold' : 'text-gray-500'}`}>
                       {formData.subtitle.length}/{CHAR_LIMITS.subtitle}
                     </span>
                   </label>
@@ -595,13 +595,13 @@ export default function ServicesPage() {
                     maxLength={CHAR_LIMITS.subtitle}
                     value={formData.subtitle}
                     onChange={(e) => updateFormData('subtitle', e.target.value)}
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
-                      fieldErrors.subtitle ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-purple-500 outline-none text-gray-900 ${
+                      fieldErrors.subtitle ? 'border-error-500 bg-error-50' : 'border-gray-300'
                     }`}
                     placeholder="Services Provided"
                   />
                   {fieldErrors.subtitle && (
-                    <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.subtitle}</p>
+                    <p className="mt-1 text-xs text-error-600 font-medium">{fieldErrors.subtitle}</p>
                   )}
                 </div>
 
@@ -609,7 +609,7 @@ export default function ServicesPage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     {t('form.shortDescription')} *
-                    <span className={`ml-2 text-xs ${formData.shortDescription.length > CHAR_LIMITS.shortDescription ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
+                    <span className={`ml-2 text-xs ${formData.shortDescription.length > CHAR_LIMITS.shortDescription ? 'text-error-600 font-bold' : 'text-gray-500'}`}>
                       {formData.shortDescription.length}/{CHAR_LIMITS.shortDescription}
                     </span>
                   </label>
@@ -619,13 +619,13 @@ export default function ServicesPage() {
                     maxLength={CHAR_LIMITS.shortDescription}
                     value={formData.shortDescription}
                     onChange={(e) => updateFormData('shortDescription', e.target.value)}
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
-                      fieldErrors.shortDescription ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-purple-500 outline-none text-gray-900 ${
+                      fieldErrors.shortDescription ? 'border-error-500 bg-error-50' : 'border-gray-300'
                     }`}
                     placeholder="Brief description shown on services page"
                   />
                   {fieldErrors.shortDescription && (
-                    <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.shortDescription}</p>
+                    <p className="mt-1 text-xs text-error-600 font-medium">{fieldErrors.shortDescription}</p>
                   )}
                 </div>
 
@@ -633,7 +633,7 @@ export default function ServicesPage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     {t('form.fullDescription')}
-                    <span className={`ml-2 text-xs ${formData.fullDescription.length > CHAR_LIMITS.fullDescription ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
+                    <span className={`ml-2 text-xs ${formData.fullDescription.length > CHAR_LIMITS.fullDescription ? 'text-error-600 font-bold' : 'text-gray-500'}`}>
                       {formData.fullDescription.length}/{CHAR_LIMITS.fullDescription}
                     </span>
                   </label>
@@ -642,19 +642,19 @@ export default function ServicesPage() {
                     maxLength={CHAR_LIMITS.fullDescription}
                     value={formData.fullDescription}
                     onChange={(e) => updateFormData('fullDescription', e.target.value)}
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-gray-900 ${
-                      fieldErrors.fullDescription ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-purple-500 outline-none text-gray-900 ${
+                      fieldErrors.fullDescription ? 'border-error-500 bg-error-50' : 'border-gray-300'
                     }`}
                     placeholder="Detailed description of the service"
                   />
                   {fieldErrors.fullDescription && (
-                    <p className="mt-1 text-xs text-red-600 font-medium">{fieldErrors.fullDescription}</p>
+                    <p className="mt-1 text-xs text-error-600 font-medium">{fieldErrors.fullDescription}</p>
                   )}
                 </div>
               </div>
 
               {error && (
-                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                <div className="bg-error-50 border border-error-200 text-error-700 px-4 py-3 rounded-lg text-sm">
                   {error}
                 </div>
               )}
@@ -670,7 +670,7 @@ export default function ServicesPage() {
                 <button
                   type="submit"
                   disabled={formLoading || uploadingImage}
-                  className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition disabled:opacity-50"
+                  className="flex-1 px-4 py-2 bg-accent-purple-600 text-white rounded-lg hover:bg-accent-purple-700 transition disabled:opacity-50"
                 >
                   {formLoading || uploadingImage ? t('modal.saving') : editingService ? t('button.update') : t('button.create')}
                 </button>

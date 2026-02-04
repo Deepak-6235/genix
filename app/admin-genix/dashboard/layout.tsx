@@ -157,7 +157,7 @@ function DashboardLayoutContent({
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-gray-200 border-t-indigo-600"></div>
+          <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-gray-200 border-t-primary-600"></div>
           <p className="mt-4 text-gray-700 font-medium">Loading your dashboard...</p>
         </div>
       </div>
@@ -184,7 +184,7 @@ function DashboardLayoutContent({
           {/* Logo Section with Toggle */}
           <div className="h-16 flex items-center justify-between border-b border-gray-200 px-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-tertiary-500 via-secondary-500 to-primary-600 flex items-center justify-center">
                 <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
@@ -220,17 +220,17 @@ function DashboardLayoutContent({
                   }}
                   className={`flex items-center gap-3 px-3 py-2.5 mb-1 rounded-lg transition-all duration-200 group ${
                     isActive
-                      ? 'bg-gradient-to-r from-cyan-50 to-blue-50 text-blue-600 border border-cyan-100'
+                      ? 'bg-gradient-to-r from-secondary-50 to-primary-50 text-primary-600 border border-secondary-100'
                       : 'text-gray-700 hover:bg-gray-50'
                   }`}
                   title={item.name}
                 >
-                  <span className={`${isActive ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'} transition-colors`}>
+                  <span className={`${isActive ? 'text-primary-600' : 'text-gray-400 group-hover:text-gray-600'} transition-colors`}>
                     {item.icon}
                   </span>
                   <span className="font-medium text-sm">{item.name}</span>
                   {isActive && (
-                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-blue-600"></div>
+                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-primary-600"></div>
                   )}
                 </Link>
               );
@@ -258,7 +258,7 @@ function DashboardLayoutContent({
               </button>
 
               <div>
-                <h1 style={{ fontSize: '18px' }} className="sm:text-[22px] font-bold bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent leading-none">
+                <h1 style={{ fontSize: '18px' }} className="sm:text-[22px] font-bold bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 bg-clip-text text-transparent leading-none">
                   ركن النخيل
                 </h1>
                 <p style={{ fontSize: '9px' }} className="sm:text-[10px] text-gray-500 leading-none mt-1">Content Management System</p>
@@ -270,8 +270,8 @@ function DashboardLayoutContent({
                 <AdminLanguageSwitcher />
               </div>
 
-              <div className="hidden md:flex items-center gap-2 px-3 py-2 h-10 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-lg border border-cyan-100">
-                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-teal-500 via-cyan-500 to-blue-600 flex items-center justify-center text-white text-[10px] font-semibold">
+              <div className="hidden md:flex items-center gap-2 px-3 py-2 h-10 bg-gradient-to-r from-secondary-50 to-primary-50 rounded-lg border border-secondary-100">
+                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-tertiary-500 via-secondary-500 to-primary-600 flex items-center justify-center text-white text-[10px] font-semibold">
                   {userEmail.charAt(0).toUpperCase()}
                 </div>
                 <div className="text-left">
@@ -283,7 +283,7 @@ function DashboardLayoutContent({
               <button
                 onClick={handleLogout}
                 disabled={loggingOut}
-                className="h-10 px-3 sm:px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-xs sm:text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 sm:gap-2 shadow-sm"
+                className="h-10 px-3 sm:px-4 py-2 bg-error-500 text-white rounded-lg hover:bg-error-600 transition-colors text-xs sm:text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 sm:gap-2 shadow-sm"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
