@@ -59,6 +59,8 @@ export default function ContactContent() {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitting, setSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   // Fetch About Us data
   useEffect(() => {
@@ -132,16 +134,60 @@ export default function ContactContent() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      // Here you would typically send the form data to your backend
-      // For now, we'll use mailto as a fallback
-      const subject = encodeURIComponent(`طلب خدمة: ${formData.service}`);
-      const body = encodeURIComponent(
-        `الاسم: ${formData.name}\nالبريد الإلكتروني: ${formData.email}\nالهاتف: ${formData.phone || "غير محدد"}\nالخدمة: ${formData.service}\n\nالرسالة:\n${formData.message}`
-      );
-      window.location.href = `mailto:roknalnakheel@gmail.com?subject=${subject}&body=${body}`;
+      try {
+        setSubmitting(true);
+        setSubmitSuccess(false);
+
+        // Find the selected service to get its slug
+        const selectedService = services.find(s => s.name === formData.service);
+
+        if (!selectedService) {
+          setErrors({ service: 'Invalid service selected' });
+          return;
+        }
+
+        const response = await fetch('/api/contact-form-submissions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            serviceSlug: selectedService.slug,
+            message: formData.message,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          setSubmitSuccess(true);
+          // Reset form
+          setFormData({
+            name: "",
+            email: "",
+            phone: "",
+            service: "",
+            message: "",
+          });
+          // Show success message for 5 seconds
+          setTimeout(() => {
+            setSubmitSuccess(false);
+          }, 5000);
+        } else {
+          alert(data.message || 'Failed to submit form. Please try again.');
+        }
+      } catch (error) {
+        console.error('Form submission error:', error);
+        alert('Failed to submit form. Please try again.');
+      } finally {
+        setSubmitting(false);
+      }
     }
   };
 
@@ -467,12 +513,21 @@ export default function ContactContent() {
                   )}
                 </div>
 
+                {/* Success Message */}
+                {submitSuccess && (
+                  <div className="p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+                    <p className="font-semibold">Success! Your message has been sent.</p>
+                    <p className="text-sm">We will get back to you soon.</p>
+                  </div>
+                )}
+
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 text-white font-bold py-3 sm:py-4 px-6 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl text-base sm:text-lg"
+                  disabled={submitting}
+                  className="w-full bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 hover:from-blue-700 hover:via-cyan-600 hover:to-blue-700 text-white font-bold py-3 sm:py-4 px-6 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl text-base sm:text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {t.form.sendMessage}
+                  {submitting ? 'Sending...' : t.form.sendMessage}
                 </button>
               </form>
             </div>

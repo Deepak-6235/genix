@@ -19,13 +19,14 @@ model Language {
   updatedAt DateTime @updatedAt
 
   // Relations
-  services      Service[]      @relation("ServiceLanguage")
-  blogs         Blog[]         @relation("BlogLanguage")
-  detailedBlogs DetailedBlog[] @relation("DetailedBlogLanguage")
-  faqs          FAQ[]          @relation("FAQLanguage")
-  reviews       Review[]       @relation("ReviewLanguage")
-  comments      Comment[]      @relation("CommentLanguage")
-  aboutUs       AboutUs[]      @relation("AboutUsLanguage")
+  services              Service[]               @relation("ServiceLanguage")
+  blogs                 Blog[]                  @relation("BlogLanguage")
+  detailedBlogs         DetailedBlog[]          @relation("DetailedBlogLanguage")
+  faqs                  FAQ[]                   @relation("FAQLanguage")
+  reviews               Review[]                @relation("ReviewLanguage")
+  comments              Comment[]               @relation("CommentLanguage")
+  aboutUs               AboutUs[]               @relation("AboutUsLanguage")
+  contactFormSubmissions ContactFormSubmission[] @relation("ContactFormLanguage")
 
   @@map("languages")
 }
@@ -219,4 +220,28 @@ model Comment {
   @@unique([commentId, languageId], name: "commentId_languageId")
   @@index([blogSlug])
   @@map("comments")
+}
+
+model ContactFormSubmission {
+  id              String   @id @default(cuid())
+  contactId       String   // Unique identifier for the same submission across all languages
+  languageId      String   // Foreign key to Language table
+  language        Language @relation("ContactFormLanguage", fields: [languageId], references: [id])
+
+  // User fields
+  name            String
+  email           String
+  phone           String?
+  serviceSlug     String   // Service slug as relation
+  message         String   @db.Text
+
+  // Meta
+  isRead          Boolean  @default(false) // Track if admin has read this
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([contactId, languageId], name: "contactId_languageId")
+  @@index([serviceSlug])
+  @@index([createdAt])
+  @@map("contact_form_submissions")
 }
