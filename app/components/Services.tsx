@@ -2,8 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Autoplay } from 'swiper/modules';
 import { useServicesTranslations } from "@/hooks/useTranslations";
 import { useLanguage } from "@/contexts/LanguageContext";
+
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 interface Service {
   id: string;
@@ -75,49 +81,68 @@ export default function Services() {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 max-w-7xl mx-auto">
+          <Swiper
+            modules={[Pagination, Autoplay]}
+            spaceBetween={30}
+            slidesPerView={1}
+            pagination={{ clickable: true }}
+            autoplay={{
+              delay: 5000,
+              disableOnInteraction: false,
+            }}
+            breakpoints={{
+              640: {
+                slidesPerView: 2,
+              },
+              1024: {
+                slidesPerView: 3,
+              },
+            }}
+            className="pb-16"
+          >
             {services.map((service) => (
-              <div
-                key={service.id}
-                className="group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
-              >
-                {/* Service Image */}
-                <div className="relative h-48 w-full overflow-hidden">
-                  <Image
-                    src={getServiceImagePath(service.imageUrl)}
-                    alt={service.name}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-300"
-                    unoptimized
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
+              <SwiperSlide key={service.id}>
+                <Link
+                  href={`/services/${service.slug}`}
+                  className="block h-full group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+                >
+                  {/* Service Image */}
+                  <div className="relative h-48 w-full overflow-hidden">
+                    <Image
+                      src={getServiceImagePath(service.imageUrl)}
+                      alt={service.name}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-300"
+                      unoptimized
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
 
-                <div className="p-4 sm:p-6 md:p-8">
-                  {/* Title */}
-                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2 sm:mb-3">
-                    {service.name}
-                  </h3>
+                  <div className="p-4 sm:p-6 md:p-8">
+                    {/* Title */}
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2 sm:mb-3">
+                      {service.name}
+                    </h3>
 
-                  {/* Short Description */}
-                  <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 sm:mb-6">
-                    {service.shortDescription}
-                  </p>
+                    {/* Short Description */}
+                    <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 sm:mb-6">
+                      {service.shortDescription}
+                    </p>
 
-                  {/* Learn More Button */}
-                  <a
-                    href="#contact"
-                    className={`inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-semibold transition-colors group ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
-                  >
-                    <span>{t.cta}</span>
-                    <svg className={`w-4 h-4 transition-transform ${dir === 'rtl' ? 'group-hover:-translate-x-1 rotate-180' : 'group-hover:translate-x-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                    </svg>
-                  </a>
-                </div>
-              </div>
+                    {/* Learn More Button */}
+                    <div
+                      className={`inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-semibold transition-colors group ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
+                    >
+                      <span>{t.cta}</span>
+                      <svg className={`w-4 h-4 transition-transform ${dir === 'rtl' ? 'group-hover:-translate-x-1 rotate-180' : 'group-hover:translate-x-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </div>
+                </Link>
+              </SwiperSlide>
             ))}
-          </div>
+          </Swiper>
         )}
       </div>
     </section>
