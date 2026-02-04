@@ -94,20 +94,19 @@ export default function Blog() {
     });
   };
 
-  return (
-    <section id="blog" className="py-10 sm:py-16 md:py-20 bg-white">
-      <div className="container mx-auto px-4 sm:px-6">
-        <div className="text-center mb-6 sm:mb-8 md:mb-12">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-4 sm:mb-6">
-            {t.title}
-          </h2>
-          <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
-            {t.subtitle}
-          </p>
-        </div>
+  if (loading) {
+    return (
+      <section id="blog" className="py-10 sm:py-16 md:py-20 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="text-center mb-6 sm:mb-8 md:mb-12">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-4 sm:mb-6">
+              {t.title}
+            </h2>
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
+              {t.subtitle}
+            </p>
+          </div>
 
-        {/* Loading State */}
-        {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 max-w-7xl mx-auto">
             {[1, 2, 3].map((i) => (
               <div key={i} className="animate-pulse bg-white border border-slate-200 rounded-2xl overflow-hidden">
@@ -126,77 +125,106 @@ export default function Blog() {
               </div>
             ))}
           </div>
-        ) : (
-          <div className="relative group">
-            <Swiper
-              modules={[Pagination, Autoplay, Navigation]}
-              spaceBetween={30}
-              slidesPerView={1}
-              navigation={{
-                nextEl: '.blog-button-next',
-                prevEl: '.blog-button-prev',
-              }}
-              pagination={{ clickable: true }}
-              autoplay={{
-                delay: 5000,
-                disableOnInteraction: false,
-              }}
-              breakpoints={{
-                640: {
-                  slidesPerView: 2,
-                },
-                1024: {
-                  slidesPerView: 3,
-                },
-              }}
-              className="!pt-4 !px-4 !pb-14"
-            >
-              {blogs.map((blog) => (
-                <SwiperSlide key={blog.id} className="pt-2 pb-2 !h-auto">
-                  <article
-                    className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group h-full flex flex-col"
-                  >
-                    {/* Blog Image */}
-                    <div className="relative h-40 sm:h-48 w-full overflow-hidden shrink-0">
-                      <Image
-                        src={blog.imageUrl}
-                        alt={blog.name}
-                        fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-300"
-                        unoptimized
-                      />
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section id="blog" className="py-10 sm:py-16 md:py-20 bg-white">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="text-center mb-6 sm:mb-8 md:mb-12">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-4 sm:mb-6">
+            {t.title}
+          </h2>
+          <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
+            {t.subtitle}
+          </p>
+        </div>
+
+        <div className="relative group">
+          <Swiper
+            modules={[Pagination, Autoplay, Navigation]}
+            spaceBetween={30}
+            slidesPerView={1}
+            navigation={{
+              nextEl: '.blog-button-next',
+              prevEl: '.blog-button-prev',
+            }}
+            pagination={{ clickable: true }}
+            autoplay={{
+              delay: 5000,
+              disableOnInteraction: false,
+            }}
+            breakpoints={{
+              640: {
+                slidesPerView: 2,
+              },
+              1024: {
+                slidesPerView: 3,
+              },
+            }}
+            className="!pt-4 !px-4 !pb-14"
+          >
+            {blogs.map((blog) => (
+              <SwiperSlide key={blog.id} className="pt-2 pb-2 !h-auto">
+                <article
+                  className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group h-full flex flex-col"
+                >
+                  {/* Blog Image */}
+                  <div className="relative h-40 sm:h-48 w-full overflow-hidden shrink-0">
+                    <Image
+                      src={blog.imageUrl}
+                      alt={blog.name}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-300"
+                      unoptimized
+                    />
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-4 sm:p-6 flex-1 flex flex-col">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
+                      <span className="text-xs font-semibold text-primary-600 bg-primary-50 px-2 sm:px-3 py-1 rounded-full">
+                        {blog.author}
+                      </span>
+                      <span className="text-xs sm:text-sm text-slate-500">{formatDate(blog.publishedAt)}</span>
                     </div>
 
-                    {/* Content */}
-                    <div className="p-4 sm:p-6 flex-1 flex flex-col">
-                      <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
-                        <span className="text-xs font-semibold text-primary-600 bg-primary-50 px-2 sm:px-3 py-1 rounded-full">
-                          {blog.author}
-                        </span>
-                        <span className="text-xs sm:text-sm text-slate-500">{formatDate(blog.publishedAt)}</span>
-                      </div>
+                    <h3 className="text-lg sm:text-xl font-bold text-tertiary-600 mb-2 sm:mb-3 group-hover:text-primary-600 transition-colors line-clamp-2">
+                      {blog.name}
+                    </h3>
 
-                      <h3 className="text-lg sm:text-xl font-bold text-tertiary-600 mb-2 sm:mb-3 group-hover:text-primary-600 transition-colors line-clamp-2">
-                        {blog.name}
-                      </h3>
+                    <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 line-clamp-3">
+                      {blog.shortDescription}
+                    </p>
 
-                      <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 line-clamp-3">
-                        {blog.shortDescription}
-                      </p>
+                    <Link
+                      href={`/blog/${blog.slug}`}
+                      className={`text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors ${dir === 'rtl' ? '' : ''}`}
+                    >
+                      {t.readMore} →
+                    </Link>
+                  </div>
+                </article>
+              </SwiperSlide>
+            ))}
+          </Swiper>
 
-                      <Link
-                        href={`/blog/${blog.slug}`}
-                        className={`text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors ${dir === 'rtl' ? '' : ''}`}
-                      >
-                        {t.readMore} →
-                      </Link>
-                    </div>
-                  </article>
-                </SwiperSlide>
-              ))}
-            </Swiper>
+          {/* Navigation Arrows */}
+          <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 z-20 flex justify-between pointer-events-none px-2 sm:-mx-4">
+            <button className="blog-button-prev p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-0 group-hover:opacity-100 disabled:opacity-0 rtl:rotate-180">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button className="blog-button-next p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-0 group-hover:opacity-100 disabled:opacity-0 rtl:rotate-180">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
           </div>
-        )}
+        </div>
 
         <div className="text-center mt-6 sm:mt-8 px-4">
           <Link
@@ -213,3 +241,4 @@ export default function Blog() {
     </section>
   );
 }
+

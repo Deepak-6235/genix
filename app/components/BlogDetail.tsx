@@ -388,7 +388,7 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full sm:w-auto bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-600 text-white px-6 sm:px-8 py-3 rounded-xl font-bold text-base sm:text-lg hover:from-primary-700 hover:via-secondary-600 hover:to-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full sm:w-auto hero-gradient-btn text-white px-6 sm:px-8 py-3 rounded-xl font-bold text-base sm:text-lg transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {submitting ? 'Submitting...' : t.submitComment}
                 </button>
