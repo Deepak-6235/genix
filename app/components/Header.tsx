@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useHeaderTranslations } from "@/hooks/useTranslations";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -21,6 +23,7 @@ export default function Header() {
   const [services, setServices] = useState<Service[]>([]);
   const t = useHeaderTranslations();
   const { language, dir } = useLanguage();
+  const pathname = usePathname();
 
   // Fetch services from database
   useEffect(() => {
@@ -53,7 +56,7 @@ export default function Header() {
       <nav className="container mx-auto px-4 sm:px-6 py-2 sm:py-3" suppressHydrationWarning>
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity">
+          <Link href="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity">
             <Image
               src={iconImage}
               alt={t.logo}
@@ -63,7 +66,7 @@ export default function Header() {
               priority
             />
 
-          </a>
+          </Link>
 
           {/* Navigation & Actions Grouped at the End */}
           <div className="flex items-center gap-4 xl:gap-6">
@@ -71,64 +74,71 @@ export default function Header() {
             <ul className="hidden lg:flex items-center gap-4 xl:gap-6">
               {/* Language Switcher */}
 
-              {navItems.map((item) => (
-                <li key={item.href} className="relative group">
-                  {item.hasDropdown ? (
-                    <div
-                      className="relative"
-                      onMouseEnter={() => setIsServicesOpen(true)}
-                      onMouseLeave={() => setIsServicesOpen(false)}
-                    >
-                      <a
+              {navItems.map((item) => {
+                const isActive = pathname === item.href || (item.href === '/services' && pathname?.startsWith('/services'));
+
+                return (
+                  <li key={item.href} className="relative group">
+                    {item.hasDropdown ? (
+                      <div
+                        className="relative"
+                        onMouseEnter={() => setIsServicesOpen(true)}
+                        onMouseLeave={() => setIsServicesOpen(false)}
+                      >
+                        <Link
+                          href={item.href}
+                          className={`font-semibold relative py-2 flex items-center gap-1 cursor-pointer transition-colors ${isActive ? 'text-primary-600' : 'text-slate-700 hover:text-primary-600'
+                            }`}
+                          suppressHydrationWarning
+                        >
+                          {item.label}
+                          <svg
+                            className={`w-4 h-4 transition-transform ${isServicesOpen ? "rotate-180" : ""}`}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        </Link>
+                        {isServicesOpen && (
+                          <div className={`absolute top-full pt-2 w-64 ${dir === 'rtl' ? 'right-0' : 'left-0'}`}>
+                            <div className="bg-white rounded-xl shadow-xl border border-slate-200 py-2 max-h-96 overflow-y-auto">
+                              {services.map((service) => (
+                                <Link
+                                  key={service.id}
+                                  href={`/services/${service.slug}`}
+                                  className="block px-4 py-3 text-slate-700 hover:bg-primary-50 hover:text-primary-600 transition-colors text-sm"
+                                  onClick={() => setIsServicesOpen(false)}
+                                  suppressHydrationWarning
+                                >
+                                  {service.name}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <Link
                         href={item.href}
-                        className="text-slate-700 hover:text-primary-600 font-semibold relative py-2 flex items-center gap-1 cursor-pointer"
+                        className={`font-semibold relative group py-2 transition-colors ${isActive ? 'text-primary-600' : 'text-slate-700 hover:text-primary-600'
+                          }`}
                         suppressHydrationWarning
                       >
                         {item.label}
-                        <svg
-                          className={`w-4 h-4 transition-transform ${isServicesOpen ? "rotate-180" : ""}`}
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 9l-7 7-7-7"
-                          />
-                        </svg>
-                      </a>
-                      {isServicesOpen && (
-                        <div className={`absolute top-full pt-2 w-64 ${dir === 'rtl' ? 'right-0' : 'left-0'}`}>
-                          <div className="bg-white rounded-xl shadow-xl border border-slate-200 py-2 max-h-96 overflow-y-auto">
-                            {services.map((service) => (
-                              <a
-                                key={service.id}
-                                href={`/services/${service.slug}`}
-                                className="block px-4 py-3 text-slate-700 hover:bg-primary-50 hover:text-primary-600 transition-colors text-sm"
-                                onClick={() => setIsServicesOpen(false)}
-                                suppressHydrationWarning
-                              >
-                                {service.name}
-                              </a>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <a
-                      href={item.href}
-                      className="text-slate-700 hover:text-primary-600 font-semibold relative group py-2"
-                      suppressHydrationWarning
-                    >
-                      {item.label}
-                      <span className={`absolute bottom-0 w-0 h-0.5 bg-primary-600 group-hover:w-full transition-all duration-300 ${dir === 'rtl' ? 'right-0' : 'left-0'}`}></span>
-                    </a>
-                  )}
-                </li>
-              ))}
+                        <span className={`absolute bottom-0 h-0.5 bg-primary-600 transition-all duration-300 ${dir === 'rtl' ? 'right-0' : 'left-0'} ${isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                          }`}></span>
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
               <li>
                 <LanguageSwitcher />
               </li>
@@ -174,62 +184,68 @@ export default function Header() {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <ul className="lg:hidden mt-4 space-y-2 pb-4">
-            {navItems.map((item) => (
-              <li key={item.href}>
-                {item.hasDropdown ? (
-                  <div>
-                    <button
-                      onClick={() => setIsServicesOpen(!isServicesOpen)}
-                      className={`w-full text-slate-700 hover:text-primary-600 hover:bg-slate-50 font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-between text-start`}
+            {navItems.map((item) => {
+              const isActive = pathname === item.href || (item.href === '/services' && pathname?.startsWith('/services'));
+
+              return (
+                <li key={item.href}>
+                  {item.hasDropdown ? (
+                    <div>
+                      <button
+                        onClick={() => setIsServicesOpen(!isServicesOpen)}
+                        className={`w-full font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-between text-start ${isActive ? 'text-primary-600 bg-primary-50' : 'text-slate-700 hover:text-primary-600 hover:bg-slate-50'
+                          }`}
+                        suppressHydrationWarning
+                      >
+                        {item.label}
+                        <svg
+                          className={`w-5 h-5 transition-transform ${isServicesOpen ? "rotate-180" : ""}`}
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </button>
+                      {isServicesOpen && (
+                        <ul className={`mt-2 space-y-1 ${dir === 'rtl' ? 'mr-4' : 'ml-4'} max-h-80 overflow-y-auto`}>
+                          {services.map((service) => (
+                            <li key={service.id}>
+                              <Link
+                                href={`/services/${service.slug}`}
+                                className="block text-slate-600 hover:text-primary-600 hover:bg-slate-50 py-2 px-4 rounded-lg transition-colors text-sm"
+                                onClick={() => {
+                                  setIsServicesOpen(false);
+                                  setIsMenuOpen(false);
+                                }}
+                                suppressHydrationWarning
+                              >
+                                {service.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className={`block font-semibold py-3 px-4 rounded-lg transition-colors ${isActive ? 'text-primary-600 bg-primary-50' : 'text-slate-700 hover:text-primary-600 hover:bg-slate-50'
+                        }`}
+                      onClick={() => setIsMenuOpen(false)}
                       suppressHydrationWarning
                     >
                       {item.label}
-                      <svg
-                        className={`w-5 h-5 transition-transform ${isServicesOpen ? "rotate-180" : ""}`}
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </button>
-                    {isServicesOpen && (
-                      <ul className={`mt-2 space-y-1 ${dir === 'rtl' ? 'mr-4' : 'ml-4'} max-h-80 overflow-y-auto`}>
-                        {services.map((service) => (
-                          <li key={service.id}>
-                            <a
-                              href={`/services/${service.slug}`}
-                              className="block text-slate-600 hover:text-primary-600 hover:bg-slate-50 py-2 px-4 rounded-lg transition-colors text-sm"
-                              onClick={() => {
-                                setIsServicesOpen(false);
-                                setIsMenuOpen(false);
-                              }}
-                              suppressHydrationWarning
-                            >
-                              {service.name}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                ) : (
-                  <a
-                    href={item.href}
-                    className="block text-slate-700 hover:text-primary-600 hover:bg-slate-50 font-semibold py-3 px-4 rounded-lg transition-colors"
-                    onClick={() => setIsMenuOpen(false)}
-                    suppressHydrationWarning
-                  >
-                    {item.label}
-                  </a>
-                )}
-              </li>
-            ))}
+                    </Link>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         )}
       </nav>

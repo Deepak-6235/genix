@@ -41,7 +41,7 @@ export const footerTranslations: Record<LanguageCode, {
     copyright: 'جميع الحقوق محفوظة.',
     designedBy: 'برمجة وتصميم ❤️ نوفل سيو',
     logo: 'ركن النخيل',
-    socialMedia: 'تابعنا',
+    socialMedia: 'وسائل التواصل الاجتماعي',
     navItems: {
       home: 'الرئيسية',
       about: 'من نحن',
@@ -71,7 +71,7 @@ export const footerTranslations: Record<LanguageCode, {
     copyright: 'All rights reserved.',
     designedBy: 'Programming and Design ❤️ Noufal SEO',
     logo: 'Rukn Al-Nakheel',
-    socialMedia: 'Follow Us',
+    socialMedia: 'Social Media',
     navItems: {
       home: 'Home',
       about: 'About Us',
@@ -101,7 +101,7 @@ export const footerTranslations: Record<LanguageCode, {
     copyright: 'Todos os direitos reservados.',
     designedBy: 'Programação e Design ❤️ Noufal SEO',
     logo: 'Rukn Al-Nakheel',
-    socialMedia: 'Siga-nos',
+    socialMedia: 'Mídia Social',
     navItems: {
       home: 'Início',
       about: 'Sobre Nós',
@@ -131,7 +131,7 @@ export const footerTranslations: Record<LanguageCode, {
     copyright: '版权所有。',
     designedBy: '编程和设计 ❤️ Noufal SEO',
     logo: '棕榈角',
-    socialMedia: '关注我们',
+    socialMedia: '社交媒体',
     navItems: {
       home: '首页',
       about: '关于我们',
@@ -161,7 +161,7 @@ export const footerTranslations: Record<LanguageCode, {
     copyright: '全著作権所有。',
     designedBy: 'プログラミングとデザイン ❤️ Noufal SEO',
     logo: 'ルクン・アルナキール',
-    socialMedia: 'フォローする',
+    socialMedia: 'ソーシャルメディア',
     navItems: {
       home: 'ホーム',
       about: '私たちについて',
@@ -191,7 +191,7 @@ export const footerTranslations: Record<LanguageCode, {
     copyright: 'Alle Rechte vorbehalten.',
     designedBy: 'Programmierung und Design ❤️ Noufal SEO',
     logo: 'Rukn Al-Nakheel',
-    socialMedia: 'Folge uns',
+    socialMedia: 'Soziale Medien',
     navItems: {
       home: 'Startseite',
       about: 'Über Uns',
@@ -221,7 +221,7 @@ export const footerTranslations: Record<LanguageCode, {
     copyright: 'Tous droits réservés.',
     designedBy: 'Programmation et Design ❤️ Noufal SEO',
     logo: 'Rukn Al-Nakheel',
-    socialMedia: 'Suivez-nous',
+    socialMedia: 'Réseaux Sociaux',
     navItems: {
       home: 'Accueil',
       about: 'À Propos',
