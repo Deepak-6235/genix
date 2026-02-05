@@ -87,7 +87,7 @@ export default function BlogContent() {
         style={{ backgroundImage: "url('/images/blog.jpg')" }}
       >
         {/* Overlay for better text readability */}
-        <div className="absolute inset-0 bg-slate-900/40 z-0"></div>
+        <div className="absolute inset-0 bg-slate-900/50 z-0"></div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-4xl mx-auto">
