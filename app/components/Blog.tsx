@@ -164,10 +164,10 @@ export default function Blog() {
                 slidesPerView: 3,
               },
             }}
-            className="!pt-4 !px-4 !pb-14"
+            className="!pt-12 !px-6 !pb-16"
           >
             {blogs.map((blog) => (
-              <SwiperSlide key={blog.id} className="pt-2 pb-2 !h-auto">
+              <SwiperSlide key={blog.id} className="py-4 px-2 !h-auto">
                 <article
                   className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group h-full flex flex-col"
                 >

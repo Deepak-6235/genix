@@ -119,10 +119,10 @@ export default function Services() {
                 slidesPerView: 3,
               },
             }}
-            className="!pt-4 !px-4 !pb-14"
+            className="!pt-12 !px-6 !pb-16"
           >
             {services.map((service) => (
-              <SwiperSlide key={service.id} className="pt-2 pb-2 !h-auto">
+              <SwiperSlide key={service.id} className="py-4 px-2 !h-auto">
                 <Link
                   href={`/services/${service.slug}`}
                   className="block h-full flex flex-col group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"

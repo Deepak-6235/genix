@@ -38,8 +38,8 @@ export default function AboutUs() {
               {/* Image Content */}
               <div className="relative h-64 sm:h-80 md:h-96 lg:h-[450px] rounded-3xl overflow-hidden shadow-2xl order-first lg:order-last">
                 <Image
-                  src="/images/about-us.jpg"
-                  alt="Rukn Al-Nakheel Office"
+                  src="/images/choose-us.jpg"
+                  alt="Rukn Al-Nakheel Services"
                   fill
                   className="object-cover"
                   priority
