@@ -179,7 +179,6 @@ export default function Blog() {
                       alt={blog.name}
                       fill
                       className="object-cover group-hover:scale-110 transition-transform duration-300"
-                      unoptimized
                     />
                   </div>
 

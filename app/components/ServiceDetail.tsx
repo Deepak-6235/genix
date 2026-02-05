@@ -125,7 +125,6 @@ export default function ServiceDetail({ serviceSlug }: { serviceSlug: string }) 
                   className="object-cover rounded-xl"
                   priority
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  unoptimized
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent rounded-xl pointer-events-none"></div>
               </div>

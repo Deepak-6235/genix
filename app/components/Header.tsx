@@ -21,9 +21,33 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [services, setServices] = useState<Service[]>([]);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const t = useHeaderTranslations();
   const { language, dir } = useLanguage();
   const pathname = usePathname();
+
+  // Handle scroll events for smart header
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY <= 0 || isMenuOpen) {
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Scrolling down & not at the very top
+        setIsVisible(false);
+      } else if (currentScrollY < lastScrollY) {
+        // Scrolling up
+        setIsVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY, isMenuOpen]);
 
   // Fetch services from database
   useEffect(() => {
@@ -52,7 +76,10 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-slate-100" data-aos="fade-down">
+    <header
+      className={`sticky top-0 z-50 bg-white shadow-sm border-b border-slate-100 transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}
+      data-aos="fade-down"
+    >
       <nav className="container mx-auto px-4 sm:px-6 py-2 sm:py-3" suppressHydrationWarning>
         <div className="flex items-center justify-between">
           {/* Logo */}

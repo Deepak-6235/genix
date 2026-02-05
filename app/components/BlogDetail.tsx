@@ -254,7 +254,7 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
                     fill
                     className="object-cover"
                     sizes="(max-width: 1024px) 100vw, 33vw"
-                    unoptimized
+                    priority
                   />
                 </div>
               </aside>
@@ -286,7 +286,6 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
                         fill
                         className="object-cover"
                         sizes="(max-width: 768px) 100vw, 896px"
-                        unoptimized
                       />
                     </div>
                   )}
