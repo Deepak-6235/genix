@@ -11,7 +11,7 @@ export default function FAQ() {
     <section id="faq" className="py-10 sm:py-16 md:py-20 bg-gradient-to-b from-white to-slate-50">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="mb-3">
+          <div className="mb-3" data-aos="fade-up">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-3">
               {t.title}
             </h2>

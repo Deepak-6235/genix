@@ -91,7 +91,7 @@ export default function Testimonials() {
     return (
         <section id="testimonials" className="py-10 sm:py-16 md:py-20 bg-slate-50 overflow-hidden">
             <div className="container mx-auto px-4 sm:px-6">
-                <div className="text-center mb-3">
+                <div className="text-center mb-3" data-aos="fade-up">
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-3">
                         {t.title}
                     </h2>
@@ -100,7 +100,7 @@ export default function Testimonials() {
                     </p>
                 </div>
 
-                <div className="relative group max-w-7xl mx-auto px-10 sm:px-14 md:px-20 lg:px-24">
+                <div className="relative group max-w-7xl mx-auto px-10 sm:px-14 md:px-20 lg:px-24" data-aos="fade-up" data-aos-delay="200">
                     <Swiper
                         modules={[Pagination, Autoplay, Navigation]}
                         spaceBetween={20}

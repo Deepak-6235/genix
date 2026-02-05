@@ -1,48 +1,43 @@
-# Implementation Plan - Section Scroll-Up Button
+# Implementation Plan - Integrate AOS Animation Library
 
-## Goal
-Implement a feature on the homepage where an "up arrow" button appears when the user scrolls past 50% of a specific section. Clicking the button scrolls the user back to the top of **that active section**.
+The user wants to add "Animate On Scroll" (AOS) animations to all components in the application.
+
+## User Review Required
+- None.
 
 ## Proposed Changes
 
-### 1. New Component: `SectionScrollController`
-Create `app/components/SectionScrollController.tsx`.
-- **Logic**:
-    - Use `IntersectionObserver` to track all elements with a specific class (e.g., `section-track`).
-    - Monitor scroll position relative to the active section.
-    - If `scrollTop > sectionHeight / 2`, show the button.
-    - On click, `section.scrollIntoView({ behavior: 'smooth' })`.
-- **UI**:
-    - Fixed position button (bottom-right or similar, but scoped to viewport).
-    - Styling: Rounded, primary color, up arrow icon.
+### Dependencies
+- Install `aos` and `@types/aos`.
 
-### 2. Modify `app/page.tsx`
-- Import `SectionScrollController`.
-- Wrap each main component in a `<section>` or `<div>` with the tracking class/ID.
-- Alternatively, modify each sub-component (`Hero`, `AboutUs`, etc.) to forward a ref or expose a class, but wrapping in `page.tsx` is less invasive.
+### Components
+#### [NEW] [AOSInit.tsx](file:///c:/users/bairuha%20tech/genix/app/components/AOSInit.tsx)
+- Create a client component `AOSInit` to handle `AOS.init()`.
+- This avoids making `layout.tsx` a client component if it isn't already, or keeps the logic clean.
+- Include `import 'aos/dist/aos.css';`
 
-#### Structure in `page.tsx`:
-```tsx
-<SectionScrollController>
-  <section id="hero" className="scroll-section"><Hero /></section>
-  <section id="why-choose-us" className="scroll-section"><WhyChooseUs /></section>
-  // ... and so on
-</SectionScrollController>
-```
-*Refinement*: Instead of a wrapper component logic, `SectionScrollController` can be a sibling that simply looks for `.scroll-section` elements on mount. This avoids nesting hell.
+#### [MODIFY] [layout.tsx](file:///c:/users/bairuha%20tech/genix/app/layout.tsx)
+- Import and include `<AOSInit />` within the `<body>`.
 
-### 3. Styling
-- Ensure sections have `relative` positioning if needed, or just rely on standard flow.
-- Ensure the button z-index is high enough.
+#### [MODIFY] [Header.tsx](file:///c:/users/bairuha%20tech/genix/app/components/Header.tsx)
+- Add `data-aos="fade-down"` to the navbar.
+
+#### [MODIFY] [Hero.tsx] (and other components)
+- Systematically add `data-aos` attributes to main containers and children elements (cards, titles, images).
+- Use `fade-up`, `fade-right`, `fade-left`, `zoom-in` as appropriate.
+- List of components to update:
+    - `Hero`
+    - `AboutUs` / `AboutUsContent`
+    - `WhyChooseUs`
+    - `Services` / `ServicesContent`
+    - `Statistics`
+    - `Testimonials`
+    - `Blog` / `BlogContent`
+    - `Contact` / `ContactContent`
+    - `Footer`
 
 ## Verification Plan
-
 ### Manual Verification
-1. Open the homepage.
-2. Scroll down to the "About Us" section.
-3. Scroll past the halfway point of "About Us".
-4. Verify an "Up Arrow" button appears.
-5. Click the button.
-6. Verify the page scrolls smoothly to the top of "About Us".
-7. Repeat for "Services" and "Blog" sections.
-8. Verify the button disappears when at the top of a section.
+- Run `npm run dev`.
+- Scroll through the homepage and verifying animations trigger correctly.
+- Navigate to inner pages (Services, About, Contact) and verify animations.

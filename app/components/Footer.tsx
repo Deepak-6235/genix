@@ -28,7 +28,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-slate-900 text-white py-4 sm:py-6 md:py-8">
+    <footer className="bg-slate-900 text-white py-4 sm:py-6 md:py-8" data-aos="fade-up">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6 mb-3 sm:mb-4">
           {/* Brand Section */}

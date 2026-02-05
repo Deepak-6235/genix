@@ -95,7 +95,7 @@ export default function AboutUsContent() {
             </nav>
 
             {/* Main Page Title */}
-            <div className="text-center">
+            <div className="text-center" data-aos="fade-up">
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
                 {t.pageTitle}
               </h1>
@@ -116,7 +116,7 @@ export default function AboutUsContent() {
 
             {/* Why Choose Us Section */}
             <div className="mb-16 sm:mb-20 md:mb-24">
-              <div className="text-center mb-3">
+              <div className="text-center mb-3" data-aos="fade-up">
                 <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-tertiary-600 mb-3 leading-tight">
                   {t.whyChooseTitle}
                 </h2>
@@ -124,7 +124,7 @@ export default function AboutUsContent() {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center mb-12">
                 {/* Content */}
-                <div>
+                <div data-aos="fade-right">
                   <p className="text-base sm:text-lg md:text-xl text-slate-600 leading-relaxed mb-6">
                     {t.description1}
                   </p>
@@ -137,7 +137,7 @@ export default function AboutUsContent() {
                 </div>
 
                 {/* Image */}
-                <div className="relative h-64 sm:h-80 md:h-96 rounded-2xl overflow-hidden shadow-lg">
+                <div className="relative h-64 sm:h-80 md:h-96 rounded-2xl overflow-hidden shadow-lg" data-aos="fade-left">
                   <Image
                     src="/images/about-us.webp"
                     alt="About Rukn Al-Nakheel"
@@ -150,7 +150,7 @@ export default function AboutUsContent() {
 
 
             {/* Company Description Section */}
-            <div className="bg-slate-50 rounded-2xl p-8 sm:p-10 md:p-12 lg:p-16 mb-16 sm:mb-20 md:mb-24">
+            <div className="bg-slate-50 rounded-2xl p-8 sm:p-10 md:p-12 lg:p-16 mb-16 sm:mb-20 md:mb-24" data-aos="zoom-in">
               <div className="max-w-4xl mx-auto">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-tertiary-600 mb-3 text-center">
                   {t.companyTitle}
@@ -165,7 +165,7 @@ export default function AboutUsContent() {
 
             {/* Best Services Section */}
             <div className="mb-16 sm:mb-20 md:mb-24">
-              <div className="text-center mb-3">
+              <div className="text-center mb-3" data-aos="fade-up">
                 <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-tertiary-600 mb-3 leading-tight">
                   {t.bestServicesTitle}
                 </h2>

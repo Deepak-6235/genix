@@ -128,7 +128,7 @@ export default function ServicesContent() {
             </nav>
 
             {/* Main Page Title */}
-            <div className="text-center">
+            <div className="text-center" data-aos="fade-up">
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
                 {t.pageTitle}
               </h1>
@@ -161,7 +161,7 @@ export default function ServicesContent() {
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10" data-aos="fade-up" data-aos-delay="200">
                 {services.map((service) => (
                   <div
                     key={service.id}
@@ -214,7 +214,7 @@ export default function ServicesContent() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             {/* Section Header */}
-            <div className="text-center mb-3">
+            <div className="text-center mb-3" data-aos="fade-up">
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-3">
                 {t.reviews.title}
               </h2>
@@ -255,7 +255,7 @@ export default function ServicesContent() {
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8" data-aos="fade-up" data-aos-delay="200">
                 {reviews.map((review, index) => {
                   const colors = [
                     "from-primary-500 to-secondary-500",

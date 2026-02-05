@@ -1,6 +1,15 @@
-# Task: Standardize Spacing on Service Pages
+# Task: Integrate AOS Animation Library
 
-- [x] Identify service detail page components <!-- id: 0 -->
-- [x] Audit and update spacing in `app/services/[slug]/page.tsx` (or equivalent) <!-- id: 1 -->
-- [x] Verify if other service-related components need updates <!-- id: 2 -->
-- [x] Verify changes <!-- id: 3 -->
+- [x] Check/Install `aos` and types <!-- id: 0 -->
+- [x] Initialize AOS (likely in `app/layout.tsx` or new component) <!-- id: 1 -->
+- [x] Implement AOS in main components:
+    - [x] `Header` & `Hero` <!-- id: 2 -->
+    - [x] `AboutUs` / `AboutUsContent` <!-- id: 3 -->
+    - [x] `Services` / `ServicesContent` <!-- id: 4 -->
+    - [x] `WhyChooseUs` <!-- id: 5 -->
+    - [x] `Statistics` <!-- id: 6 -->
+    - [x] `Blog` / `BlogContent` <!-- id: 7 -->
+    - [x] `Testimonials` <!-- id: 8 -->
+    - [x] `Contact` / `ContactContent` <!-- id: 9 -->
+    - [x] `Footer` <!-- id: 10 -->
+- [ ] Verify animations in browser <!-- id: 11 -->

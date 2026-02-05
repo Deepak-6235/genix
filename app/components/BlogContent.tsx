@@ -109,7 +109,7 @@ export default function BlogContent() {
             </nav>
 
             {/* Main Page Title */}
-            <div className="text-center">
+            <div className="text-center" data-aos="fade-up">
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
                 {t.pageTitle}
               </h1>
@@ -143,7 +143,7 @@ export default function BlogContent() {
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 mb-12 sm:mb-16">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 mb-12 sm:mb-16" data-aos="fade-up" data-aos-delay="200">
                 {blogs.map((post) => (
                   <article
                     key={post.id}

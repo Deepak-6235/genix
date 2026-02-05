@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useHeroTranslations } from "@/hooks/useTranslations";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -25,6 +25,65 @@ interface StatisticData {
   suffix: string | null;
   color: string | null;
   order: number;
+}
+
+// CountUp Component
+function CountUp({ end, duration = 2000, suffix = "" }: { end: number; duration?: number; suffix?: string }) {
+  const [count, setCount] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    let startTime: number | null = null;
+    let animationFrameId: number;
+
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = timestamp - startTime;
+      const percentage = Math.min(progress / duration, 1);
+
+      // Easing function for smooth animation
+      const easeOutQuart = (x: number): number => 1 - Math.pow(1 - x, 4);
+
+      setCount(Math.floor(easeOutQuart(percentage) * end));
+
+      if (progress < duration) {
+        animationFrameId = requestAnimationFrame(animate);
+      } else {
+        setCount(end); // Ensure final value is exact
+      }
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [isVisible, end, duration]);
+
+  return (
+    <span ref={ref}>
+      {count}{suffix}
+    </span>
+  );
 }
 
 export default function Statistics({ variant = "light", className = "" }: StatisticsProps) {
@@ -70,38 +129,14 @@ export default function Statistics({ variant = "light", className = "" }: Statis
 
   // Map database keys to colors based on variant
   const getColorForKey = (key: string, dbColor: string | null) => {
-    if (variant === "dark") {
-      switch (key) {
-        case 'years_experience':
-          return "text-primary-500";
-        case 'satisfied_customers':
-          return "text-success-500";
-        case 'houses':
-          return "text-accent-purple-500";
-        case 'work_team':
-          return "text-accent-orange-500";
-        default:
-          return "text-primary-500";
-      }
-    } else {
-      switch (key) {
-        case 'years_experience':
-          return "text-primary-600";
-        case 'satisfied_customers':
-          return "text-success-600";
-        case 'houses':
-          return "text-accent-purple-600";
-        case 'work_team':
-          return "text-accent-orange-600";
-        default:
-          return "text-primary-600";
-      }
-    }
+    // User requested all numbers to be green
+    return "text-primary-600";
   };
 
   // Build stats array from database data
   const stats = statistics.map(stat => ({
-    number: `${stat.value}${stat.suffix || ''}`,
+    value: stat.value,
+    suffix: stat.suffix || '',
     label: getLabelForKey(stat.key),
     numberColor: getColorForKey(stat.key, stat.color),
     color: getColorForKey(stat.key, stat.color),
@@ -133,10 +168,10 @@ export default function Statistics({ variant = "light", className = "" }: Statis
         {/* Overlay for better readability */}
         <div className="absolute inset-0 bg-slate-900/50"></div>
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10" data-aos="fade-up">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 md:gap-12 max-w-6xl mx-auto">
             {stats.map((stat, index) => {
-              const darkStat = stat as { number: string; label: string; numberColor: string };
+              const darkStat = stat as { value: number; suffix: string; label: string; numberColor: string };
               return (
                 <div
                   key={index}
@@ -144,7 +179,7 @@ export default function Statistics({ variant = "light", className = "" }: Statis
                 >
                   {/* Number with Plus Sign (colored) */}
                   <div className={`${darkStat.numberColor} text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2`}>
-                    {darkStat.number}
+                    <CountUp end={darkStat.value} suffix={darkStat.suffix} />
                   </div>
 
                   {/* Label */}
@@ -166,15 +201,17 @@ export default function Statistics({ variant = "light", className = "" }: Statis
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 max-w-5xl mx-auto">
           {stats.map((stat, index) => {
-            const lightStat = stat as { number: string; label: string; color: string };
+            const lightStat = stat as { value: number; suffix: string; label: string; color: string };
             return (
               <div
                 key={index}
                 className="bg-white p-6 sm:p-8 md:p-10 rounded-2xl shadow-md hover:shadow-xl text-center transition-all duration-300 border border-slate-100 hover:-translate-y-1"
+                data-aos="zoom-in"
+                data-aos-delay={index * 100}
               >
                 {/* Number */}
                 <div className={`${lightStat.color} text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 sm:mb-3`}>
-                  {lightStat.number}
+                  <CountUp end={lightStat.value} suffix={lightStat.suffix} />
                 </div>
 
                 {/* Label */}
