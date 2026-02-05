@@ -142,7 +142,7 @@ export default function Blog() {
           </p>
         </div>
 
-        <div className="relative group">
+        <div className="relative group/swiper">
           <Swiper
             modules={[Pagination, Autoplay, Navigation]}
             spaceBetween={30}
@@ -201,9 +201,10 @@ export default function Blog() {
 
                     <Link
                       href={`/blog/${blog.slug}`}
-                      className={`text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors ${dir === 'rtl' ? '' : ''}`}
+                      className="text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors flex items-center gap-1"
                     >
-                      {t.readMore} →
+                      {t.readMore}
+                      <span className={`inline-block transition-transform duration-300 group-hover:${dir === 'rtl' ? '-translate-x-1' : 'translate-x-1'}`}>→</span>
                     </Link>
                   </div>
                 </article>
@@ -213,12 +214,12 @@ export default function Blog() {
 
           {/* Navigation Arrows */}
           <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 z-20 flex justify-between pointer-events-none px-2 sm:-mx-4">
-            <button className="blog-button-prev p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-0 group-hover:opacity-100 disabled:opacity-0 rtl:rotate-180">
+            <button className="blog-button-prev p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-0 group-hover/swiper:opacity-100 disabled:opacity-0 rtl:rotate-180">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
-            <button className="blog-button-next p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-0 group-hover:opacity-100 disabled:opacity-0 rtl:rotate-180">
+            <button className="blog-button-next p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-0 group-hover/swiper:opacity-100 disabled:opacity-0 rtl:rotate-180">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>

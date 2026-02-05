@@ -126,9 +126,12 @@ export default function Statistics({ variant = "light", className = "" }: Statis
 
   if (variant === "dark") {
     return (
-      <section className={`py-12 sm:py-16 md:py-20 relative overflow-hidden ${className}`}>
-        {/* Plain Dark Background */}
-        <div className="absolute inset-0 bg-slate-900"></div>
+      <section
+        className={`py-12 sm:py-16 md:py-20 relative overflow-hidden bg-cover bg-center bg-no-repeat ${className}`}
+        style={{ backgroundImage: "url('/images/hero-bg.jpg')" }}
+      >
+        {/* Overlay for better readability */}
+        <div className="absolute inset-0 bg-slate-900/50"></div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 md:gap-12 max-w-6xl mx-auto">

@@ -187,9 +187,10 @@ export default function BlogContent() {
                       {/* Read More Link */}
                       <Link
                         href={`/blog/${post.slug}`}
-                        className={`text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors ${dir === 'rtl' ? '' : ''}`}
+                        className="text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors flex items-center gap-1"
                       >
-                        {t.readMore} →
+                        {t.readMore}
+                        <span className={`inline-block transition-transform duration-300 group-hover:${dir === 'rtl' ? '-translate-x-1' : 'translate-x-1'}`}>→</span>
                       </Link>
                     </div>
                   </article>

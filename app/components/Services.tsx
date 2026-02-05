@@ -97,7 +97,7 @@ export default function Services() {
           </p>
         </div>
 
-        <div className="relative group">
+        <div className="relative group/swiper">
           <Swiper
             modules={[Pagination, Autoplay, Navigation]}
             spaceBetween={30}
@@ -152,9 +152,10 @@ export default function Services() {
 
                     {/* Learn More Button */}
                     <div
-                      className={`text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors ${dir === 'rtl' ? '' : ''}`}
+                      className="text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors flex items-center gap-1"
                     >
-                      {t.cta} →
+                      {t.cta}
+                      <span className={`inline-block transition-transform duration-300 group-hover:${dir === 'rtl' ? '-translate-x-1' : 'translate-x-1'}`}>→</span>
                     </div>
                   </div>
                 </Link>
@@ -164,12 +165,12 @@ export default function Services() {
 
           {/* Navigation Arrows */}
           <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 z-20 flex justify-between pointer-events-none px-2 sm:-mx-4">
-            <button className="services-button-prev p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-0 group-hover:opacity-100 disabled:opacity-0 rtl:rotate-180">
+            <button className="services-button-prev p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-0 group-hover/swiper:opacity-100 disabled:opacity-0 rtl:rotate-180">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
-            <button className="services-button-next p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-0 group-hover:opacity-100 disabled:opacity-0 rtl:rotate-180">
+            <button className="services-button-next p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-0 group-hover/swiper:opacity-100 disabled:opacity-0 rtl:rotate-180">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>

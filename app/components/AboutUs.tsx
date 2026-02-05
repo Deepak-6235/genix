@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useAboutUsTranslations } from "@/hooks/useTranslations";
 
 export default function AboutUs() {
@@ -17,48 +18,44 @@ export default function AboutUs() {
             </p>
           </div>
 
-          {/* Single White Card with All Information */}
-          <div className="bg-white rounded-2xl p-6 sm:p-8 md:p-10 lg:p-12 shadow-xl border border-slate-100">
-            {/* Features Section */}
-            <div className="mb-6 sm:mb-8 md:mb-10">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-                <div className="bg-slate-50 p-4 sm:p-5 md:p-6 rounded-xl text-center border border-slate-200">
-                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-tertiary-600">{t.features.prices}</div>
-                  <div className="text-sm sm:text-base text-slate-600">{t.features.pricesSub}</div>
-                </div>
-                <div className="bg-slate-50 p-4 sm:p-5 md:p-6 rounded-xl text-center border border-slate-200">
-                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-tertiary-600">{t.features.warranty}</div>
-                  <div className="text-sm sm:text-base text-slate-600">{t.features.warrantySub}</div>
-                </div>
-                <div className="bg-slate-50 p-4 sm:p-5 md:p-6 rounded-xl text-center border border-slate-200">
-                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-tertiary-600">{t.features.chooseTime}</div>
-                  <div className="text-sm sm:text-base text-slate-600">{t.features.chooseTimeSub}</div>
-                </div>
+
+          {/* Why Choose Our Services Section */}
+          <div className="mb-12 sm:mb-16 md:mb-20">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              {/* Text Content */}
+              <div>
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 text-tertiary-600">
+                  {t.whyChoose}
+                </h3>
+                <p className="text-base sm:text-lg md:text-xl leading-relaxed mb-4 sm:mb-6 text-slate-600">
+                  {t.description1}
+                </p>
+                <p className="text-base sm:text-lg md:text-xl leading-relaxed text-slate-600">
+                  {t.description2}
+                </p>
+              </div>
+
+              {/* Image Content */}
+              <div className="relative h-64 sm:h-80 md:h-96 lg:h-[450px] rounded-3xl overflow-hidden shadow-2xl order-first lg:order-last">
+                <Image
+                  src="/images/about-us.jpg"
+                  alt="Rukn Al-Nakheel Office"
+                  fill
+                  className="object-cover"
+                  priority
+                />
               </div>
             </div>
+          </div>
 
-            {/* Why Choose Our Services Section */}
-            <div className="mb-6 sm:mb-8 md:mb-10">
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 text-tertiary-600">
-                {t.whyChoose}
-              </h3>
-              <p className="text-base sm:text-lg md:text-xl leading-relaxed mb-4 sm:mb-6 text-slate-600">
-                {t.description1}
-              </p>
-              <p className="text-base sm:text-lg md:text-xl leading-relaxed text-slate-600">
-                {t.description2}
-              </p>
-            </div>
-
-            {/* Mission Statement */}
-            <div className="border-t border-slate-200 pt-6 sm:pt-8">
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 text-center text-tertiary-600">
-                {t.missionTitle}
-              </h3>
-              <p className="text-base sm:text-lg md:text-xl leading-relaxed text-center text-slate-600">
-                {t.missionText}
-              </p>
-            </div>
+          {/* Mission Statement */}
+          <div className="max-w-4xl mx-auto text-center pt-10 sm:pt-14 mt-10 sm:mt-14">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 text-tertiary-600">
+              {t.missionTitle}
+            </h3>
+            <p className="text-base sm:text-lg md:text-xl leading-relaxed text-slate-600 font-medium">
+              {t.missionText}
+            </p>
           </div>
         </div>
       </div>

@@ -47,7 +47,7 @@ interface Review {
 
 export default function ServicesContent() {
   const t = useServicesContentTranslations();
-  const { language } = useLanguage();
+  const { language, dir } = useLanguage();
   const [services, setServices] = useState<Service[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
@@ -193,9 +193,10 @@ export default function ServicesContent() {
                       {/* Read More Button */}
                       <Link
                         href={`/services/${service.slug}`}
-                        className="text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors"
+                        className="text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors flex items-center gap-1"
                       >
-                        {t.readMore} →
+                        {t.readMore}
+                        <span className={`inline-block transition-transform duration-300 group-hover:${dir === 'rtl' ? '-translate-x-1' : 'translate-x-1'}`}>→</span>
                       </Link>
                     </div>
                   </div>
