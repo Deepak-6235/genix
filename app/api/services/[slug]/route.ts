@@ -71,10 +71,10 @@ export async function GET(
 // PUT update service in all languages
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { id } = await params;
+    const { slug: id } = await params;
     // Verify authentication
     const isAuth = await verifyAuth(request);
     if (!isAuth) {
@@ -152,10 +152,10 @@ export async function PUT(
 // DELETE service (all language versions)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { id } = await params;
+    const { slug: id } = await params;
     // Verify authentication
     const isAuth = await verifyAuth(request);
     if (!isAuth) {

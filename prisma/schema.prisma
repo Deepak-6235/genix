@@ -21,6 +21,7 @@ model Language {
   // Relations
   services              Service[]               @relation("ServiceLanguage")
   blogs                 Blog[]                  @relation("BlogLanguage")
+  detailedServices      DetailedService[]       @relation("DetailedServiceLanguage")
   detailedBlogs         DetailedBlog[]          @relation("DetailedBlogLanguage")
   faqs                  FAQ[]                   @relation("FAQLanguage")
   reviews               Review[]                @relation("ReviewLanguage")
@@ -66,6 +67,29 @@ model Service {
   // Unique constraint: same slug can have multiple languages
   @@unique([slug, languageId], name: "slug_languageId")
   @@map("services")
+}
+
+model DetailedService {
+  id          String   @id @default(cuid())
+  serviceSlug String   // Use slug instead of serviceId - same across all languages
+  languageId  String   // Foreign key to Language table
+  language    Language @relation("DetailedServiceLanguage", fields: [languageId], references: [id])
+
+  // Content fields - multiple title+subtitle+description sections for each service
+  title       String   @db.Text
+  subtitle    String   @db.Text
+  fullDescription String @db.Text
+  imageUrl    String?  // Optional image for this section
+
+  // Meta
+  sectionOrder Int      @default(0) // Order within a service
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Unique constraint: each detailed service section must be unique per service slug, language, and order
+  @@unique([serviceSlug, languageId, sectionOrder], name: "service_slug_language_order")
+  @@index([serviceSlug])
+  @@map("detailed_services")
 }
 
 model Blog {

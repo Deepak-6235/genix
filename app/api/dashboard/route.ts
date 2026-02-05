@@ -70,7 +70,7 @@ export async function GET(request: NextRequest) {
       // Counts
       prisma.service.count({ where: { languageId: enLangId } }),
       prisma.blog.count({ where: { languageId: enLangId } }),
-      prisma.review.count(),
+      prisma.review.count({where:{languageId:enLangId}}),
       prisma.fAQ.count({ where: { languageId: enLangId } }),
       prisma.statistic.count(),
     ]);

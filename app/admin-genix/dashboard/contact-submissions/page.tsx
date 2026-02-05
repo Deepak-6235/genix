@@ -125,7 +125,7 @@ export default function ContactSubmissionsPage() {
   const [submissions, setSubmissions] = useState<ContactSubmission[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'unread' | 'read'>('all');
-  const { toast, showToast, hideToast } = useToast();
+  const { toast, showToast, closeToast } = useToast();
 
   const fetchSubmissions = async () => {
     if (!adminLanguage) return; // Wait for language to be set
@@ -278,7 +278,7 @@ export default function ContactSubmissionsPage() {
         <Toast
           message={toast.message}
           type={toast.type}
-          onClose={hideToast}
+          onClose={closeToast}
         />
       )}
     </div>

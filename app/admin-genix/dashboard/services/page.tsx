@@ -143,6 +143,17 @@ export default function ServicesPage() {
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
+  // Sections state
+  const [sections, setSections] = useState<Array<{ title: string; subtitle: string; fullDescription: string; imageUrl?: string }>>([]);
+  const [showSectionForm, setShowSectionForm] = useState(false);
+  const [sectionFormData, setSectionFormData] = useState({
+    title: '',
+    subtitle: '',
+    fullDescription: '',
+  });
+  const [sectionImageFile, setSectionImageFile] = useState<File | null>(null);
+  const [sectionImagePreview, setSectionImagePreview] = useState<string>('');
+
   // Character limits for each field
   const CHAR_LIMITS = {
     name: 50,
@@ -150,6 +161,12 @@ export default function ServicesPage() {
     subtitle: 100,
     shortDescription: 300,
     fullDescription: 1000,
+  };
+
+  const DETAIL_CHAR_LIMITS = {
+    title: 100,
+    subtitle: 100,
+    fullDescription: 2000,
   };
 
   const fetchServices = async () => {
@@ -213,6 +230,77 @@ export default function ServicesPage() {
     }
   };
 
+  const handleSectionImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSectionImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSectionImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const uploadSectionImage = async (file: File): Promise<string | null> => {
+    try {
+      const formDataUpload = new FormData();
+      formDataUpload.append('image', file);
+
+      const response = await fetch('/api/upload/service-image', {
+        method: 'POST',
+        body: formDataUpload,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || 'Failed to upload image');
+      }
+
+      return data.imageUrl;
+    } catch (error) {
+      console.error('Image upload error:', error);
+      setError(error instanceof Error ? error.message : 'Failed to upload image');
+      return null;
+    }
+  };
+
+  const addSection = async () => {
+    if (!sectionFormData.title || !sectionFormData.subtitle || !sectionFormData.fullDescription) {
+      setError('Section title, subtitle, and description are required');
+      return;
+    }
+
+    let imageUrl = '';
+    if (sectionImageFile) {
+      const uploadedUrl = await uploadSectionImage(sectionImageFile);
+      if (!uploadedUrl) return;
+      imageUrl = uploadedUrl;
+    }
+
+    setSections([
+      ...sections,
+      {
+        title: sectionFormData.title,
+        subtitle: sectionFormData.subtitle,
+        fullDescription: sectionFormData.fullDescription,
+        imageUrl,
+      },
+    ]);
+
+    // Reset section form
+    setSectionFormData({ title: '', subtitle: '', fullDescription: '' });
+    setSectionImageFile(null);
+    setSectionImagePreview('');
+    setShowSectionForm(false);
+    setError('');
+  };
+
+  const removeSection = (index: number) => {
+    setSections(sections.filter((_, i) => i !== index));
+  };
+
   const openModal = (service?: Service) => {
     if (service) {
       setEditingService(service);
@@ -241,6 +329,7 @@ export default function ServicesPage() {
         fullDescription: '',
       });
       setImagePreview('');
+      setSections([]);
     }
     setImageFile(null);
     setActiveTab('basic');
@@ -256,6 +345,8 @@ export default function ServicesPage() {
     setFieldErrors({});
     setImageFile(null);
     setImagePreview('');
+    setSections([]);
+    setShowSectionForm(false);
   };
 
   const generateSlug = (title: string): string => {
@@ -376,6 +467,41 @@ export default function ServicesPage() {
       }
 
       if (data.success) {
+        // If creating new service and have sections, save them
+        if (!editingService && sections.length > 0) {
+          setError('Creating sections...');
+
+          for (let i = 0; i < sections.length; i++) {
+            const section = sections[i];
+            const sectionEnglishContent = {
+              title: section.title,
+              subtitle: section.subtitle,
+              fullDescription: section.fullDescription,
+            };
+
+            const targetLanguages: LanguageCode[] = ['ar', 'pt', 'zh', 'ja'];
+            const sectionTranslations = await translateContent(sectionEnglishContent, targetLanguages);
+
+            const sectionResponse = await fetch(`/api/services/${encodeURIComponent(formData.slug)}/detailed`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                order: i,
+                imageUrl: section.imageUrl || null,
+                translations: sectionTranslations,
+              }),
+            });
+
+            const sectionData = await sectionResponse.json();
+
+            if (!sectionResponse.ok || !sectionData.success) {
+              console.warn(`Warning: Section ${i} creation failed, but service was created`);
+            }
+          }
+
+          setError('');
+        }
+
         await fetchServices();
         closeModal();
         showToast(editingService ? 'Service updated successfully' : 'Service created successfully', 'success');
@@ -652,6 +778,152 @@ export default function ServicesPage() {
                   )}
                 </div>
               </div>
+
+              {/* Sections Tab - Only show when not editing */}
+              {!editingService && (
+                <div className="border-t border-gray-200 pt-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h4 className="text-lg font-bold text-gray-900">Add Service Sections (Optional)</h4>
+                    {!showSectionForm && (
+                      <button
+                        type="button"
+                        onClick={() => setShowSectionForm(true)}
+                        className="px-3 py-1.5 bg-accent-purple-600 text-white rounded-lg hover:bg-accent-purple-700 transition text-sm font-medium"
+                      >
+                        + Add Section
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Section Form */}
+                  {showSectionForm && (
+                    <div className="border border-gray-200 rounded-lg p-4 mb-4 space-y-3">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Section Title
+                          <span className="ml-2 text-xs text-gray-500">
+                            {sectionFormData.title.length}/{DETAIL_CHAR_LIMITS.title}
+                          </span>
+                        </label>
+                        <input
+                          type="text"
+                          maxLength={DETAIL_CHAR_LIMITS.title}
+                          value={sectionFormData.title}
+                          onChange={(e) => setSectionFormData({ ...sectionFormData, title: e.target.value })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-accent-purple-500 outline-none"
+                          placeholder="Section title"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Section Subtitle
+                          <span className="ml-2 text-xs text-gray-500">
+                            {sectionFormData.subtitle.length}/{DETAIL_CHAR_LIMITS.subtitle}
+                          </span>
+                        </label>
+                        <input
+                          type="text"
+                          maxLength={DETAIL_CHAR_LIMITS.subtitle}
+                          value={sectionFormData.subtitle}
+                          onChange={(e) => setSectionFormData({ ...sectionFormData, subtitle: e.target.value })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-accent-purple-500 outline-none"
+                          placeholder="Section subtitle"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Section Description
+                          <span className="ml-2 text-xs text-gray-500">
+                            {sectionFormData.fullDescription.length}/{DETAIL_CHAR_LIMITS.fullDescription}
+                          </span>
+                        </label>
+                        <textarea
+                          rows={4}
+                          maxLength={DETAIL_CHAR_LIMITS.fullDescription}
+                          value={sectionFormData.fullDescription}
+                          onChange={(e) => setSectionFormData({ ...sectionFormData, fullDescription: e.target.value })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-accent-purple-500 outline-none"
+                          placeholder="Section description"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Section Image (Optional)
+                        </label>
+                        {sectionImagePreview && (
+                          <div className="relative w-24 h-24 rounded-lg overflow-hidden border-2 border-gray-200 mb-2">
+                            <Image
+                              src={sectionImagePreview}
+                              alt="Preview"
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        )}
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleSectionImageChange}
+                          className="block w-full text-sm text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:font-medium file:bg-accent-purple-50 file:text-accent-purple-700"
+                        />
+                      </div>
+
+                      <div className="flex gap-2 pt-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            addSection();
+                          }}
+                          className="flex-1 px-3 py-2 bg-accent-purple-600 text-white rounded-lg hover:bg-accent-purple-700 transition text-sm font-medium"
+                        >
+                          Add Section
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowSectionForm(false);
+                            setSectionFormData({ title: '', subtitle: '', fullDescription: '' });
+                            setSectionImageFile(null);
+                            setSectionImagePreview('');
+                          }}
+                          className="flex-1 px-3 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition text-sm font-medium"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Sections List */}
+                  {sections.length > 0 && (
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-gray-700 mb-2">
+                        Sections to add ({sections.length}):
+                      </p>
+                      {sections.map((section, index) => (
+                        <div key={index} className="border border-gray-200 rounded-lg p-3 flex items-start justify-between bg-gray-50">
+                          <div className="flex-1">
+                            <h5 className="font-medium text-gray-900 text-sm">{section.title}</h5>
+                            <p className="text-xs text-gray-600 mt-0.5 line-clamp-2">{section.subtitle}</p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => removeSection(index)}
+                            className="ml-3 text-error-600 hover:text-error-700 transition"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
 
               {error && (
                 <div className="bg-error-50 border border-error-200 text-error-700 px-4 py-3 rounded-lg text-sm">
