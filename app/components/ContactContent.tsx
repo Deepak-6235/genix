@@ -473,21 +473,28 @@ export default function ContactContent() {
                   >
                     {t.form.services}
                   </label>
-                  <select
-                    id="service"
-                    name="service"
-                    value={formData.service}
-                    onChange={handleChange}
-                    className={`w-full px-4 py-3 rounded-lg border ${errors.service ? "border-red-500" : "border-slate-300"
-                      } focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-slate-900 bg-white`}
-                  >
-                    <option value="">{servicesLoading ? 'Loading services...' : t.form.chooseServices}</option>
-                    {services.map((service) => (
-                      <option key={service.id} value={service.name}>
-                        {service.name}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="relative">
+                    <select
+                      id="service"
+                      name="service"
+                      value={formData.service}
+                      onChange={handleChange}
+                      className={`w-full px-4 py-3 rounded-lg border ${errors.service ? "border-red-500" : "border-slate-300"
+                        } focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-slate-900 bg-white appearance-none ltr:pr-10 rtl:pl-10`}
+                    >
+                      <option value="">{servicesLoading ? 'Loading services...' : t.form.chooseServices}</option>
+                      {services.map((service) => (
+                        <option key={service.id} value={service.name}>
+                          {service.name}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="absolute inset-y-0 right-0 rtl:right-auto rtl:left-0 flex items-center px-3 pointer-events-none text-slate-500">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </div>
                   {errors.service && (
                     <p className="text-red-500 text-sm mt-1">{errors.service}</p>
                   )}
