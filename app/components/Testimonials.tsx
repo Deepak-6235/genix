@@ -52,8 +52,8 @@ export default function Testimonials() {
         return (
             <section id="testimonials" className="py-10 sm:py-16 md:py-20 bg-slate-50 overflow-hidden">
                 <div className="container mx-auto px-4 sm:px-6">
-                    <div className="text-center mb-6 sm:mb-8 md:mb-12">
-                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-4 sm:mb-6">
+                    <div className="text-center mb-3">
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-3">
                             {t.title}
                         </h2>
                         <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
@@ -91,8 +91,8 @@ export default function Testimonials() {
     return (
         <section id="testimonials" className="py-10 sm:py-16 md:py-20 bg-slate-50 overflow-hidden">
             <div className="container mx-auto px-4 sm:px-6">
-                <div className="text-center mb-6 sm:mb-8 md:mb-12">
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-4 sm:mb-6">
+                <div className="text-center mb-3">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-3">
                         {t.title}
                     </h2>
                     <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">

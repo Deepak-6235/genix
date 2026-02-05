@@ -59,8 +59,8 @@ export default function Services() {
     return (
       <section id="services" className="py-10 sm:py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="text-center mb-6 sm:mb-8 md:mb-12">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-4 sm:mb-6">
+          <div className="text-center mb-3">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-3">
               {t.title}
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
@@ -88,8 +88,8 @@ export default function Services() {
   return (
     <section id="services" className="py-10 sm:py-16 md:py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6">
-        <div className="text-center mb-6 sm:mb-8 md:mb-12">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-4 sm:mb-6">
+        <div className="text-center mb-3">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-3">
             {t.title}
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
@@ -120,7 +120,7 @@ export default function Services() {
                 slidesPerView: 3,
               },
             }}
-            className="!pt-12 !pb-16"
+            className="!pt-4 !pb-16"
           >
             {services.map((service) => (
               <SwiperSlide key={service.id} className="py-4 px-2 !h-auto">
@@ -142,7 +142,7 @@ export default function Services() {
 
                   <div className="p-4 sm:p-6 md:p-8 flex-1 flex flex-col">
                     {/* Title */}
-                    <h3 className="text-lg sm:text-xl font-bold text-tertiary-600 mb-2 sm:mb-3 line-clamp-2">
+                    <h3 className="text-lg sm:text-xl font-bold text-tertiary-600 mb-3 line-clamp-2">
                       {service.name}
                     </h3>
 

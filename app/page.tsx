@@ -10,18 +10,34 @@ import WhyChooseUs from "./components/WhyChooseUs";
 import Testimonials from "./components/Testimonials";
 import Blog from "./components/Blog";
 import Footer from "./components/Footer";
+import SectionScrollController from "./components/SectionScrollController";
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <Hero />
-      <WhyChooseUs />
-      <AboutUs />
-      <Services />
-      <Statistics variant="dark" />
-      <Testimonials />
-      <Blog />
+      <SectionScrollController />
+      <div className="scroll-section relative">
+        <Hero />
+      </div>
+      <div className="scroll-section relative">
+        <WhyChooseUs />
+      </div>
+      <div className="scroll-section relative">
+        <AboutUs />
+      </div>
+      <div className="scroll-section relative">
+        <Services />
+      </div>
+      <div className="scroll-section relative">
+        <Statistics variant="dark" />
+      </div>
+      <div className="scroll-section relative">
+        <Testimonials />
+      </div>
+      <div className="scroll-section relative">
+        <Blog />
+      </div>
       <Footer />
     </div>
   );

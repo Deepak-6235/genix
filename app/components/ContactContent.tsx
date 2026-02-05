@@ -396,7 +396,7 @@ export default function ContactContent() {
 
             {/* Contact Form */}
             <div className="bg-white rounded-xl p-6 sm:p-8 md:p-10 shadow-lg border border-slate-100 mb-12 sm:mb-16">
-              <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-6 sm:mb-8 text-center">
+              <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-3 text-center">
                 {t.formTitle}
               </h3>
               <form onSubmit={handleSubmit} className="space-y-6">

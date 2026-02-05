@@ -214,8 +214,8 @@ export default function ServicesContent() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             {/* Section Header */}
-            <div className="text-center mb-12 sm:mb-16 md:mb-20">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
+            <div className="text-center mb-3">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-3">
                 {t.reviews.title}
               </h2>
               <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto px-4">
