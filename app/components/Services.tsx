@@ -156,7 +156,7 @@ export default function Services() {
                       className="text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors flex items-center gap-1"
                     >
                       {t.cta}
-                      <span className={`inline-block transition-transform duration-300 group-hover:${dir === 'rtl' ? '-translate-x-1' : 'translate-x-1'}`}>→</span>
+                      <span className="inline-block transition-transform duration-300 rtl:rotate-180 group-hover:translate-x-1 rtl:group-hover:-translate-x-1">→</span>
                     </div>
                   </div>
                 </Link>

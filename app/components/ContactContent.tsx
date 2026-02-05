@@ -198,7 +198,7 @@ export default function ContactContent() {
           ============================================ */}
       <section
         className="relative bg-cover bg-center bg-no-repeat min-h-[calc(100vh-5rem)] flex items-center py-20 overflow-hidden"
-        style={{ backgroundImage: "url('/images/contact-us.jpg')" }}
+        style={{ backgroundImage: "url('/images/contact-us.webp')" }}
       >
         {/* Overlay for better text readability */}
         <div className="absolute inset-0 bg-slate-900/50 z-0"></div>

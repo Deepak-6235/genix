@@ -23,7 +23,12 @@ const imagesToCompress = [
 async function compressImage(filename) {
     const inputPath = path.join(imagesDir, filename);
     const backupPath = path.join(backupDir, filename);
-    const tempPath = path.join(imagesDir, `temp_${filename}`);
+
+    // Determine new filename with .webp extension
+    const filenameWithoutExt = filename.replace(/\.[^/.]+$/, "");
+    const webpFilename = `${filenameWithoutExt}.webp`;
+    const tempPath = path.join(imagesDir, `temp_${webpFilename}`);
+    const finalPath = path.join(imagesDir, webpFilename);
 
     try {
         // Check if file exists
@@ -42,11 +47,13 @@ async function compressImage(filename) {
             console.log(`📦 Backed up ${filename}`);
         }
 
-        // Compress image with sharp
-        await sharp(inputPath)
-            .jpeg({
-                quality: 82,
-                progressive: true,
+        // Read input file to buffer first to avoid file locking issues on Windows
+        const inputBuffer = await fs.readFile(inputPath);
+
+        // Compress image with sharp to WebP
+        await sharp(inputBuffer)
+            .webp({
+                quality: 80,
             })
             .toFile(tempPath);
 
@@ -55,11 +62,13 @@ async function compressImage(filename) {
         const compressedSizeMB = (compressedStats.size / (1024 * 1024)).toFixed(2);
         const reduction = (((originalStats.size - compressedStats.size) / originalStats.size) * 100).toFixed(1);
 
-        // Replace original with compressed version
-        await fs.unlink(inputPath);
-        await fs.rename(tempPath, inputPath);
+        // Replace original with compressed version (delete old, rename new)
+        if (inputPath !== finalPath) {
+            await fs.unlink(inputPath);
+        }
+        await fs.rename(tempPath, finalPath);
 
-        console.log(`✅ ${filename}: ${originalSizeMB}MB → ${compressedSizeMB}MB (${reduction}% reduction)`);
+        console.log(`✅ ${filename} -> ${webpFilename}: ${originalSizeMB}MB → ${compressedSizeMB}MB (${reduction}% reduction)`);
     } catch (error) {
         console.error(`❌ Error compressing ${filename}:`, error.message);
         // Clean up temp file if it exists

@@ -12,7 +12,8 @@ if (!imageName) {
 
 const imagesDir = path.join(__dirname, '..', 'public', 'images');
 const inputPath = path.join(imagesDir, imageName);
-const outputPath = path.join(imagesDir, `compressed_${imageName}`);
+const outputName = imageName.replace(/\.[^/.]+$/, "") + ".webp";
+const outputPath = path.join(imagesDir, `compressed_${outputName}`);
 
 async function compressImage() {
     try {
@@ -28,9 +29,8 @@ async function compressImage() {
         console.log(`Original size: ${originalSizeMB}MB`);
 
         await sharp(inputPath)
-            .jpeg({
-                quality: 82,
-                progressive: true,
+            .webp({
+                quality: 80,
             })
             .toFile(outputPath);
 
@@ -40,7 +40,7 @@ async function compressImage() {
 
         console.log(`Compressed size: ${compressedSizeMB}MB`);
         console.log(`Reduction: ${reduction}%`);
-        console.log(`\nCompressed file saved as: compressed_${imageName}`);
+        console.log(`\nCompressed file saved as: compressed_${outputName}`);
         console.log('To replace the original, rename or delete the old file and rename this one.');
 
     } catch (error) {

@@ -6,10 +6,10 @@ import * as path from 'path';
 const serviceImages: Record<string, string> = {
   'pest-control': 'service-1.jpg',
   'disinfection-against-viruses': 'service-2.jpg',
-  'paints-and-decorations': 'service-3.jpg',
+  'paints-and-decorations': 'service-3.webp',
   'air-conditioner-maintenance': 'service-4.jpg',
-  'interior-exterior-restoration': 'service-5.jpg',
-  'swimming-pools-construction-maintenance': 'service-6.jpg',
+  'interior-exterior-restoration': 'service-5.webp',
+  'swimming-pools-construction-maintenance': 'service-6.webp',
   'waterfalls-and-fountains': 'service-7.jpg',
 };
 

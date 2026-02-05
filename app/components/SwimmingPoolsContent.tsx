@@ -58,7 +58,7 @@ export default function SwimmingPoolsContent() {
               {/* Right Side: Service Image */}
               <div className="order-1 lg:order-2 relative w-full min-h-[256px] h-64 sm:h-80 md:h-96 lg:h-[500px] rounded-xl overflow-hidden shadow-lg bg-slate-200">
                 <Image
-                  src="/images/service-6.jpg"
+                  src="/images/service-6.webp"
                   alt={service.title}
                   fill
                   className="object-cover rounded-xl"

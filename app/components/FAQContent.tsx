@@ -129,7 +129,7 @@ export default function FAQContent() {
     <div className="min-h-screen">
       <section
         className="relative bg-cover bg-center bg-no-repeat min-h-[calc(100vh-5rem)] flex items-center py-20 overflow-hidden"
-        style={{ backgroundImage: "url('/images/faq.jpg')" }}
+        style={{ backgroundImage: "url('/images/faq.webp')" }}
       >
         {/* Overlay for better text readability */}
         <div className="absolute inset-0 bg-slate-900/50 z-0"></div>

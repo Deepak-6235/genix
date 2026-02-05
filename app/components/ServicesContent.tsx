@@ -103,7 +103,7 @@ export default function ServicesContent() {
           ============================================ */}
       <section
         className="relative bg-cover bg-center bg-no-repeat min-h-[calc(100vh-5rem)] flex items-center py-20 overflow-hidden"
-        style={{ backgroundImage: "url('/images/services.jpg')" }}
+        style={{ backgroundImage: "url('/images/services.webp')" }}
       >
         {/* Overlay for better text readability */}
         <div className="absolute inset-0 bg-slate-900/50 z-0"></div>
@@ -196,7 +196,7 @@ export default function ServicesContent() {
                         className="text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors flex items-center gap-1"
                       >
                         {t.readMore}
-                        <span className={`inline-block transition-transform duration-300 group-hover:${dir === 'rtl' ? '-translate-x-1' : 'translate-x-1'}`}>→</span>
+                        <span className="inline-block transition-transform duration-300 rtl:rotate-180 group-hover:translate-x-1 rtl:group-hover:-translate-x-1">→</span>
                       </Link>
                     </div>
                   </div>
