@@ -100,11 +100,12 @@ export default function Testimonials() {
                     </p>
                 </div>
 
-                <div className="relative group max-w-7xl mx-auto">
+                <div className="relative group max-w-7xl mx-auto px-10 sm:px-14 md:px-20 lg:px-24">
                     <Swiper
                         modules={[Pagination, Autoplay, Navigation]}
                         spaceBetween={30}
                         slidesPerView={1}
+                        loop={true}
                         navigation={
                             {
                                 nextEl: '.testimonials-button-next',
@@ -113,7 +114,7 @@ export default function Testimonials() {
                         }
                         pagination={{ clickable: true }}
                         autoplay={{
-                            delay: 5000,
+                            delay: 3000,
                             disableOnInteraction: false,
                         }}
                         breakpoints={{
@@ -124,7 +125,7 @@ export default function Testimonials() {
                                 slidesPerView: 3,
                             },
                         }}
-                        className="!pt-4 !px-4 !pb-14"
+                        className="!pt-4 !pb-14"
                     >
                         {reviews.map((review) => (
                             <SwiperSlide key={review.id} className="pt-2 pb-2 !h-auto">
@@ -166,14 +167,13 @@ export default function Testimonials() {
                         ))}
                     </Swiper>
 
-                    {/* Navigation Arrows */}
-                    <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 z-20 flex justify-between pointer-events-none px-2 sm:-mx-4">
-                        <button className="testimonials-button-prev p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-0 group-hover:opacity-100 disabled:opacity-0 rtl:rotate-180">
+                    <div className="absolute top-1/2 -translate-y-1/2 left-2 right-2 sm:left-4 sm:right-4 z-20 flex justify-between pointer-events-none">
+                        <button className="testimonials-button-prev p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-100 rtl:rotate-180">
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                             </svg>
                         </button>
-                        <button className="testimonials-button-next p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-0 group-hover:opacity-100 disabled:opacity-0 rtl:rotate-180">
+                        <button className="testimonials-button-next p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-100 rtl:rotate-180">
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                             </svg>

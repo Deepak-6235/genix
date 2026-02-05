@@ -119,7 +119,7 @@ export default function AboutUsContent() {
             {/* Why Choose Us Section */}
             <div className="mb-16 sm:mb-20 md:mb-24">
               <div className="text-center mb-10 sm:mb-12 md:mb-16">
-                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-tertiary-600 mb-6 leading-tight">
                   {t.whyChooseTitle}
                 </h2>
               </div>
@@ -154,7 +154,7 @@ export default function AboutUsContent() {
             {/* Company Description Section */}
             <div className="bg-slate-50 rounded-2xl p-8 sm:p-10 md:p-12 lg:p-16 mb-16 sm:mb-20 md:mb-24">
               <div className="max-w-4xl mx-auto">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-6 text-center">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-tertiary-600 mb-6 text-center">
                   {t.companyTitle}
                 </h2>
                 <p className="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed mb-8 text-center">
@@ -168,7 +168,7 @@ export default function AboutUsContent() {
             {/* Best Services Section */}
             <div className="mb-16 sm:mb-20 md:mb-24">
               <div className="text-center mb-10 sm:mb-12 md:mb-16">
-                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-tertiary-600 mb-6 leading-tight">
                   {t.bestServicesTitle}
                 </h2>
               </div>

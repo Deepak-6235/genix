@@ -97,18 +97,19 @@ export default function Services() {
           </p>
         </div>
 
-        <div className="relative group/swiper">
+        <div className="relative group/swiper px-10 sm:px-14 md:px-20 lg:px-24">
           <Swiper
             modules={[Pagination, Autoplay, Navigation]}
             spaceBetween={30}
             slidesPerView={1}
+            loop={true}
             navigation={{
               nextEl: '.services-button-next',
               prevEl: '.services-button-prev',
             }}
             pagination={{ clickable: true }}
             autoplay={{
-              delay: 5000,
+              delay: 3000,
               disableOnInteraction: false,
             }}
             breakpoints={{
@@ -119,7 +120,7 @@ export default function Services() {
                 slidesPerView: 3,
               },
             }}
-            className="!pt-12 !px-6 !pb-16"
+            className="!pt-12 !pb-16"
           >
             {services.map((service) => (
               <SwiperSlide key={service.id} className="py-4 px-2 !h-auto">
@@ -164,13 +165,13 @@ export default function Services() {
           </Swiper>
 
           {/* Navigation Arrows */}
-          <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 z-20 flex justify-between pointer-events-none px-2 sm:-mx-4">
-            <button className="services-button-prev p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-0 group-hover/swiper:opacity-100 disabled:opacity-0 rtl:rotate-180">
+          <div className="absolute top-1/2 -translate-y-1/2 left-2 right-2 sm:left-4 sm:right-4 z-20 flex justify-between pointer-events-none">
+            <button className="services-button-prev p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-100 rtl:rotate-180">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
-            <button className="services-button-next p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-0 group-hover/swiper:opacity-100 disabled:opacity-0 rtl:rotate-180">
+            <button className="services-button-next p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-100 rtl:rotate-180">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
