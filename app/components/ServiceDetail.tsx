@@ -108,7 +108,7 @@ export default function ServiceDetail({ serviceSlug }: { serviceSlug: string }) 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
               {/* Left Side: Service Name and Short Description */}
               <div className="order-2 lg:order-1">
-                <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4 sm:mb-6 leading-tight text-center ${dir === 'rtl' ? 'lg:text-right' : 'lg:text-left'}`}>
+                <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-3 leading-tight text-center ${dir === 'rtl' ? 'lg:text-right' : 'lg:text-left'}`}>
                   {service.name}
                 </h1>
                 <p className={`text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed text-center ${dir === 'rtl' ? 'lg:text-right' : 'lg:text-left'}`}>
@@ -142,8 +142,8 @@ export default function ServiceDetail({ serviceSlug }: { serviceSlug: string }) 
           <div className="max-w-7xl mx-auto">
             {/* Title Section */}
             {service.title && (
-              <div className="mb-8 sm:mb-12">
-                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6 text-center leading-tight">
+              <div className="mb-3">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-3 text-center leading-tight">
                   {service.title}
                 </h2>
               </div>
@@ -151,8 +151,8 @@ export default function ServiceDetail({ serviceSlug }: { serviceSlug: string }) 
 
             {/* Subtitle Section */}
             {service.subtitle && (
-              <div className="mb-8 sm:mb-12">
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold text-slate-800 mb-6 text-center">
+              <div className="mb-3">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold text-slate-800 mb-3 text-center">
                   {service.subtitle}
                 </h3>
               </div>

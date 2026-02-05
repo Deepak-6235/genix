@@ -145,7 +145,7 @@ export default function Blog() {
         <div className="relative group/swiper px-10 sm:px-14 md:px-20 lg:px-24">
           <Swiper
             modules={[Pagination, Autoplay, Navigation]}
-            spaceBetween={30}
+            spaceBetween={20}
             slidesPerView={1}
             loop={true}
             navigation={{
@@ -170,7 +170,7 @@ export default function Blog() {
             {blogs.map((blog) => (
               <SwiperSlide key={blog.id} className="py-4 px-2 !h-auto">
                 <article
-                  className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group h-full flex flex-col"
+                  className="bg-white border border-slate-200 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2 group h-full flex flex-col"
                 >
                   {/* Blog Image */}
                   <div className="relative h-40 sm:h-48 w-full overflow-hidden shrink-0">

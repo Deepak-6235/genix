@@ -103,7 +103,7 @@ export default function Testimonials() {
                 <div className="relative group max-w-7xl mx-auto px-10 sm:px-14 md:px-20 lg:px-24">
                     <Swiper
                         modules={[Pagination, Autoplay, Navigation]}
-                        spaceBetween={30}
+                        spaceBetween={20}
                         slidesPerView={1}
                         loop={true}
                         navigation={
@@ -130,7 +130,7 @@ export default function Testimonials() {
                         {reviews.map((review) => (
                             <SwiperSlide key={review.id} className="pt-2 pb-2 !h-auto">
                                 <div
-                                    className="h-full bg-gradient-to-br from-slate-50 to-white rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-100 flex flex-col"
+                                    className="h-full bg-gradient-to-br from-slate-50 to-white rounded-2xl p-4 sm:p-6 md:p-8 transition-all duration-300 border border-slate-100 flex flex-col"
                                 >
                                     {/* Rating */}
                                     <div className="flex gap-1 mb-4">

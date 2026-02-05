@@ -8,9 +8,9 @@ const serviceImages: Record<string, string> = {
   'disinfection-against-viruses': 'service-2.jpg',
   'paints-and-decorations': 'service-3.webp',
   'air-conditioner-maintenance': 'service-4.jpg',
-  'interior-exterior-restoration': 'service-5.webp',
+  'interior-exterior-restoration': 'service-7.jpg',
   'swimming-pools-construction-maintenance': 'service-6.webp',
-  'waterfalls-and-fountains': 'service-7.jpg',
+  'waterfalls-and-fountains': 'service-5.webp',
 };
 
 async function uploadServiceImage(imageName: string): Promise<string | null> {

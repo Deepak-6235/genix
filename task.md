@@ -1,8 +1,6 @@
-# Task: Standardize Header and Subheading Spacing
+# Task: Standardize Spacing on Service Pages
 
-- [ ] Identify components with Header -> Subheading -> Cards structure <!-- id: 0 -->
-    - [ ] `Services.tsx` / `AboutUs.tsx` / `WhyChooseUs.tsx` / `Testimonials.tsx` / `Blog.tsx`
-- [ ] Update spacing to `mb-3` <!-- id: 1 -->
-    - [ ] Between Main Header and Subheading (Description)
-    - [ ] Between Subheading (Description) and Card Container
-- [ ] Verify visually (code review) <!-- id: 2 -->
+- [x] Identify service detail page components <!-- id: 0 -->
+- [x] Audit and update spacing in `app/services/[slug]/page.tsx` (or equivalent) <!-- id: 1 -->
+- [x] Verify if other service-related components need updates <!-- id: 2 -->
+- [x] Verify changes <!-- id: 3 -->
