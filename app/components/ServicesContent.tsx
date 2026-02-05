@@ -129,10 +129,10 @@ export default function ServicesContent() {
 
             {/* Main Page Title */}
             <div className="text-center" data-aos="fade-up">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-3 leading-tight">
                 {t.pageTitle}
               </h1>
-              <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto px-4">
+              <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto px-4 mb-5">
                 {t.pageSubtitle}
               </p>
             </div>
@@ -180,7 +180,7 @@ export default function ServicesContent() {
 
                     <div className="p-6 sm:p-8 md:p-10">
                       {/* Title */}
-                      <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2 sm:mb-3">
+                      <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-5">
                         {service.name}
                       </h3>
 
@@ -213,11 +213,11 @@ export default function ServicesContent() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             {/* Section Header */}
-            <div className="text-center mb-3" data-aos="fade-up">
+            <div className="text-center" data-aos="fade-up">
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-3">
                 {t.reviews.title}
               </h2>
-              <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto px-4">
+              <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto px-4 mb-5">
                 {t.reviews.subtitle}
               </p>
             </div>

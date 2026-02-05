@@ -96,10 +96,10 @@ export default function AboutUsContent() {
 
             {/* Main Page Title */}
             <div className="text-center" data-aos="fade-up">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-3 leading-tight">
                 {t.pageTitle}
               </h1>
-              <p className="text-lg sm:text-xl text-white/90 max-w-3xl mx-auto px-4 mb-6 leading-relaxed">
+              <p className="text-lg sm:text-xl text-white/90 max-w-3xl mx-auto px-4 mb-5 leading-relaxed">
                 Rukn Al-Nakheel allows you to request maintenance and care services for your home as well as pest control and extermination services.
               </p>
             </div>
@@ -116,8 +116,8 @@ export default function AboutUsContent() {
 
             {/* Why Choose Us Section */}
             <div className="mb-16 sm:mb-20 md:mb-24">
-              <div className="text-center mb-3" data-aos="fade-up">
-                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-tertiary-600 mb-3 leading-tight">
+              <div className="text-center" data-aos="fade-up">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-tertiary-600 mb-5 leading-tight">
                   {t.whyChooseTitle}
                 </h2>
               </div>
@@ -152,10 +152,10 @@ export default function AboutUsContent() {
             {/* Company Description Section */}
             <div className="bg-slate-50 rounded-2xl p-8 sm:p-10 md:p-12 lg:p-16 mb-16 sm:mb-20 md:mb-24" data-aos="zoom-in">
               <div className="max-w-4xl mx-auto">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-tertiary-600 mb-3 text-center">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-tertiary-600 mb-5 text-center">
                   {t.companyTitle}
                 </h2>
-                <p className="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed mb-3 text-center">
+                <p className="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed mb-5 text-center">
                   {t.companyDescription}
                 </p>
 
@@ -165,8 +165,8 @@ export default function AboutUsContent() {
 
             {/* Best Services Section */}
             <div className="mb-16 sm:mb-20 md:mb-24">
-              <div className="text-center mb-3" data-aos="fade-up">
-                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-tertiary-600 mb-3 leading-tight">
+              <div className="text-center" data-aos="fade-up">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-tertiary-600 mb-5 leading-tight">
                   {t.bestServicesTitle}
                 </h2>
               </div>

@@ -178,7 +178,7 @@ export default function Statistics({ variant = "light", className = "" }: Statis
                   className="text-center"
                 >
                   {/* Number with Plus Sign (colored) */}
-                  <div className={`${darkStat.numberColor} text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2`}>
+                  <div className={`${darkStat.numberColor} text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3`}>
                     <CountUp end={darkStat.value} suffix={darkStat.suffix} />
                   </div>
 
@@ -210,7 +210,7 @@ export default function Statistics({ variant = "light", className = "" }: Statis
                 data-aos-delay={index * 100}
               >
                 {/* Number */}
-                <div className={`${lightStat.color} text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 sm:mb-3`}>
+                <div className={`${lightStat.color} text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3`}>
                   <CountUp end={lightStat.value} suffix={lightStat.suffix} />
                 </div>
 

@@ -9,11 +9,11 @@ export default function AboutUs() {
     <section id="about" className="py-10 sm:py-16 md:py-20 bg-gradient-to-b from-slate-50 to-white">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-3">
+          <div className="text-center">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-3">
               {t.title}
             </h2>
-            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4 mb-5">
               {t.subtitle}
             </p>
           </div>
@@ -24,7 +24,7 @@ export default function AboutUs() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
               {/* Text Content */}
               <div>
-                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 text-tertiary-600">
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-5 text-tertiary-600">
                   {t.whyChoose}
                 </h3>
                 <p className="text-base sm:text-lg md:text-xl leading-relaxed mb-4 sm:mb-6 text-slate-600">
@@ -50,7 +50,7 @@ export default function AboutUs() {
 
           {/* Mission Statement */}
           <div className="max-w-4xl mx-auto text-center pt-10 sm:pt-14 mt-10 sm:mt-14">
-            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 text-tertiary-600">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-5 text-tertiary-600">
               {t.missionTitle}
             </h3>
             <p className="text-base sm:text-lg md:text-xl leading-relaxed text-slate-600 font-medium">

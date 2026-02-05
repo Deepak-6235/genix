@@ -34,21 +34,67 @@ export default function Services() {
   // Fetch services from database
   useEffect(() => {
     const fetchServices = async () => {
+      console.log('Fetching services for language:', language);
       try {
-        const response = await fetch(`/api/services?lang=${language}`);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+        const response = await fetch(`/api/services?lang=${language}`, { signal: controller.signal });
+        clearTimeout(timeoutId);
+
+        console.log('Services API response status:', response.status);
         const data = await response.json();
-        if (data.success) {
+        console.log('Services API success:', data.success);
+
+        if (data.success && data.services && data.services.length > 0) {
+          console.log('Services count from DB:', data.services.length);
           setServices(data.services);
+        } else {
+          // Fallback to static services from translations if no database services
+          console.log('Using static fallback for services');
+          const staticServices: Service[] = Object.keys(t.services).map((key, index) => {
+            const serviceKey = key as keyof typeof t.services;
+            return {
+              id: `static-${index + 1}`,
+              slug: key,
+              name: t.services[serviceKey].title,
+              title: t.services[serviceKey].title,
+              subtitle: t.services[serviceKey].title,
+              shortDescription: t.services[serviceKey].description,
+              fullDescription: t.services[serviceKey].description,
+              imageUrl: `/images/service-${index + 1}.jpg`,
+              isActive: true,
+              order: index,
+            };
+          });
+          setServices(staticServices);
         }
       } catch (error) {
         console.error('Failed to fetch services:', error);
+        // Fallback on error
+        const staticServices: Service[] = Object.keys(t.services).map((key, index) => {
+          const serviceKey = key as keyof typeof t.services;
+          return {
+            id: `static-${index + 1}`,
+            slug: key,
+            name: t.services[serviceKey].title,
+            title: t.services[serviceKey].title,
+            subtitle: t.services[serviceKey].title,
+            shortDescription: t.services[serviceKey].description,
+            fullDescription: t.services[serviceKey].description,
+            imageUrl: `/images/service-${index + 1}.jpg`,
+            isActive: true,
+            order: index,
+          };
+        });
+        setServices(staticServices);
       } finally {
         setLoading(false);
       }
     };
 
     fetchServices();
-  }, [language]);
+  }, [language, t.services]);
 
   // Fallback image if service doesn't have one
   const getServiceImagePath = (imageUrl: string | null): string => {
@@ -59,11 +105,11 @@ export default function Services() {
     return (
       <section id="services" className="py-10 sm:py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="text-center mb-3">
+          <div className="text-center">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-3">
               {t.title}
             </h2>
-            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4 mb-5">
               {t.subtitle}
             </p>
           </div>
@@ -88,11 +134,11 @@ export default function Services() {
   return (
     <section id="services" className="py-10 sm:py-16 md:py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6">
-        <div className="text-center mb-3" data-aos="fade-up">
+        <div className="text-center" data-aos="fade-up">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-3">
             {t.title}
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
+          <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4 mb-5">
             {t.subtitle}
           </p>
         </div>
@@ -135,6 +181,7 @@ export default function Services() {
                       alt={service.name}
                       fill
                       className="object-cover group-hover:scale-110 transition-transform duration-300"
+                      unoptimized
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>

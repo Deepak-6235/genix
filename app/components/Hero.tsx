@@ -19,7 +19,7 @@ export default function Hero() {
         <div className="max-w-4xl mx-auto text-center">
           {/* Main Heading */}
           <h1
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-3 leading-tight"
             data-aos="fade-up"
             data-aos-delay="100"
           >
@@ -30,7 +30,7 @@ export default function Hero() {
 
           {/* Subheading */}
           <p
-            className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 mb-3 sm:mb-4 leading-relaxed px-2"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 mb-5 leading-relaxed px-2"
             data-aos="fade-up"
             data-aos-delay="200"
           >
@@ -39,7 +39,7 @@ export default function Hero() {
 
           {/* Services List */}
           <p
-            className="text-sm sm:text-base md:text-lg lg:text-xl text-white/80 mb-8 sm:mb-12 leading-relaxed px-2"
+            className="text-sm sm:text-base md:text-lg lg:text-xl text-white/80 mb-5 leading-relaxed px-2"
             data-aos="fade-up"
             data-aos-delay="300"
           >

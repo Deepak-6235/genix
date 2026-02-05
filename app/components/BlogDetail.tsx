@@ -226,7 +226,7 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
               {/* Main Content */}
               <div className="lg:col-span-2">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4 sm:mb-6 leading-tight">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-5 leading-tight">
                   {blog.name}
                 </h1>
                 <div className="flex items-center gap-3 mb-6 text-sm sm:text-base text-slate-500">
@@ -273,7 +273,7 @@ export default function BlogDetail({ blogSlug }: { blogSlug: string }) {
               {blog.detailedBlogs.map((section) => (
                 <div key={section.id} className="space-y-6">
                   {/* Section Title */}
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-5">
                     {section.title}
                   </h2>
 

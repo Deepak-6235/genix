@@ -47,11 +47,11 @@ export default function Contact() {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
           {/* Header Section */}
-          <div className="text-center mb-3" data-aos="fade-up">
+          <div className="text-center" data-aos="fade-up">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-3">
               {t.title}
             </h2>
-            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4 mb-5">
               {t.subtitle}
             </p>
           </div>
@@ -90,7 +90,7 @@ export default function Contact() {
                         />
                       </svg>
                     </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900">
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-5">
                       {t.phone}
                     </h3>
                   </div>
@@ -134,7 +134,7 @@ export default function Contact() {
                         />
                       </svg>
                     </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900">
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-5">
                       {t.email}
                     </h3>
                   </div>
@@ -172,7 +172,7 @@ export default function Contact() {
                         />
                       </svg>
                     </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900">
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-5">
                       {t.address}
                     </h3>
                   </div>
@@ -201,7 +201,7 @@ export default function Contact() {
                         />
                       </svg>
                     </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900">
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-5">
                       {t.hours}
                     </h3>
                   </div>
@@ -216,7 +216,7 @@ export default function Contact() {
           {/* CTA Section */}
           <div className="text-center px-4 space-y-6" data-aos="fade-up" data-aos-delay="300">
             <div>
-              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-4">
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-5">
                 {t.offers}
               </h3>
               <p className="text-slate-600 mb-6 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">

@@ -110,10 +110,10 @@ export default function BlogContent() {
 
             {/* Main Page Title */}
             <div className="text-center" data-aos="fade-up">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-3 leading-tight">
                 {t.pageTitle}
               </h1>
-              <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto px-4">
+              <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto px-4 mb-5">
                 Stay updated with our latest news, home maintenance tips, and professional advice.
               </p>
             </div>
@@ -174,7 +174,7 @@ export default function BlogContent() {
                       </div>
 
                       {/* Title */}
-                      <h3 className="!text-lg !md:text-xl font-bold text-slate-900 mb-3 sm:mb-4 group-hover:text-primary-600 transition-colors leading-tight">
+                      <h3 className="!text-lg !md:text-xl font-bold text-slate-900 mb-5 group-hover:text-primary-600 transition-colors leading-tight">
                         {post.name}
                       </h3>
 
