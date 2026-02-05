@@ -124,11 +124,6 @@ export default function FAQContent() {
     </svg>
   );
 
-  // Split FAQs into two columns for better layout
-  // Left column: FAQs at even indices (0, 2, 4...)
-  // Right column: FAQs at odd indices (1, 3, 5...)
-  const leftColumnFAQs = faqs.filter((_, index) => index % 2 === 0);
-  const rightColumnFAQs = faqs.filter((_, index) => index % 2 === 1);
 
   return (
     <div className="min-h-screen">
@@ -180,10 +175,10 @@ export default function FAQContent() {
 
 
             {/* ============================================
-                FAQ CARDS SECTION - Two Column Layout
+                FAQ CARDS SECTION - Single Column Layout
                 ============================================ */}
             {loading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-10 mb-12 sm:mb-16 md:mb-20">
+              <div className="max-w-3xl mx-auto space-y-6 mb-12 sm:mb-16 md:mb-20">
                 {[1, 2, 3, 4].map((i) => (
                   <div key={i} className="animate-pulse rounded-2xl border border-slate-200 overflow-hidden">
                     <div className="p-6 md:p-8">
@@ -203,140 +198,67 @@ export default function FAQContent() {
                 <p className="text-lg text-slate-600">No FAQs available at this time.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-10 mb-12 sm:mb-16 md:mb-20">
-                {/* Left Column - FAQs at even indices */}
-                <div className="flex flex-col gap-4 md:gap-6">
-                  {leftColumnFAQs.map((faq, index) => {
-                    // Find the actual index in the original faqs array
-                    const actualIndex = faqs.findIndex(f => f.id === faq.id);
-                    // Check if this FAQ is currently open
-                    const isOpen = openIndex === actualIndex;
+              <div className="max-w-3xl mx-auto flex flex-col gap-4 md:gap-6 mb-12 sm:mb-16 md:mb-20">
+                {faqs.map((faq, index) => {
+                  // Check if this FAQ is currently open
+                  const isOpen = openIndex === index;
 
-                    return (
-                      <div
-                        key={faq.id}
-                        className="group rounded-2xl border border-slate-200 overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                  return (
+                    <div
+                      key={faq.id}
+                      className="group rounded-2xl border border-slate-200 overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-white"
+                    >
+                      {/* FAQ Question Button - Clickable header */}
+                      <button
+                        onClick={() => toggleFAQ(index)}
+                        className="w-full px-6 py-6 md:px-8 md:py-7 flex items-start gap-4 text-start hover:bg-slate-50 transition-all duration-300"
                       >
-                        {/* FAQ Question Button - Clickable header */}
-                        <button
-                          onClick={() => toggleFAQ(actualIndex)}
-                          className="w-full px-6 py-6 md:px-8 md:py-7 flex items-start gap-4 text-start hover:bg-slate-50 transition-all duration-300"
-                        >
-                          {/* FAQ Icon - Changes color when open */}
-                          <div className={`flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${isOpen
-                            ? "bg-primary-600 text-white"
-                            : "bg-slate-100 text-slate-600 group-hover:bg-primary-100 group-hover:text-primary-600"
-                            }`}>
-                            {getDefaultIcon()}
-                          </div>
+                        {/* FAQ Icon - Changes color when open */}
+                        <div className={`flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${isOpen
+                          ? "bg-primary-600 text-white"
+                          : "bg-slate-100 text-slate-600 group-hover:bg-primary-100 group-hover:text-primary-600"
+                          }`}>
+                          {getDefaultIcon()}
+                        </div>
 
-                          {/* Question Text */}
-                          <div className="flex-1 pt-1.5">
-                            <span className="text-base sm:text-lg font-bold text-slate-900 block leading-snug">
-                              {faq.question}
-                            </span>
-                          </div>
+                        {/* Question Text */}
+                        <div className="flex-1 pt-1.5">
+                          <span className="text-base sm:text-lg font-bold text-slate-900 block leading-snug">
+                            {faq.question}
+                          </span>
+                        </div>
 
-                          {/* Chevron Icon - Rotates when FAQ is open */}
-                          <div className={`flex-shrink-0 pt-1.5 transition-all duration-300 ${isOpen ? "text-primary-600" : "text-slate-400"
-                            }`}>
-                            <svg
-                              className={`w-6 h-6 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-                            </svg>
-                          </div>
-                        </button>
+                        {/* Chevron Icon - Rotates when FAQ is open */}
+                        <div className={`flex-shrink-0 pt-1.5 transition-all duration-300 ${isOpen ? "text-primary-600" : "text-slate-400"
+                          }`}>
+                          <svg
+                            className={`w-6 h-6 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </div>
+                      </button>
 
-                        {/* FAQ Answer - Expandable content area */}
-                        {/* Uses max-h-[2000px] to allow full content expansion without height constraints */}
-                        <div
-                          className={`overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
-                            }`}
-                        >
-                          <div className="px-6 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6 ms-16 md:ms-20">
-                            {/* Answer text with start border accent */}
-                            <div className="ps-4 md:ps-5 border-s-4 border-primary-200">
-                              <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-                                {faq.answer}
-                              </p>
-                            </div>
+                      {/* FAQ Answer - Expandable content area */}
+                      <div
+                        className={`overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
+                          }`}
+                      >
+                        <div className="px-6 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6 ms-16 md:ms-20 text-start">
+                          {/* Answer text with start border accent */}
+                          <div className="ps-4 md:ps-5 border-s-4 border-primary-200">
+                            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+                              {faq.answer}
+                            </p>
                           </div>
                         </div>
                       </div>
-                    );
-                  })}
-                </div>
-
-                {/* Right Column - FAQs at odd indices */}
-                <div className="flex flex-col gap-4 md:gap-6">
-                  {rightColumnFAQs.map((faq, index) => {
-                    // Find the actual index in the original faqs array
-                    const actualIndex = faqs.findIndex(f => f.id === faq.id);
-                    // Check if this FAQ is currently open
-                    const isOpen = openIndex === actualIndex;
-
-                    return (
-                      <div
-                        key={faq.id}
-                        className="group rounded-2xl border border-slate-200 overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-                      >
-                        {/* FAQ Question Button - Clickable header */}
-                        <button
-                          onClick={() => toggleFAQ(actualIndex)}
-                          className="w-full px-6 py-6 md:px-8 md:py-7 flex items-start gap-4 text-start hover:bg-slate-50 transition-all duration-300"
-                        >
-                          {/* FAQ Icon - Changes color when open */}
-                          <div className={`flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${isOpen
-                            ? "bg-primary-600 text-white"
-                            : "bg-slate-100 text-slate-600 group-hover:bg-primary-100 group-hover:text-primary-600"
-                            }`}>
-                            {getDefaultIcon()}
-                          </div>
-
-                          {/* Question Text */}
-                          <div className="flex-1 pt-1.5">
-                            <span className="text-base sm:text-lg font-bold text-slate-900 block leading-snug">
-                              {faq.question}
-                            </span>
-                          </div>
-
-                          {/* Chevron Icon - Rotates when FAQ is open */}
-                          <div className={`flex-shrink-0 pt-1.5 transition-all duration-300 ${isOpen ? "text-primary-600" : "text-slate-400"
-                            }`}>
-                            <svg
-                              className={`w-6 h-6 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-                            </svg>
-                          </div>
-                        </button>
-
-                        {/* FAQ Answer - Expandable content area */}
-                        {/* Uses max-h-[2000px] to allow full content expansion without height constraints */}
-                        <div
-                          className={`overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
-                            }`}
-                        >
-                          <div className="px-6 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6 ms-16 md:ms-20">
-                            {/* Answer text with start border accent */}
-                            <div className="ps-4 md:ps-5 border-s-4 border-primary-200">
-                              <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-                                {faq.answer}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                    </div>
+                  );
+                })}
               </div>
             )}
 

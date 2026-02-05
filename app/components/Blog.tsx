@@ -191,7 +191,7 @@ export default function Blog() {
                       <span className="text-xs sm:text-sm text-slate-500">{formatDate(blog.publishedAt)}</span>
                     </div>
 
-                    <h3 className="text-lg sm:text-xl font-bold text-tertiary-600 mb-2 sm:mb-3 group-hover:text-primary-600 transition-colors line-clamp-2">
+                    <h3 className="!text-base !sm:text-lg font-bold text-tertiary-600 mb-2 sm:mb-3 group-hover:text-primary-600 transition-colors line-clamp-2">
                       {blog.name}
                     </h3>
 

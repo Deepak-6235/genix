@@ -175,9 +175,9 @@ export default function BlogContent() {
                       </div>
 
                       {/* Title */}
-                      <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 mb-3 sm:mb-4 group-hover:text-primary-600 transition-colors leading-tight">
+                      <h3 className="!text-lg !md:text-xl font-bold text-slate-900 mb-3 sm:mb-4 group-hover:text-primary-600 transition-colors leading-tight">
                         {post.name}
-                      </h2>
+                      </h3>
 
                       {/* Excerpt */}
                       <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 sm:mb-6 line-clamp-3">
