@@ -142,7 +142,7 @@ export default function ServicesContent() {
           ============================================ */}
       <section
         className="relative bg-cover bg-center bg-no-repeat min-h-[calc(100vh-5rem)] flex items-center py-20 overflow-hidden"
-        style={{ backgroundImage: "url('/images/services.jpg')" }}
+        style={{ backgroundImage: "url('/images/services.webp')" }}
       >
         {/* Overlay for better text readability */}
         <div className="absolute inset-0 bg-slate-900/50 z-0"></div>
@@ -167,11 +167,11 @@ export default function ServicesContent() {
             </nav>
 
             {/* Main Page Title */}
-            <div className="text-center">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
+            <div className="text-center" data-aos="fade-up">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-3 leading-tight">
                 {t.pageTitle}
               </h1>
-              <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto px-4">
+              <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto px-4 mb-5">
                 {t.pageSubtitle}
               </p>
             </div>
@@ -200,7 +200,7 @@ export default function ServicesContent() {
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10" data-aos="fade-up" data-aos-delay="200">
                 {services.map((service) => (
                   <div
                     key={service.id}
@@ -213,14 +213,13 @@ export default function ServicesContent() {
                         alt={service.name}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-300"
-                        unoptimized
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
 
                     <div className="p-6 sm:p-8 md:p-10">
                       {/* Title */}
-                      <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2 sm:mb-3">
+                      <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-5">
                         {service.name}
                       </h3>
 
@@ -347,11 +346,11 @@ export default function ServicesContent() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             {/* Section Header */}
-            <div className="text-center mb-12 sm:mb-16 md:mb-20">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
+            <div className="text-center" data-aos="fade-up">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-3">
                 {t.reviews.title}
               </h2>
-              <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto px-4">
+              <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto px-4 mb-5">
                 {t.reviews.subtitle}
               </p>
             </div>
@@ -388,7 +387,7 @@ export default function ServicesContent() {
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8" data-aos="fade-up" data-aos-delay="200">
                 {reviews.map((review, index) => {
                   const colors = [
                     "from-primary-500 to-secondary-500",

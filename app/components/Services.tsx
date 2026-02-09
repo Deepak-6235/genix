@@ -34,21 +34,67 @@ export default function Services() {
   // Fetch services from database
   useEffect(() => {
     const fetchServices = async () => {
+      console.log('Fetching services for language:', language);
       try {
-        const response = await fetch(`/api/services?lang=${language}`);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+        const response = await fetch(`/api/services?lang=${language}`, { signal: controller.signal });
+        clearTimeout(timeoutId);
+
+        console.log('Services API response status:', response.status);
         const data = await response.json();
-        if (data.success) {
+        console.log('Services API success:', data.success);
+
+        if (data.success && data.services && data.services.length > 0) {
+          console.log('Services count from DB:', data.services.length);
           setServices(data.services);
+        } else {
+          // Fallback to static services from translations if no database services
+          console.log('Using static fallback for services');
+          const staticServices: Service[] = Object.keys(t.services).map((key, index) => {
+            const serviceKey = key as keyof typeof t.services;
+            return {
+              id: `static-${index + 1}`,
+              slug: key,
+              name: t.services[serviceKey].title,
+              title: t.services[serviceKey].title,
+              subtitle: t.services[serviceKey].title,
+              shortDescription: t.services[serviceKey].description,
+              fullDescription: t.services[serviceKey].description,
+              imageUrl: `/images/service-${index + 1}.jpg`,
+              isActive: true,
+              order: index,
+            };
+          });
+          setServices(staticServices);
         }
       } catch (error) {
         console.error('Failed to fetch services:', error);
+        // Fallback on error
+        const staticServices: Service[] = Object.keys(t.services).map((key, index) => {
+          const serviceKey = key as keyof typeof t.services;
+          return {
+            id: `static-${index + 1}`,
+            slug: key,
+            name: t.services[serviceKey].title,
+            title: t.services[serviceKey].title,
+            subtitle: t.services[serviceKey].title,
+            shortDescription: t.services[serviceKey].description,
+            fullDescription: t.services[serviceKey].description,
+            imageUrl: `/images/service-${index + 1}.jpg`,
+            isActive: true,
+            order: index,
+          };
+        });
+        setServices(staticServices);
       } finally {
         setLoading(false);
       }
     };
 
     fetchServices();
-  }, [language]);
+  }, [language, t.services]);
 
   // Fallback image if service doesn't have one
   const getServiceImagePath = (imageUrl: string | null): string => {
@@ -59,11 +105,11 @@ export default function Services() {
     return (
       <section id="services" className="py-10 sm:py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="text-center mb-6 sm:mb-8 md:mb-12">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-4 sm:mb-6">
+          <div className="text-center">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-3">
               {t.title}
             </h2>
-            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4 mb-5">
               {t.subtitle}
             </p>
           </div>
@@ -88,27 +134,28 @@ export default function Services() {
   return (
     <section id="services" className="py-10 sm:py-16 md:py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6">
-        <div className="text-center mb-6 sm:mb-8 md:mb-12">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-4 sm:mb-6">
+        <div className="text-center" data-aos="fade-up">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-3">
             {t.title}
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
+          <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4 mb-5">
             {t.subtitle}
           </p>
         </div>
 
-        <div className="relative group/swiper">
+        <div className="relative group/swiper px-10 sm:px-14 md:px-20 lg:px-24" data-aos="fade-up" data-aos-delay="200">
           <Swiper
             modules={[Pagination, Autoplay, Navigation]}
-            spaceBetween={30}
+            spaceBetween={20}
             slidesPerView={1}
+            loop={true}
             navigation={{
               nextEl: '.services-button-next',
               prevEl: '.services-button-prev',
             }}
             pagination={{ clickable: true }}
             autoplay={{
-              delay: 5000,
+              delay: 3000,
               disableOnInteraction: false,
             }}
             breakpoints={{
@@ -119,13 +166,13 @@ export default function Services() {
                 slidesPerView: 3,
               },
             }}
-            className="!pt-12 !px-6 !pb-16"
+            className="!pt-4 !pb-16"
           >
             {services.map((service) => (
               <SwiperSlide key={service.id} className="py-4 px-2 !h-auto">
                 <Link
                   href={`/services/${service.slug}`}
-                  className="block h-full flex flex-col group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+                  className="block h-full flex flex-col group bg-white border border-slate-200 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2"
                 >
                   {/* Service Image */}
                   <div className="relative h-48 w-full overflow-hidden shrink-0">
@@ -141,7 +188,7 @@ export default function Services() {
 
                   <div className="p-4 sm:p-6 md:p-8 flex-1 flex flex-col">
                     {/* Title */}
-                    <h3 className="text-lg sm:text-xl font-bold text-tertiary-600 mb-2 sm:mb-3 line-clamp-2">
+                    <h3 className="text-lg sm:text-xl font-bold text-tertiary-600 mb-3 line-clamp-2">
                       {service.name}
                     </h3>
 
@@ -155,7 +202,7 @@ export default function Services() {
                       className="text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors flex items-center gap-1"
                     >
                       {t.cta}
-                      <span className={`inline-block transition-transform duration-300 group-hover:${dir === 'rtl' ? '-translate-x-1' : 'translate-x-1'}`}>→</span>
+                      <span className="inline-block transition-transform duration-300 rtl:rotate-180 group-hover:translate-x-1 rtl:group-hover:-translate-x-1">→</span>
                     </div>
                   </div>
                 </Link>
@@ -164,13 +211,13 @@ export default function Services() {
           </Swiper>
 
           {/* Navigation Arrows */}
-          <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 z-20 flex justify-between pointer-events-none px-2 sm:-mx-4">
-            <button className="services-button-prev p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-0 group-hover/swiper:opacity-100 disabled:opacity-0 rtl:rotate-180">
+          <div className="absolute top-1/2 -translate-y-1/2 left-2 right-2 sm:left-4 sm:right-4 z-20 flex justify-between pointer-events-none">
+            <button className="services-button-prev p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-100 rtl:rotate-180">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
-            <button className="services-button-next p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-0 group-hover/swiper:opacity-100 disabled:opacity-0 rtl:rotate-180">
+            <button className="services-button-next p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-100 rtl:rotate-180">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>

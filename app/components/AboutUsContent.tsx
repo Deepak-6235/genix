@@ -70,7 +70,7 @@ export default function AboutUsContent() {
           ============================================ */}
       <section
         className="relative bg-cover bg-center bg-no-repeat min-h-[calc(100vh-5rem)] flex items-center py-20 overflow-hidden"
-        style={{ backgroundImage: "url('/images/about-us-hero.jpg')" }}
+        style={{ backgroundImage: "url('/images/about-us-hero.webp')" }}
       >
         {/* Overlay for better text readability */}
         <div className="absolute inset-0 bg-slate-900/50 z-0"></div>
@@ -95,15 +95,13 @@ export default function AboutUsContent() {
             </nav>
 
             {/* Main Page Title */}
-            <div className="text-center">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
+            <div className="text-center" data-aos="fade-up">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-3 leading-tight">
                 {t.pageTitle}
               </h1>
-              <div className="flex items-center justify-center gap-3 mb-6">
-                <span className="text-lg sm:text-xl md:text-2xl text-white font-semibold">
-                  {t.experience}
-                </span>
-              </div>
+              <p className="text-lg sm:text-xl text-white/90 max-w-3xl mx-auto px-4 mb-5 leading-relaxed">
+                Rukn Al-Nakheel allows you to request maintenance and care services for your home as well as pest control and extermination services.
+              </p>
             </div>
           </div>
         </div>
@@ -118,15 +116,15 @@ export default function AboutUsContent() {
 
             {/* Why Choose Us Section */}
             <div className="mb-16 sm:mb-20 md:mb-24">
-              <div className="text-center mb-10 sm:mb-12 md:mb-16">
-                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+              <div className="text-center" data-aos="fade-up">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-tertiary-600 mb-5 leading-tight">
                   {t.whyChooseTitle}
                 </h2>
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center mb-12">
                 {/* Content */}
-                <div>
+                <div data-aos="fade-right">
                   <p className="text-base sm:text-lg md:text-xl text-slate-600 leading-relaxed mb-6">
                     {t.description1}
                   </p>
@@ -139,9 +137,9 @@ export default function AboutUsContent() {
                 </div>
 
                 {/* Image */}
-                <div className="relative h-64 sm:h-80 md:h-96 rounded-2xl overflow-hidden shadow-lg">
+                <div className="relative h-64 sm:h-80 md:h-96 rounded-2xl overflow-hidden shadow-lg" data-aos="fade-left">
                   <Image
-                    src="/images/about-us.jpg"
+                    src="/images/about-us.webp"
                     alt="About Rukn Al-Nakheel"
                     fill
                     className="object-cover"
@@ -152,12 +150,12 @@ export default function AboutUsContent() {
 
 
             {/* Company Description Section */}
-            <div className="bg-slate-50 rounded-2xl p-8 sm:p-10 md:p-12 lg:p-16 mb-16 sm:mb-20 md:mb-24">
+            <div className="bg-slate-50 rounded-2xl p-8 sm:p-10 md:p-12 lg:p-16 mb-16 sm:mb-20 md:mb-24" data-aos="zoom-in">
               <div className="max-w-4xl mx-auto">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-6 text-center">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-tertiary-600 mb-5 text-center">
                   {t.companyTitle}
                 </h2>
-                <p className="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed mb-8 text-center">
+                <p className="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed mb-5 text-center">
                   {t.companyDescription}
                 </p>
 
@@ -167,8 +165,8 @@ export default function AboutUsContent() {
 
             {/* Best Services Section */}
             <div className="mb-16 sm:mb-20 md:mb-24">
-              <div className="text-center mb-10 sm:mb-12 md:mb-16">
-                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+              <div className="text-center" data-aos="fade-up">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-tertiary-600 mb-5 leading-tight">
                   {t.bestServicesTitle}
                 </h2>
               </div>

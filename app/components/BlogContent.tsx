@@ -109,11 +109,11 @@ export default function BlogContent() {
             </nav>
 
             {/* Main Page Title */}
-            <div className="text-center">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
+            <div className="text-center" data-aos="fade-up">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-3 leading-tight">
                 {t.pageTitle}
               </h1>
-              <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto px-4">
+              <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto px-4 mb-5">
                 Stay updated with our latest news, home maintenance tips, and professional advice.
               </p>
             </div>
@@ -143,7 +143,7 @@ export default function BlogContent() {
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 mb-12 sm:mb-16">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 mb-12 sm:mb-16" data-aos="fade-up" data-aos-delay="200">
                 {blogs.map((post) => (
                   <article
                     key={post.id}
@@ -157,7 +157,6 @@ export default function BlogContent() {
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-300"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        unoptimized
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
@@ -175,7 +174,7 @@ export default function BlogContent() {
                       </div>
 
                       {/* Title */}
-                      <h3 className="!text-lg !md:text-xl font-bold text-slate-900 mb-3 sm:mb-4 group-hover:text-primary-600 transition-colors leading-tight">
+                      <h3 className="!text-lg !md:text-xl font-bold text-slate-900 mb-5 group-hover:text-primary-600 transition-colors leading-tight">
                         {post.name}
                       </h3>
 
@@ -190,7 +189,7 @@ export default function BlogContent() {
                         className="text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors flex items-center gap-1"
                       >
                         {t.readMore}
-                        <span className={`inline-block transition-transform duration-300 group-hover:${dir === 'rtl' ? '-translate-x-1' : 'translate-x-1'}`}>→</span>
+                        <span className="inline-block transition-transform duration-300 rtl:rotate-180 group-hover:translate-x-1 rtl:group-hover:-translate-x-1">→</span>
                       </Link>
                     </div>
                   </article>

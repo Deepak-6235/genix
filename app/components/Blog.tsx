@@ -98,11 +98,11 @@ export default function Blog() {
     return (
       <section id="blog" className="py-10 sm:py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="text-center mb-6 sm:mb-8 md:mb-12">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-4 sm:mb-6">
+          <div className="text-center">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-3">
               {t.title}
             </h2>
-            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4 mb-5">
               {t.subtitle}
             </p>
           </div>
@@ -133,27 +133,28 @@ export default function Blog() {
   return (
     <section id="blog" className="py-10 sm:py-16 md:py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6">
-        <div className="text-center mb-6 sm:mb-8 md:mb-12">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-4 sm:mb-6">
+        <div className="text-center" data-aos="fade-up">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-tertiary-600 mb-3">
             {t.title}
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4">
+          <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto px-4 mb-5">
             {t.subtitle}
           </p>
         </div>
 
-        <div className="relative group/swiper">
+        <div className="relative group/swiper px-10 sm:px-14 md:px-20 lg:px-24" data-aos="fade-up" data-aos-delay="200">
           <Swiper
             modules={[Pagination, Autoplay, Navigation]}
-            spaceBetween={30}
+            spaceBetween={20}
             slidesPerView={1}
+            loop={true}
             navigation={{
               nextEl: '.blog-button-next',
               prevEl: '.blog-button-prev',
             }}
             pagination={{ clickable: true }}
             autoplay={{
-              delay: 5000,
+              delay: 3000,
               disableOnInteraction: false,
             }}
             breakpoints={{
@@ -164,12 +165,12 @@ export default function Blog() {
                 slidesPerView: 3,
               },
             }}
-            className="!pt-12 !px-6 !pb-16"
+            className="!pt-4 !pb-16"
           >
             {blogs.map((blog) => (
               <SwiperSlide key={blog.id} className="py-4 px-2 !h-auto">
                 <article
-                  className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group h-full flex flex-col"
+                  className="bg-white border border-slate-200 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2 group h-full flex flex-col"
                 >
                   {/* Blog Image */}
                   <div className="relative h-40 sm:h-48 w-full overflow-hidden shrink-0">
@@ -178,7 +179,6 @@ export default function Blog() {
                       alt={blog.name}
                       fill
                       className="object-cover group-hover:scale-110 transition-transform duration-300"
-                      unoptimized
                     />
                   </div>
 
@@ -191,7 +191,7 @@ export default function Blog() {
                       <span className="text-xs sm:text-sm text-slate-500">{formatDate(blog.publishedAt)}</span>
                     </div>
 
-                    <h3 className="!text-base !sm:text-lg font-bold text-tertiary-600 mb-2 sm:mb-3 group-hover:text-primary-600 transition-colors line-clamp-2">
+                    <h3 className="!text-base !sm:text-lg font-bold text-tertiary-600 mb-5 group-hover:text-primary-600 transition-colors line-clamp-2">
                       {blog.name}
                     </h3>
 
@@ -204,7 +204,7 @@ export default function Blog() {
                       className="text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors flex items-center gap-1"
                     >
                       {t.readMore}
-                      <span className={`inline-block transition-transform duration-300 group-hover:${dir === 'rtl' ? '-translate-x-1' : 'translate-x-1'}`}>→</span>
+                      <span className="inline-block transition-transform duration-300 rtl:rotate-180 group-hover:translate-x-1 rtl:group-hover:-translate-x-1">→</span>
                     </Link>
                   </div>
                 </article>
@@ -212,14 +212,13 @@ export default function Blog() {
             ))}
           </Swiper>
 
-          {/* Navigation Arrows */}
-          <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 z-20 flex justify-between pointer-events-none px-2 sm:-mx-4">
-            <button className="blog-button-prev p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-0 group-hover/swiper:opacity-100 disabled:opacity-0 rtl:rotate-180">
+          <div className="absolute top-1/2 -translate-y-1/2 left-2 right-2 sm:left-4 sm:right-4 z-20 flex justify-between pointer-events-none">
+            <button className="blog-button-prev p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-100 rtl:rotate-180">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
-            <button className="blog-button-next p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-0 group-hover/swiper:opacity-100 disabled:opacity-0 rtl:rotate-180">
+            <button className="blog-button-next p-2 rounded-full bg-white shadow-lg border border-slate-100 text-primary-600 hover:bg-primary-50 transition-all pointer-events-auto opacity-100 rtl:rotate-180">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -227,7 +226,7 @@ export default function Blog() {
           </div>
         </div>
 
-        <div className="text-center mt-6 sm:mt-8 px-4">
+        <div className="text-center mt-6 sm:mt-8 px-4" data-aos="fade-up">
           <Link
             href="/blog"
             className={`btn-view-more text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg transition-all duration-500 shadow-lg hover:shadow-xl inline-flex items-center gap-2 ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}

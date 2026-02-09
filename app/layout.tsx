@@ -4,6 +4,7 @@ import "./globals.css";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { cookies } from "next/headers";
 import { LANGUAGES, DEFAULT_LANGUAGE, type LanguageCode } from "@/lib/languages";
+import AOSInit from "./components/AOSInit";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -65,6 +66,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${cairo.variable} antialiased`}
       >
         <LanguageProvider initialLanguage={locale}>
+          <AOSInit />
           {children}
         </LanguageProvider>
       </body>
