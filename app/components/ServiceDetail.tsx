@@ -17,11 +17,27 @@ interface Service {
   imageUrl: string | null;
 }
 
+interface DetailedService {
+  id: string;
+  order: number;
+  title: string;
+  subtitle: string;
+  fullDescription: string;
+  imageUrl?: string | null;
+  translations?: Record<string, {
+    title: string;
+    subtitle: string;
+    fullDescription: string;
+  }>;
+}
+
 export default function ServiceDetail({ serviceSlug }: { serviceSlug: string }) {
   const t = useServicesContentTranslations();
   const { dir, language } = useLanguage();
   const [service, setService] = useState<Service | null>(null);
   const [loading, setLoading] = useState(true);
+  const [detailedServices, setDetailedServices] = useState<DetailedService[]>([]);
+  const [detailedServicesLoading, setDetailedServicesLoading] = useState(true);
 
   // Fetch service data
   useEffect(() => {
@@ -42,6 +58,27 @@ export default function ServiceDetail({ serviceSlug }: { serviceSlug: string }) 
 
     fetchService();
   }, [serviceSlug, language]);
+
+  // Fetch detailed services
+  useEffect(() => {
+    const fetchDetailedServices = async () => {
+      try {
+        setDetailedServicesLoading(true);
+        const response = await fetch(`/api/services/${serviceSlug}/detailed?allLangs=true`);
+        const data = await response.json();
+        if (data.success) {
+          setDetailedServices(data.detailedServices || []);
+        }
+      } catch (error) {
+        console.error('Failed to fetch detailed services:', error);
+        setDetailedServices([]);
+      } finally {
+        setDetailedServicesLoading(false);
+      }
+    };
+
+    fetchDetailedServices();
+  }, [serviceSlug]);
 
   // Loading state
   if (loading) {
@@ -173,6 +210,55 @@ export default function ServiceDetail({ serviceSlug }: { serviceSlug: string }) 
           </div>
         </div>
       </section>
+
+      {/* ============================================
+          DETAILED SERVICES SECTIONS
+          ============================================ */}
+      {!detailedServicesLoading && detailedServices.length > 0 && (
+        <section className="py-8 sm:py-10 md:py-12 lg:py-14 bg-slate-50">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto space-y-12 sm:space-y-16 md:space-y-20">
+              {detailedServices.map((section, index) => {
+                const sectionContent = section.translations?.[language] || section.translations?.en || section;
+                return (
+                  <div key={section.id} className="bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-100">
+                    {/* Section with alternating layout */}
+                    <div className={`grid grid-cols-1 ${section.imageUrl ? 'lg:grid-cols-2' : ''} gap-0`}>
+                      {/* Section Image */}
+                      {section.imageUrl && (
+                        <div className={`relative h-64 sm:h-80 md:h-96 lg:h-full overflow-hidden ${index % 2 === 0 ? 'lg:order-2' : 'lg:order-1'}`}>
+                          <Image
+                            src={section.imageUrl}
+                            alt={sectionContent.title}
+                            fill
+                            className="object-cover hover:scale-105 transition-transform duration-300"
+                            unoptimized
+                          />
+                        </div>
+                      )}
+
+                      {/* Section Content */}
+                      <div className={`p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-center ${index % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
+                        <div>
+                          <h3 className={`text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-3 sm:mb-4 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
+                            {sectionContent.title}
+                          </h3>
+                          <p className={`text-lg sm:text-xl font-semibold text-primary-600 mb-4 sm:mb-6 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
+                            {sectionContent.subtitle}
+                          </p>
+                          <p className={`text-base sm:text-lg text-slate-700 leading-relaxed whitespace-pre-line ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
+                            {sectionContent.fullDescription}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ============================================
           CTA SECTION

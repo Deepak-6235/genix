@@ -33,6 +33,20 @@ interface Service {
   order: number;
 }
 
+interface DetailedService {
+  id: string;
+  order: number;
+  title: string;
+  subtitle: string;
+  fullDescription: string;
+  imageUrl?: string | null;
+  translations?: Record<string, {
+    title: string;
+    subtitle: string;
+    fullDescription: string;
+  }>;
+}
+
 interface Review {
   id: string;
   slug: string;
@@ -52,6 +66,9 @@ export default function ServicesContent() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [reviewsLoading, setReviewsLoading] = useState(true);
+  const [selectedServiceSlug, setSelectedServiceSlug] = useState<string | null>(null);
+  const [detailedServices, setDetailedServices] = useState<Record<string, DetailedService[]>>({});
+  const [detailedServicesLoading, setDetailedServicesLoading] = useState<Record<string, boolean>>({});
 
   // Fetch services from database
   useEffect(() => {
@@ -90,6 +107,28 @@ export default function ServicesContent() {
 
     fetchReviews();
   }, [language]);
+
+  // Fetch detailed services for a specific service
+  const fetchDetailedServices = async (slug: string) => {
+    if (detailedServices[slug]) {
+      setSelectedServiceSlug(slug);
+      return;
+    }
+
+    setDetailedServicesLoading(prev => ({ ...prev, [slug]: true }));
+    try {
+      const response = await fetch(`/api/services/${slug}/detailed?allLangs=true`);
+      const data = await response.json();
+      if (data.success) {
+        setDetailedServices(prev => ({ ...prev, [slug]: data.detailedServices }));
+        setSelectedServiceSlug(slug);
+      }
+    } catch (error) {
+      console.error('Failed to fetch detailed services:', error);
+    } finally {
+      setDetailedServicesLoading(prev => ({ ...prev, [slug]: false }));
+    }
+  };
 
   // Fallback image if service doesn't have one
   const getServiceImagePath = (imageUrl: string | null): string => {
@@ -191,13 +230,15 @@ export default function ServicesContent() {
                       </p>
 
                       {/* Read More Button */}
-                      <Link
-                        href={`/services/${service.slug}`}
-                        className="text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors flex items-center gap-1"
-                      >
-                        {t.readMore}
-                        <span className={`inline-block transition-transform duration-300 group-hover:${dir === 'rtl' ? '-translate-x-1' : 'translate-x-1'}`}>→</span>
-                      </Link>
+                      <div className="flex items-center gap-3">
+                        <Link
+                          href={`/services/${service.slug}`}
+                          className="text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors flex items-center gap-1"
+                        >
+                          {t.readMore}
+                          <span className={`inline-block transition-transform duration-300 group-hover:${dir === 'rtl' ? '-translate-x-1' : 'translate-x-1'}`}>→</span>
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -206,6 +247,98 @@ export default function ServicesContent() {
           </div>
         </div>
       </section>
+
+      {/* ============================================
+          DETAILED SERVICES SECTION
+          ============================================ */}
+      {!loading && services.length > 0 && (
+        <section className="py-8 sm:py-10 md:py-12 lg:py-14">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto">
+              {/* Service Tabs */}
+              <div className="flex flex-wrap gap-3 mb-8 sm:mb-10 md:mb-12 border-b border-slate-200 pb-4">
+                {services.map((service) => (
+                  <button
+                    key={service.id}
+                    onClick={() => fetchDetailedServices(service.slug)}
+                    className={`px-4 sm:px-6 py-2 sm:py-3 font-semibold text-sm sm:text-base transition-all duration-300 border-b-2 ${
+                      selectedServiceSlug === service.slug
+                        ? 'border-primary-600 text-primary-600'
+                        : 'border-transparent text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    {service.name}
+                  </button>
+                ))}
+              </div>
+
+              {/* Detailed Services Content */}
+              {selectedServiceSlug && (
+                <div className="space-y-6 sm:space-y-8 md:space-y-10">
+                  {detailedServicesLoading[selectedServiceSlug] ? (
+                    <div className="space-y-6">
+                      {[1, 2].map((i) => (
+                        <div key={i} className="bg-slate-100 rounded-2xl overflow-hidden animate-pulse">
+                          <div className="h-64 bg-slate-200"></div>
+                          <div className="p-6 sm:p-8 space-y-4">
+                            <div className="h-6 bg-slate-200 rounded w-3/4"></div>
+                            <div className="h-4 bg-slate-200 rounded w-full"></div>
+                            <div className="h-4 bg-slate-200 rounded w-5/6"></div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : detailedServices[selectedServiceSlug]?.length === 0 ? (
+                    <div className="text-center py-12">
+                      <p className="text-slate-600 text-lg">No detailed sections available</p>
+                    </div>
+                  ) : (
+                    detailedServices[selectedServiceSlug]?.map((section, index) => {
+                      const sectionContent = section.translations?.[language] || section.translations?.en || section;
+                      return (
+                        <div
+                          key={section.id}
+                          className={`bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-100 hover:shadow-xl transition-all duration-300 ${
+                            index % 2 === 0 ? 'flex flex-col md:flex-row' : 'flex flex-col md:flex-row-reverse'
+                          }`}
+                        >
+                          {/* Section Image */}
+                          {section.imageUrl && (
+                            <div className="relative h-64 md:h-auto md:w-2/5 flex-shrink-0 overflow-hidden">
+                              <Image
+                                src={section.imageUrl}
+                                alt={sectionContent.title}
+                                fill
+                                className="object-cover hover:scale-105 transition-transform duration-300"
+                                unoptimized
+                              />
+                            </div>
+                          )}
+
+                          {/* Section Content */}
+                          <div className={`p-6 sm:p-8 md:p-10 flex flex-col justify-center ${section.imageUrl ? 'md:w-3/5' : 'w-full'}`}>
+                            <div>
+                              <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2 sm:mb-3">
+                                {sectionContent.title}
+                              </h3>
+                              <p className="text-lg sm:text-xl text-primary-600 font-semibold mb-4 sm:mb-6">
+                                {sectionContent.subtitle}
+                              </p>
+                              <p className="text-base sm:text-lg text-slate-700 leading-relaxed">
+                                {sectionContent.fullDescription}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ============================================
           REVIEWS SECTION
